@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- Integrations (Garmin/Strava/Apple Health/Coros) are simulated client-side with localStorage until real OAuth credentials exist — no backend yet.
