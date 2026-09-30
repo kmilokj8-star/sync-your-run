@@ -134,7 +134,7 @@ function ConnectedApps() {
           <div className="flex items-center justify-between">
             <div><p className="hidden text-xs font-bold uppercase text-primary md:block">Registro</p><h2 className="font-display text-base uppercase md:mt-1 md:text-lg">Actividades importadas</h2></div>
             {imported.length > 0 && (
-              <Button variant="ghost" size="sm" onClick={() => { persist(conns, []); setConns((c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, { ...v, imported: 0 }])) as typeof c); }}>
+              <Button variant="ghost" size="sm" onClick={() => { setImported([]); setConns((c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, { ...v, imported: 0 }])) as typeof c); }}>
                 Vaciar
               </Button>
             )}
