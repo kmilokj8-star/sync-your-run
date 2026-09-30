@@ -88,7 +88,7 @@ export function remoteActivities(provider: ProviderId, days: number): RemoteActi
       type: TYPES[k],
       date: new Date(now - i * 86400000).toISOString(),
       distanceKm: Math.round((5 + ((i * 7 + seed) % 17)) * 10) / 10,
-      durationMin: 25 + ((i * 11 + seed) % 90),
+      durationMin: Math.round((5 + ((i * 7 + seed) % 17)) * (4.5 + ((i * 3 + seed) % 20) / 10)),
     });
   }
   return out;
