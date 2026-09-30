@@ -82,13 +82,13 @@ function ConnectedApps() {
   const connected = PROVIDERS.filter((p) => conns[p.id].status === "connected");
 
   return (
-    <div className="flex min-h-screen bg-background pb-17 text-foreground md:pb-0">
+    <div className="flex min-h-screen bg-background pb-[calc(5.5rem+env(safe-area-inset-bottom))] text-foreground md:pb-0">
       <Sidebar />
       <main className="min-w-0 flex-1 px-3 py-3 sm:px-6 md:px-10 md:py-9">
         <div className="mx-auto max-w-6xl space-y-4 md:space-y-7">
           <div className="sticky top-0 z-20 -mx-3 -mt-3 grid grid-cols-[minmax(0,1fr)_auto] items-center border-b bg-background/95 px-3 py-2.5 backdrop-blur md:hidden">
             <div className="flex min-w-0 items-center gap-2"><span className="size-6 shrink-0 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} /><span className="truncate font-display text-base uppercase">RUN</span></div>
-            <Button variant="ghost" size="icon" className="size-9 shrink-0" aria-label="Ajustes"><Settings className="size-4" /></Button>
+            <Button variant="ghost" size="icon" className="size-11 shrink-0" aria-label="Ajustes"><Settings className="size-5" /></Button>
           </div>
           <header className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 border-b pb-3 md:flex md:flex-col md:items-stretch md:gap-5 md:pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="min-w-0">
@@ -103,16 +103,16 @@ function ConnectedApps() {
                 <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" /><span className="relative inline-flex size-2 rounded-full bg-primary" /></span>
                 Sistema operativo
               </div>
-              <Button size="sm" className="size-9 px-0 md:w-auto md:px-3" disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
+              <Button size="sm" className="size-11 px-0 md:h-9 md:w-auto md:px-3" disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
                 <RefreshCw className={syncing ? "animate-spin" : ""} /><span className="sr-only md:not-sr-only">Sincronizar todo</span>
               </Button>
             </div>
           </header>
 
-          <section className="grid grid-cols-3 overflow-hidden rounded-md border md:rounded-none md:border-x-0">
-            <Stat label="Conectadas" value={`${connected.length}/${PROVIDERS.length}`} />
-            <Stat label="Actividades importadas" value={String(imported.length)} />
-            <Stat label="Sincronización automática" value={String(connected.filter((p) => conns[p.id].autoSync).length) + " activas"} />
+          <section aria-label="Resumen de conexiones" className="grid grid-cols-3 gap-2 md:gap-0 md:overflow-hidden md:rounded-none md:border-y">
+            <Stat label="Conectadas" value={String(connected.length)} detail={`de ${PROVIDERS.length}`} />
+            <Stat label="Importadas" value={String(imported.length)} detail="actividades" />
+            <Stat label="Auto-sync" value={String(connected.filter((p) => conns[p.id].autoSync).length)} detail="activas" active />
           </section>
 
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
@@ -213,22 +213,34 @@ function MobileNav() {
     { icon: CalendarDays, label: "Calendario" },
   ];
   return (
-    <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-30 grid h-17 grid-cols-4 border-t bg-sidebar/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+    <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-sidebar/95 shadow-[0_-8px_24px_color-mix(in_oklch,var(--background)_70%,transparent)] backdrop-blur-xl md:hidden">
+      <div className="grid min-h-17 grid-cols-4 items-stretch px-1 pb-[max(env(safe-area-inset-bottom),0.25rem)] pt-1">
       {items.map(({ icon: Icon, label, active }) => (
-        <div key={label} className={`flex min-w-0 flex-col items-center justify-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+        <Button
+          key={label}
+          type="button"
+          variant="ghost"
+          aria-current={active ? "page" : undefined}
+          className={`relative h-auto min-h-14 min-w-0 flex-col gap-1 rounded-md px-1 py-1.5 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary" : "text-muted-foreground hover:text-foreground"}`}
+        >
           <Icon className="size-5 shrink-0" />
-          <span className="max-w-full truncate px-1">{label}</span>
-        </div>
+          <span className="max-w-full truncate">{label}</span>
+          {active && <span aria-hidden="true" className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
+        </Button>
       ))}
+      </div>
     </nav>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, detail, active = false }: { label: string; value: string; detail: string; active?: boolean }) {
   return (
-    <div className="min-w-0 border-r px-2 py-3 text-center last:border-r-0 md:p-4 md:text-left">
-      <p className="truncate text-[9px] font-semibold uppercase text-muted-foreground md:text-[11px]">{label}</p>
-      <p className="mt-0.5 truncate font-mono text-lg font-semibold text-foreground md:mt-1 md:text-2xl">{value}</p>
+    <div className={`min-w-0 rounded-md border px-2.5 py-3 md:rounded-none md:border-y-0 md:border-l-0 md:border-r md:p-4 md:text-left md:last:border-r-0 ${active ? "border-primary/30 bg-primary/10" : "bg-card"}`}>
+      <p className={`truncate text-[9px] font-bold uppercase md:text-[11px] ${active ? "text-primary" : "text-muted-foreground"}`}>{label}</p>
+      <div className="mt-1 flex min-w-0 items-baseline gap-1 md:mt-1.5">
+        <span className={`shrink-0 font-mono text-2xl font-semibold leading-none md:text-2xl ${active ? "text-primary" : "text-foreground"}`}>{value}</span>
+        <span className="min-w-0 truncate text-[9px] font-medium text-muted-foreground md:text-[11px]">{detail}</span>
+      </div>
     </div>
   );
 }
@@ -299,14 +311,14 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
       <div className="mt-auto flex flex-wrap gap-2 pt-3 md:pt-4">
         {on ? (
           <>
-            <Button size="sm" onClick={onSync} disabled={syncing}>
+            <Button size="sm" className="min-h-11 md:min-h-8" onClick={onSync} disabled={syncing}>
               {syncing ? <Loader2 className="animate-spin" /> : <RefreshCw />} <span className="md:hidden">Sincronizar</span><span className="hidden md:inline">Sincronizar ahora</span>
             </Button>
-            <Button size="sm" variant="outline" onClick={onImport}><Download /> Importar</Button>
-            <Button size="icon" variant="ghost" className="ml-auto text-muted-foreground" onClick={onDisconnect} title="Desvincular"><Unlink /><span className="sr-only">Desvincular {p.name}</span></Button>
+            <Button size="sm" variant="outline" className="min-h-11 md:min-h-8" onClick={onImport}><Download /> Importar</Button>
+            <Button size="icon" variant="ghost" className="ml-auto size-11 text-muted-foreground md:size-9" onClick={onDisconnect} title="Desvincular"><Unlink /><span className="sr-only">Desvincular {p.name}</span></Button>
           </>
         ) : (
-          <Button size="sm" className="w-full md:w-auto" onClick={onConnect}><Link2 /> Conectar <span className="sr-only md:not-sr-only">{p.name}</span></Button>
+          <Button size="sm" className="min-h-11 w-full md:min-h-8 md:w-auto" onClick={onConnect}><Link2 /> Conectar <span className="sr-only md:not-sr-only">{p.name}</span></Button>
         )}
       </div>
     </article>
