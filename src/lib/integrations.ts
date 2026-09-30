@@ -84,8 +84,8 @@ export function remoteActivities(provider: ProviderId, days: number): RemoteActi
     out.push({
       id: `${provider}-${i}`,
       provider,
-      name: NAMES[k],
-      type: TYPES[k],
+      name: NAMES[k]!,
+      type: TYPES[k]!,
       date: new Date(now - i * 86400000).toISOString(),
       distanceKm: Math.round((5 + ((i * 7 + seed) % 17)) * 10) / 10,
       durationMin: Math.round((5 + ((i * 7 + seed) % 17)) * (4.5 + ((i * 3 + seed) % 20) / 10)),
