@@ -34,6 +34,10 @@ export const Route = createFileRoute("/dispositivos")({
 function ConnectedApps() {
   const [conns, setConns] = useState(initialConnections);
   const [imported, setImported] = useState<RemoteActivity[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [syncing, setSyncing] = useState<ProviderId | null>(null);
+  const [connectFor, setConnectFor] = useState<Provider | null>(null);
+  const [importFor, setImportFor] = useState<Provider | null>(null);
 
   useEffect(() => {
     try {
@@ -42,25 +46,28 @@ function ConnectedApps() {
       const i = localStorage.getItem(IMPORTED_KEY);
       if (i) setImported(JSON.parse(i));
     } catch { /* ignore */ }
+    setLoaded(true);
   }, []);
+  useEffect(() => {
+    if (!loaded) return;
+    try {
+      localStorage.setItem(CONNS_KEY, JSON.stringify(conns));
+      localStorage.setItem(IMPORTED_KEY, JSON.stringify(imported));
+    } catch { /* ignore */ }
+  }, [conns, imported, loaded]);
 
   const update = (id: ProviderId, patch: Partial<Connection>) => setConns((c) => ({ ...c, [id]: { ...c[id], ...patch } }));
 
-  const persist = (nextConns: typeof conns, nextImported: RemoteActivity[]) => {
-    setConns(nextConns);
-    setImported(nextImported);
-    try {
-      localStorage.setItem(CONNS_KEY, JSON.stringify(nextConns));
-      localStorage.setItem(IMPORTED_KEY, JSON.stringify(nextImported));
-    } catch { /* ignore */ }
-  };
-
   const addActivities = (id: ProviderId, acts: RemoteActivity[]) => {
-    const ids = new Set(imported.map((a) => a.id));
-    const fresh = acts.filter((a) => !ids.has(a.id));
-    const nextImported = [...fresh, ...imported].sort((a, b) => b.date.localeCompare(a.date));
-    persist({ ...conns, [id]: { ...conns[id], lastSync: new Date().toISOString(), imported: conns[id].imported + fresh.length } }, nextImported);
-    return fresh.length;
+    let added = 0;
+    setImported((prev) => {
+      const ids = new Set(prev.map((a) => a.id));
+      const fresh = acts.filter((a) => !ids.has(a.id));
+      added = fresh.length;
+      return [...fresh, ...prev].sort((a, b) => b.date.localeCompare(a.date));
+    });
+    setConns((c) => ({ ...c, [id]: { ...c[id], lastSync: new Date().toISOString(), imported: c[id].imported + added } }));
+    return added;
   };
 
   const syncNow = async (p: Provider) => {
