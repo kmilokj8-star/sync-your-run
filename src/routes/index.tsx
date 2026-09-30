@@ -88,7 +88,7 @@ function ConnectedApps() {
         <div className="mx-auto max-w-6xl space-y-4 md:space-y-7">
           <div className="sticky top-0 z-20 -mx-3 -mt-3 grid grid-cols-[minmax(0,1fr)_auto] items-center border-b bg-background/95 px-3 py-2.5 backdrop-blur md:hidden">
             <div className="flex min-w-0 items-center gap-2"><span className="size-6 shrink-0 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} /><span className="truncate font-display text-base uppercase">RUN</span></div>
-            <Button variant="ghost" size="icon" className="size-9 shrink-0" aria-label="Ajustes"><Settings className="size-4" /></Button>
+            <Button variant="ghost" size="icon" className="size-11 shrink-0" aria-label="Ajustes"><Settings className="size-5" /></Button>
           </div>
           <header className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 border-b pb-3 md:flex md:flex-col md:items-stretch md:gap-5 md:pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="min-w-0">
@@ -103,7 +103,7 @@ function ConnectedApps() {
                 <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" /><span className="relative inline-flex size-2 rounded-full bg-primary" /></span>
                 Sistema operativo
               </div>
-              <Button size="sm" className="size-9 px-0 md:w-auto md:px-3" disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
+              <Button size="sm" className="size-11 px-0 md:h-9 md:w-auto md:px-3" disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
                 <RefreshCw className={syncing ? "animate-spin" : ""} /><span className="sr-only md:not-sr-only">Sincronizar todo</span>
               </Button>
             </div>
@@ -311,14 +311,14 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
       <div className="mt-auto flex flex-wrap gap-2 pt-3 md:pt-4">
         {on ? (
           <>
-            <Button size="sm" onClick={onSync} disabled={syncing}>
+            <Button size="sm" className="min-h-11 md:min-h-8" onClick={onSync} disabled={syncing}>
               {syncing ? <Loader2 className="animate-spin" /> : <RefreshCw />} <span className="md:hidden">Sincronizar</span><span className="hidden md:inline">Sincronizar ahora</span>
             </Button>
-            <Button size="sm" variant="outline" onClick={onImport}><Download /> Importar</Button>
-            <Button size="icon" variant="ghost" className="ml-auto text-muted-foreground" onClick={onDisconnect} title="Desvincular"><Unlink /><span className="sr-only">Desvincular {p.name}</span></Button>
+            <Button size="sm" variant="outline" className="min-h-11 md:min-h-8" onClick={onImport}><Download /> Importar</Button>
+            <Button size="icon" variant="ghost" className="ml-auto size-11 text-muted-foreground md:size-9" onClick={onDisconnect} title="Desvincular"><Unlink /><span className="sr-only">Desvincular {p.name}</span></Button>
           </>
         ) : (
-          <Button size="sm" className="w-full md:w-auto" onClick={onConnect}><Link2 /> Conectar <span className="sr-only md:not-sr-only">{p.name}</span></Button>
+          <Button size="sm" className="min-h-11 w-full md:min-h-8 md:w-auto" onClick={onConnect}><Link2 /> Conectar <span className="sr-only md:not-sr-only">{p.name}</span></Button>
         )}
       </div>
     </article>
