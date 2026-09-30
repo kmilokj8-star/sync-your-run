@@ -93,17 +93,18 @@ function MobileNav({ pathname }: { pathname: string }) {
       <div className="grid min-h-17 grid-cols-4 items-stretch px-1 pb-[max(env(safe-area-inset-bottom),0.25rem)] pt-1">
         {MOBILE_ITEMS.map(({ icon: Icon, label, href }) => {
           const active = href === pathname;
-          return (
-            <Link
-              key={label}
-              to={href}
-              aria-current={active ? "page" : undefined}
-              className={`relative flex h-auto min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-md px-1 py-1.5 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`}
-            >
+          const classes = `relative flex h-auto min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-md px-1 py-1.5 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`;
+          const content = (
+            <>
               <Icon className="size-5 shrink-0" />
               <span className="max-w-full truncate">{label}</span>
               {active && <span aria-hidden="true" className="absolute inset-x-3 bottom-0 h-0.5 rounded-full bg-primary" />}
-            </Link>
+            </>
+          );
+          return href ? (
+            <Link key={label} to={href} aria-current={active ? "page" : undefined} className={classes}>{content}</Link>
+          ) : (
+            <div key={label} aria-current={active ? "page" : undefined} className={classes}>{content}</div>
           );
         })}
       </div>
