@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
-  Activity, CalendarDays, CheckCircle2, Download, Home, Link2, Loader2, LogOut, RefreshCw, Settings, Trophy, Unlink, Watch, XCircle,
+  Activity, CalendarDays, CheckCircle2, ChevronRight, Download, Home, Link2, Loader2, LogOut, Menu, RefreshCw, Settings, ShieldCheck, Trophy, Unlink, Watch, XCircle,
 } from "lucide-react";
 import logo from "@/assets/logo-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
@@ -82,30 +82,45 @@ function ConnectedApps() {
   const connected = PROVIDERS.filter((p) => conns[p.id].status === "connected");
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background text-foreground">
       <Sidebar />
-      <main className="flex-1 px-4 py-8 md:px-10">
-        <div className="mx-auto max-w-5xl space-y-8">
-          <header className="flex flex-wrap items-end justify-between gap-4">
+      <main className="min-w-0 flex-1 px-4 py-5 sm:px-6 md:px-10 md:py-9">
+        <div className="mx-auto max-w-6xl space-y-7">
+          <div className="flex items-center justify-between border-b pb-4 md:hidden">
+            <div className="flex items-center gap-2"><span className="size-6 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} /><span className="font-display text-lg uppercase">RUN</span></div>
+            <Button variant="ghost" size="icon" aria-label="Abrir navegación"><Menu /></Button>
+          </div>
+          <header className="flex flex-col gap-5 border-b pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Ajustes · Integraciones</p>
-              <h1 className="mt-1 text-3xl font-bold tracking-tight">Apps y dispositivos</h1>
-              <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-                Vincula tus relojes y apps de running para traer tus actividades a RUN automáticamente o cuando tú quieras.
+              <p className="text-xs font-bold uppercase text-primary">Ecosistema RUN / Integraciones</p>
+              <h1 className="mt-2 font-display text-3xl uppercase sm:text-4xl">Apps y dispositivos</h1>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+                Centraliza tus datos de entrenamiento, salud y rendimiento en un solo lugar.
               </p>
             </div>
-            <Button disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
-              <RefreshCw className={syncing ? "animate-spin" : ""} /> Sincronizar todo
-            </Button>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-semibold text-primary">
+                <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" /><span className="relative inline-flex size-2 rounded-full bg-primary" /></span>
+                Sistema operativo
+              </div>
+              <Button disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
+                <RefreshCw className={syncing ? "animate-spin" : ""} /> Sincronizar todo
+              </Button>
+            </div>
           </header>
 
-          <section className="grid gap-3 sm:grid-cols-3">
+          <section className="grid border-y sm:grid-cols-3">
             <Stat label="Conectadas" value={`${connected.length}/${PROVIDERS.length}`} />
             <Stat label="Actividades importadas" value={String(imported.length)} />
             <Stat label="Sincronización automática" value={String(connected.filter((p) => conns[p.id].autoSync).length) + " activas"} />
           </section>
 
-          <section className="grid gap-4 md:grid-cols-2">
+          <div className="flex items-center justify-between">
+            <div><p className="text-xs font-bold uppercase text-primary">Fuentes de datos</p><h2 className="mt-1 font-display text-xl uppercase">Tus conexiones</h2></div>
+            <span className="font-mono text-xs text-muted-foreground">{connected.length} EN LÍNEA</span>
+          </div>
+
+          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {PROVIDERS.map((p) => (
               <ProviderCard
                 key={p.id}
@@ -121,9 +136,9 @@ function ConnectedApps() {
             ))}
           </section>
 
-          <section className="rounded-xl border bg-card p-5">
+          <section className="rounded-lg border bg-card p-5">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Actividades importadas</h2>
+              <div><p className="text-xs font-bold uppercase text-primary">Registro</p><h2 className="mt-1 font-display text-lg uppercase">Actividades importadas</h2></div>
               {imported.length > 0 && (
                 <Button variant="ghost" size="sm" onClick={() => { setImported([]); setConns((c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, { ...v, imported: 0 }])) as typeof c); }}>
                   Vaciar
@@ -131,7 +146,7 @@ function ConnectedApps() {
               )}
             </div>
             {imported.length === 0 ? (
-              <p className="mt-6 py-8 text-center text-sm text-muted-foreground">Todavía no has importado actividades. Conecta una app y pulsa “Importar”.</p>
+              <div className="mt-5 flex min-h-32 flex-col items-center justify-center border border-dashed p-6 text-center"><Download className="mb-3 size-5 text-muted-foreground" /><p className="text-sm text-muted-foreground">Todavía no has importado actividades. Conecta una app y pulsa “Importar”.</p></div>
             ) : (
               <ul className="mt-3 divide-y">
                 {imported.slice(0, 12).map((a) => <ActivityRow key={a.id} a={a} />)}
@@ -171,35 +186,37 @@ function Sidebar() {
     { icon: Trophy, label: "Retos" }, { icon: Watch, label: "Apps y dispositivos", active: true }, { icon: Settings, label: "Ajustes" },
   ];
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r bg-sidebar p-4 md:flex">
-      <div className="mb-8 flex items-center gap-2 px-2">
+    <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar p-5 md:flex">
+      <div className="mb-10 flex items-center gap-3 px-2">
         <span className="size-8 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} />
-        <span className="text-2xl font-extrabold tracking-tight" style={{ fontFamily: "var(--font-display)" }}>run</span>
+        <span className="font-display text-2xl uppercase">run</span>
       </div>
+      <p className="mb-3 px-3 text-[10px] font-bold uppercase text-muted-foreground">Entrenamiento</p>
       <nav className="space-y-1">
         {items.map(({ icon: I, label, active }) => (
-          <div key={label} className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm ${active ? "bg-accent font-semibold text-accent-foreground" : "text-muted-foreground"}`}>
-            <I className="size-4" /> {label}
+          <div key={label} className={`flex items-center gap-3 rounded-md border-l-2 px-3 py-2.5 text-sm transition-colors ${active ? "border-primary bg-sidebar-accent font-semibold text-sidebar-accent-foreground" : "border-transparent text-muted-foreground hover:bg-sidebar-accent/50 hover:text-foreground"}`}>
+            <I className="size-4" /> <span className="flex-1">{label}</span>{active && <ChevronRight className="size-3" />}
           </div>
         ))}
       </nav>
-      <div className="mt-auto flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground"><LogOut className="size-4" /> Salir</div>
+      <div className="mt-auto space-y-4"><div className="rounded-md border bg-muted/40 p-3"><div className="flex items-center gap-2 text-xs font-semibold text-primary"><ShieldCheck className="size-4" /> Datos protegidos</div><p className="mt-1 text-xs text-muted-foreground">Tus permisos se pueden revocar en cualquier momento.</p></div><div className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground"><LogOut className="size-4" /> Salir</div></div>
     </aside>
   );
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border bg-card p-4">
-      <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="mt-1 font-mono text-2xl font-semibold">{value}</p>
+    <div className="border-b p-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+      <p className="text-[11px] font-semibold uppercase text-muted-foreground">{label}</p>
+      <p className="mt-1 font-mono text-2xl font-semibold text-foreground">{value}</p>
     </div>
   );
 }
 
 function ProviderMark({ p, size = "size-11" }: { p: Provider; size?: string }) {
+  const brandClass: Record<ProviderId, string> = { garmin: "bg-sky-600", strava: "bg-orange-600", apple: "bg-rose-500", coros: "bg-neutral-800" };
   return (
-    <div className={`${size} grid shrink-0 place-items-center rounded-xl text-lg font-bold text-primary-foreground`} style={{ backgroundColor: p.swatch, color: "#fff" }}>
+    <div className={`${size} ${brandClass[p.id]} grid shrink-0 place-items-center rounded-lg text-lg font-bold text-primary-foreground`}>
       {p.id === "apple" ? "♥" : p.short}
     </div>
   );
@@ -213,29 +230,30 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
 }) {
   const on = conn.status === "connected";
   return (
-    <article className={`flex flex-col rounded-xl border bg-card p-5 transition ${on ? "ring-1 ring-primary/40" : ""}`}>
+    <article className={`group relative flex min-h-80 flex-col overflow-hidden rounded-lg border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 ${on ? "border-primary/40" : "border-dashed bg-card/70"}`}>
+      <div className={`absolute inset-x-0 top-0 h-0.5 ${on ? "bg-primary" : "bg-border"}`} />
       <div className="flex items-start gap-3">
         <ProviderMark p={p} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-semibold">{p.name}</h3>
+            <h3 className="text-lg font-bold">{p.name}</h3>
             {on ? (
               <Badge className="gap-1"><CheckCircle2 className="size-3" /> Vinculado</Badge>
             ) : conn.status === "error" ? (
               <Badge variant="destructive" className="gap-1"><XCircle className="size-3" /> Error</Badge>
             ) : (
-              <Badge variant="secondary">No vinculado</Badge>
+              <Badge variant="secondary" className="uppercase">Sin conexión</Badge>
             )}
           </div>
-          <p className="text-xs text-muted-foreground">{on ? conn.account : p.kind}</p>
+          <p className="text-xs uppercase text-muted-foreground">{on ? conn.account : p.kind}</p>
         </div>
       </div>
       <p className="mt-3 text-sm text-muted-foreground">{p.description}</p>
 
       {on ? (
-        <div className="mt-4 space-y-3 rounded-lg bg-muted/60 p-3 text-sm">
+        <div className="mt-4 space-y-3 rounded-md border bg-muted/60 p-3 text-sm">
           <div className="flex items-center justify-between">
-            <span>Sincronización automática</span>
+            <span className="font-semibold">Sincronización automática</span>
             <Switch checked={conn.autoSync} onCheckedChange={(v) => onChange({ autoSync: v })} />
           </div>
           {conn.autoSync && (
@@ -247,14 +265,14 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
               </Select>
             </div>
           )}
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between font-mono text-[10px] uppercase text-muted-foreground">
             <span>Última sincronización: {syncing ? "sincronizando…" : relTime(conn.lastSync)}</span>
             <span className="font-mono">{conn.imported} importadas</span>
           </div>
         </div>
       ) : (
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {p.scopes.map((s) => <span key={s} className="rounded-full border px-2 py-0.5 text-xs text-muted-foreground">{s}</span>)}
+        <div className="mt-4 space-y-2 border-t pt-3">
+          {p.scopes.map((s) => <div key={s} className="flex items-center gap-2 text-xs text-muted-foreground"><span className="size-1.5 rounded-full bg-primary/70" />{s}</div>)}
         </div>
       )}
 
@@ -265,7 +283,7 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
               {syncing ? <Loader2 className="animate-spin" /> : <RefreshCw />} Sincronizar ahora
             </Button>
             <Button size="sm" variant="outline" onClick={onImport}><Download /> Importar</Button>
-            <Button size="sm" variant="ghost" className="ml-auto text-muted-foreground" onClick={onDisconnect}><Unlink /> Desvincular</Button>
+            <Button size="icon" variant="ghost" className="ml-auto text-muted-foreground" onClick={onDisconnect} title="Desvincular"><Unlink /><span className="sr-only">Desvincular {p.name}</span></Button>
           </>
         ) : (
           <Button size="sm" onClick={onConnect}><Link2 /> Conectar {p.name}</Button>
@@ -372,7 +390,8 @@ function ImportDialog({ provider, importedIds, onClose, onImport }: {
 }
 
 function ActivityRow({ a }: { a: RemoteActivity }) {
-  const p = PROVIDERS.find((x) => x.id === a.provider)!;
+  const p = PROVIDERS.find((x) => x.id === a.provider);
+  if (!p) return null;
   const pace = a.durationMin / a.distanceKm;
   return (
     <li className="flex items-center gap-3 py-3 text-sm">

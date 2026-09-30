@@ -9,3 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Integrations (Garmin/Strava/Apple Health/Coros) are simulated client-side with localStorage until real OAuth credentials exist — no backend yet.
+- The product UI uses a dark performance-dashboard system with neon green, black, white, Archivo Black headings, and Hind body text to support fast athletic data scanning.
