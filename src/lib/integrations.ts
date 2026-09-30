@@ -103,3 +103,11 @@ export function relTime(iso?: string) {
   if (h < 24) return `Hace ${h} h`;
   return `Hace ${Math.round(h / 24)} d`;
 }
+
+export const CONNS_KEY = "run_connections_v1";
+export const IMPORTED_KEY = "run_imported_v1";
+
+export const emptyConnection = (): Connection => ({ status: "disconnected", autoSync: true, frequency: "hourly", imported: 0 });
+
+export const initialConnections = () =>
+  Object.fromEntries(PROVIDERS.map((p) => [p.id, emptyConnection()])) as Record<ProviderId, Connection>;
