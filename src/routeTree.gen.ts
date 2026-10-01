@@ -11,6 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DispositivosRouteImport } from './routes/dispositivos'
+import { Route as MasRouteImport } from './routes/mas'
+import { Route as MasAyudaRouteImport } from './routes/mas.ayuda'
+import { Route as MasConfiguracionRouteImport } from './routes/mas.configuracion'
+import { Route as MasEntrenamientoRouteImport } from './routes/mas.entrenamiento'
+import { Route as MasPerfilRouteImport } from './routes/mas.perfil'
+import { Route as MasRendimientoRouteImport } from './routes/mas.rendimiento'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +28,105 @@ const DispositivosRoute = DispositivosRouteImport.update({
   path: '/dispositivos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MasRoute = MasRouteImport.update({
+  id: '/mas',
+  path: '/mas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MasAyudaRoute = MasAyudaRouteImport.update({
+  id: '/ayuda',
+  path: '/ayuda',
+  getParentRoute: () => MasRoute,
+} as any)
+const MasConfiguracionRoute = MasConfiguracionRouteImport.update({
+  id: '/configuracion',
+  path: '/configuracion',
+  getParentRoute: () => MasRoute,
+} as any)
+const MasEntrenamientoRoute = MasEntrenamientoRouteImport.update({
+  id: '/entrenamiento',
+  path: '/entrenamiento',
+  getParentRoute: () => MasRoute,
+} as any)
+const MasPerfilRoute = MasPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => MasRoute,
+} as any)
+const MasRendimientoRoute = MasRendimientoRouteImport.update({
+  id: '/rendimiento',
+  path: '/rendimiento',
+  getParentRoute: () => MasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dispositivos': typeof DispositivosRoute
+  '/mas': typeof MasRouteWithChildren
+  '/mas/ayuda': typeof MasAyudaRoute
+  '/mas/configuracion': typeof MasConfiguracionRoute
+  '/mas/entrenamiento': typeof MasEntrenamientoRoute
+  '/mas/perfil': typeof MasPerfilRoute
+  '/mas/rendimiento': typeof MasRendimientoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dispositivos': typeof DispositivosRoute
+  '/mas': typeof MasRouteWithChildren
+  '/mas/ayuda': typeof MasAyudaRoute
+  '/mas/configuracion': typeof MasConfiguracionRoute
+  '/mas/entrenamiento': typeof MasEntrenamientoRoute
+  '/mas/perfil': typeof MasPerfilRoute
+  '/mas/rendimiento': typeof MasRendimientoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dispositivos': typeof DispositivosRoute
+  '/mas': typeof MasRouteWithChildren
+  '/mas/ayuda': typeof MasAyudaRoute
+  '/mas/configuracion': typeof MasConfiguracionRoute
+  '/mas/entrenamiento': typeof MasEntrenamientoRoute
+  '/mas/perfil': typeof MasPerfilRoute
+  '/mas/rendimiento': typeof MasRendimientoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dispositivos'
+  fullPaths:
+    | '/'
+    | '/dispositivos'
+    | '/mas'
+    | '/mas/ayuda'
+    | '/mas/configuracion'
+    | '/mas/entrenamiento'
+    | '/mas/perfil'
+    | '/mas/rendimiento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dispositivos'
-  id: '__root__' | '/' | '/dispositivos'
+  to:
+    | '/'
+    | '/dispositivos'
+    | '/mas'
+    | '/mas/ayuda'
+    | '/mas/configuracion'
+    | '/mas/entrenamiento'
+    | '/mas/perfil'
+    | '/mas/rendimiento'
+  id:
+    | '__root__'
+    | '/'
+    | '/dispositivos'
+    | '/mas'
+    | '/mas/ayuda'
+    | '/mas/configuracion'
+    | '/mas/entrenamiento'
+    | '/mas/perfil'
+    | '/mas/rendimiento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DispositivosRoute: typeof DispositivosRoute
+  MasRoute: typeof MasRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +145,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DispositivosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mas': {
+      id: '/mas'
+      path: '/mas'
+      fullPath: '/mas'
+      preLoaderRoute: typeof MasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mas/ayuda': {
+      id: '/mas/ayuda'
+      path: '/ayuda'
+      fullPath: '/mas/ayuda'
+      preLoaderRoute: typeof MasAyudaRouteImport
+      parentRoute: typeof MasRoute
+    }
+    '/mas/configuracion': {
+      id: '/mas/configuracion'
+      path: '/configuracion'
+      fullPath: '/mas/configuracion'
+      preLoaderRoute: typeof MasConfiguracionRouteImport
+      parentRoute: typeof MasRoute
+    }
+    '/mas/entrenamiento': {
+      id: '/mas/entrenamiento'
+      path: '/entrenamiento'
+      fullPath: '/mas/entrenamiento'
+      preLoaderRoute: typeof MasEntrenamientoRouteImport
+      parentRoute: typeof MasRoute
+    }
+    '/mas/perfil': {
+      id: '/mas/perfil'
+      path: '/perfil'
+      fullPath: '/mas/perfil'
+      preLoaderRoute: typeof MasPerfilRouteImport
+      parentRoute: typeof MasRoute
+    }
+    '/mas/rendimiento': {
+      id: '/mas/rendimiento'
+      path: '/rendimiento'
+      fullPath: '/mas/rendimiento'
+      preLoaderRoute: typeof MasRendimientoRouteImport
+      parentRoute: typeof MasRoute
+    }
   }
 }
+
+interface MasRouteChildren {
+  MasAyudaRoute: typeof MasAyudaRoute
+  MasConfiguracionRoute: typeof MasConfiguracionRoute
+  MasEntrenamientoRoute: typeof MasEntrenamientoRoute
+  MasPerfilRoute: typeof MasPerfilRoute
+  MasRendimientoRoute: typeof MasRendimientoRoute
+}
+
+const MasRouteChildren: MasRouteChildren = {
+  MasAyudaRoute: MasAyudaRoute,
+  MasConfiguracionRoute: MasConfiguracionRoute,
+  MasEntrenamientoRoute: MasEntrenamientoRoute,
+  MasPerfilRoute: MasPerfilRoute,
+  MasRendimientoRoute: MasRendimientoRoute,
+}
+
+const MasRouteWithChildren = MasRoute._addFileChildren(MasRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DispositivosRoute: DispositivosRoute,
+  MasRoute: MasRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
