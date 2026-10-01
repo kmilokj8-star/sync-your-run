@@ -6,5 +6,5 @@
 - [x] Add persistent unit, notification, privacy, and visual-theme preferences.
 - [x] Preserve and localize Inicio and Apps y dispositivos, including existing import/sync flows.
 - [x] Update desktop and mobile navigation to include Más.
-- [ ] Verify core flows on mobile and desktop.
+- [x] Verify core flows on mobile and desktop.
 - [ ] Generate the Android test APK (blocked: Android SDK is unavailable in this workspace).
