@@ -1,26 +1,11 @@
 import type { ReactNode } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Activity, CalendarDays, ChevronRight, Home, LogOut, Settings, ShieldCheck, Trophy, Watch,
+  Activity, CalendarDays, ChevronRight, Ellipsis, Home, LogOut, Settings, ShieldCheck, Trophy, Watch,
 } from "lucide-react";
 import logo from "@/assets/logo-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
-
-const SIDEBAR_ITEMS = [
-  { icon: Home, label: "Inicio", href: "/" },
-  { icon: Activity, label: "Actividades" },
-  { icon: CalendarDays, label: "Calendario" },
-  { icon: Trophy, label: "Retos" },
-  { icon: Watch, label: "Apps y dispositivos", href: "/dispositivos" },
-  { icon: Settings, label: "Ajustes" },
-];
-
-const MOBILE_ITEMS = [
-  { icon: Home, label: "Inicio", href: "/" },
-  { icon: Activity, label: "Actividad" },
-  { icon: Watch, label: "Dispositivos", href: "/dispositivos" },
-  { icon: CalendarDays, label: "Calendario" },
-];
+import { usePreferences } from "@/lib/preferences";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useLocation().pathname;
@@ -34,6 +19,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 export function TopBar() {
+  const { t } = usePreferences();
   return (
     <div className="sticky top-0 z-20 -mx-3 -mt-3 grid grid-cols-[minmax(0,1fr)_auto] items-center border-b bg-background/95 px-3 py-2.5 backdrop-blur md:hidden">
       <div className="flex min-w-0 items-center gap-2">
@@ -42,12 +28,21 @@ export function TopBar() {
           <span className="truncate font-display text-base uppercase">RUN</span>
         </Link>
       </div>
-      <Button variant="ghost" size="icon" className="size-11 shrink-0" aria-label="Ajustes"><Settings className="size-5" /></Button>
+       <Button asChild variant="ghost" size="icon" className="size-11 shrink-0" aria-label={t("settings")}><Link to="/mas/configuracion"><Settings className="size-5" /></Link></Button>
     </div>
   );
 }
 
 function Sidebar({ pathname }: { pathname: string }) {
+  const { t } = usePreferences();
+  const items = [
+    { icon: Home, label: t("home"), href: "/" as const },
+    { icon: Activity, label: t("activity") },
+    { icon: CalendarDays, label: "Calendario" },
+    { icon: Trophy, label: "Retos" },
+    { icon: Watch, label: t("appsDevices"), href: "/dispositivos" as const },
+    { icon: Ellipsis, label: t("more"), href: "/mas" as const },
+  ];
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar p-5 md:flex">
       <div className="mb-10 flex items-center gap-3 px-2">
@@ -56,10 +51,10 @@ function Sidebar({ pathname }: { pathname: string }) {
           <span className="font-display text-2xl uppercase">run</span>
         </Link>
       </div>
-      <p className="mb-3 px-3 text-[10px] font-bold uppercase text-muted-foreground">Entrenamiento</p>
+       <p className="mb-3 px-3 text-[10px] font-bold uppercase text-muted-foreground">{t("training")}</p>
       <nav className="space-y-1">
-        {SIDEBAR_ITEMS.map(({ icon: I, label, href }) => {
-          const active = href === pathname;
+         {items.map(({ icon: I, label, href }) => {
+           const active = href === "/mas" ? pathname.startsWith("/mas") : href === pathname;
           return href ? (
             <Link
               key={label}
@@ -78,21 +73,28 @@ function Sidebar({ pathname }: { pathname: string }) {
       </nav>
       <div className="mt-auto space-y-4">
         <div className="rounded-md border bg-muted/40 p-3">
-          <div className="flex items-center gap-2 text-xs font-semibold text-primary"><ShieldCheck className="size-4" /> Datos protegidos</div>
-          <p className="mt-1 text-xs text-muted-foreground">Tus permisos se pueden revocar en cualquier momento.</p>
+           <div className="flex items-center gap-2 text-xs font-semibold text-primary"><ShieldCheck className="size-4" /> {t("protectedData")}</div>
+           <p className="mt-1 text-xs text-muted-foreground">{t("revokeAnytime")}</p>
         </div>
-        <div className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground"><LogOut className="size-4" /> Salir</div>
+         <div className="flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground"><LogOut className="size-4" /> {t("logout")}</div>
       </div>
     </aside>
   );
 }
 
 function MobileNav({ pathname }: { pathname: string }) {
+  const { t } = usePreferences();
+  const items = [
+    { icon: Home, label: t("home"), href: "/" as const },
+    { icon: Activity, label: t("activity") },
+    { icon: Watch, label: t("devices"), href: "/dispositivos" as const },
+    { icon: Ellipsis, label: t("more"), href: "/mas" as const },
+  ];
   return (
     <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-sidebar/95 shadow-[0_-8px_24px_color-mix(in_oklch,var(--background)_70%,transparent)] backdrop-blur-xl md:hidden">
       <div className="grid min-h-17 grid-cols-4 items-stretch px-1 pb-[max(env(safe-area-inset-bottom),0.25rem)] pt-1">
-        {MOBILE_ITEMS.map(({ icon: Icon, label, href }) => {
-          const active = href === pathname;
+         {items.map(({ icon: Icon, label, href }) => {
+           const active = href === "/mas" ? pathname.startsWith("/mas") : href === pathname;
           const classes = `relative flex h-auto min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-md px-1 py-1.5 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`;
           const content = (
             <>

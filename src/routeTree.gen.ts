@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DispositivosRouteImport } from './routes/dispositivos'
 import { Route as MasRouteImport } from './routes/mas'
+import { Route as MasIndexRouteImport } from './routes/mas.index'
 import { Route as MasAyudaRouteImport } from './routes/mas.ayuda'
 import { Route as MasConfiguracionRouteImport } from './routes/mas.configuracion'
 import { Route as MasEntrenamientoRouteImport } from './routes/mas.entrenamiento'
@@ -32,6 +33,11 @@ const MasRoute = MasRouteImport.update({
   id: '/mas',
   path: '/mas',
   getParentRoute: () => rootRouteImport,
+} as any)
+const MasIndexRoute = MasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MasRoute,
 } as any)
 const MasAyudaRoute = MasAyudaRouteImport.update({
   id: '/ayuda',
@@ -68,16 +74,17 @@ export interface FileRoutesByFullPath {
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
+  '/mas/': typeof MasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dispositivos': typeof DispositivosRoute
-  '/mas': typeof MasRouteWithChildren
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
+  '/mas': typeof MasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +96,7 @@ export interface FileRoutesById {
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
+  '/mas/': typeof MasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,16 +109,17 @@ export interface FileRouteTypes {
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
+    | '/mas/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dispositivos'
-    | '/mas'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
+    | '/mas'
   id:
     | '__root__'
     | '/'
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
+    | '/mas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -151,6 +161,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/mas'
       preLoaderRoute: typeof MasRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/mas/': {
+      id: '/mas/'
+      path: '/'
+      fullPath: '/mas/'
+      preLoaderRoute: typeof MasIndexRouteImport
+      parentRoute: typeof MasRoute
     }
     '/mas/ayuda': {
       id: '/mas/ayuda'
@@ -196,6 +213,7 @@ interface MasRouteChildren {
   MasEntrenamientoRoute: typeof MasEntrenamientoRoute
   MasPerfilRoute: typeof MasPerfilRoute
   MasRendimientoRoute: typeof MasRendimientoRoute
+  MasIndexRoute: typeof MasIndexRoute
 }
 
 const MasRouteChildren: MasRouteChildren = {
@@ -204,6 +222,7 @@ const MasRouteChildren: MasRouteChildren = {
   MasEntrenamientoRoute: MasEntrenamientoRoute,
   MasPerfilRoute: MasPerfilRoute,
   MasRendimientoRoute: MasRendimientoRoute,
+  MasIndexRoute: MasIndexRoute,
 }
 
 const MasRouteWithChildren = MasRoute._addFileChildren(MasRouteChildren)
