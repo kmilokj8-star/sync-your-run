@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { TrainingPage } from "@/components/more-pages";
+export const Route = createFileRoute("/mas/entrenamiento")({ head: () => ({ meta: [{ title: "Entrenamiento y herramientas — RUN" }, { name: "description", content: "Planes, rutas y carga de entrenamiento en RUN." }, { property: "og:title", content: "Entrenamiento y herramientas — RUN" }, { property: "og:description", content: "Planes, rutas y carga de entrenamiento en RUN." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: TrainingPage });

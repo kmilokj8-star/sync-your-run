@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ProfilePage } from "@/components/more-pages";
+export const Route = createFileRoute("/mas/perfil")({ head: () => ({ meta: [{ title: "Perfil del atleta — RUN" }, { name: "description", content: "Perfil y objetivos del atleta en RUN." }, { property: "og:title", content: "Perfil del atleta — RUN" }, { property: "og:description", content: "Perfil y objetivos del atleta en RUN." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: ProfilePage });

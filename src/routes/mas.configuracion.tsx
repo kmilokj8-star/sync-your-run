@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { SettingsPage } from "@/components/more-pages";
+export const Route = createFileRoute("/mas/configuracion")({ head: () => ({ meta: [{ title: "Configuración — RUN" }, { name: "description", content: "Idioma, unidades, alertas y privacidad de RUN." }, { property: "og:title", content: "Configuración — RUN" }, { property: "og:description", content: "Idioma, unidades, alertas y privacidad de RUN." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: SettingsPage });
