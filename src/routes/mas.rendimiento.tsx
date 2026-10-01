@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PerformancePage } from "@/components/more-pages";
+export const Route = createFileRoute("/mas/rendimiento")({ head: () => ({ meta: [{ title: "Rendimiento — RUN" }, { name: "description", content: "Zonas, récords y métricas de rendimiento en RUN." }, { property: "og:title", content: "Rendimiento — RUN" }, { property: "og:description", content: "Zonas, récords y métricas de rendimiento en RUN." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: PerformancePage });

@@ -16,6 +16,7 @@ import {
   CONNS_KEY, IMPORTED_KEY, PROVIDERS, emptyConnection, initialConnections, remoteActivities, relTime,
   type Connection, type Frequency, type Provider, type ProviderId, type RemoteActivity,
 } from "@/lib/integrations";
+import { usePreferences } from "@/lib/preferences";
 
 export const Route = createFileRoute("/dispositivos")({
   head: () => ({
@@ -32,6 +33,7 @@ export const Route = createFileRoute("/dispositivos")({
 });
 
 function ConnectedApps() {
+  const { t } = usePreferences();
   const [conns, setConns] = useState(initialConnections);
   const [imported, setImported] = useState<RemoteActivity[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -86,32 +88,32 @@ function ConnectedApps() {
         <TopBar />
         <header className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 border-b pb-3 md:flex md:flex-col md:items-stretch md:gap-5 md:pb-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="min-w-0">
-            <p className="hidden text-xs font-bold uppercase text-primary md:block">Ecosistema RUN / Integraciones</p>
-            <h1 className="truncate font-display text-2xl uppercase md:mt-2 md:text-4xl">Apps y dispositivos</h1>
+            <p className="hidden text-xs font-bold uppercase text-primary md:block">RUN / {t("devices")}</p>
+            <h1 className="truncate font-display text-2xl uppercase md:mt-2 md:text-4xl">{t("appsDevices")}</h1>
             <p className="mt-2 hidden max-w-2xl text-sm text-muted-foreground md:block">
-              Centraliza tus datos de entrenamiento, salud y rendimiento en un solo lugar.
+              {t("devicesSubtitle")}
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-3">
             <div className="hidden items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-semibold text-primary md:flex">
               <span className="relative flex size-2"><span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" /><span className="relative inline-flex size-2 rounded-full bg-primary" /></span>
-              Sistema operativo
+              {t("systemOnline")}
             </div>
             <Button size="sm" className="size-11 px-0 md:h-9 md:w-auto md:px-3" disabled={!connected.length || !!syncing} onClick={async () => { for (const p of connected) await syncNow(p); }}>
-              <RefreshCw className={syncing ? "animate-spin" : ""} /><span className="sr-only md:not-sr-only">Sincronizar todo</span>
+              <RefreshCw className={syncing ? "animate-spin" : ""} /><span className="sr-only md:not-sr-only">{t("syncAll")}</span>
             </Button>
           </div>
         </header>
 
         <section aria-label="Resumen de conexiones" className="grid grid-cols-3 gap-2 md:gap-0 md:overflow-hidden md:rounded-none md:border-y">
-          <Stat label="Conectadas" value={String(connected.length)} detail={`de ${PROVIDERS.length}`} />
-          <Stat label="Importadas" value={String(imported.length)} detail="actividades" />
-          <Stat label="Auto-sync" value={String(connected.filter((p) => conns[p.id].autoSync).length)} detail="activas" active />
+          <Stat label={t("connectedStat")} value={String(connected.length)} detail={`/ ${PROVIDERS.length}`} />
+          <Stat label={t("importedStat")} value={String(imported.length)} detail={t("activity")} />
+          <Stat label="Auto-sync" value={String(connected.filter((p) => conns[p.id].autoSync).length)} detail={t("activeStat")} active />
         </section>
 
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3">
-          <div className="min-w-0"><p className="hidden text-xs font-bold uppercase text-primary md:block">Fuentes de datos</p><h2 className="truncate font-display text-base uppercase md:mt-1 md:text-xl">Tus conexiones</h2></div>
-          <span className="shrink-0 font-mono text-[10px] text-muted-foreground md:text-xs">{connected.length} EN LÍNEA</span>
+          <div className="min-w-0"><p className="hidden text-xs font-bold uppercase text-primary md:block">{t("dataSources")}</p><h2 className="truncate font-display text-base uppercase md:mt-1 md:text-xl">{t("yourConnections")}</h2></div>
+          <span className="shrink-0 font-mono text-[10px] text-muted-foreground md:text-xs">{connected.length} {t("online")}</span>
         </div>
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -126,21 +128,22 @@ function ConnectedApps() {
               onSync={() => syncNow(p)}
               onImport={() => setImportFor(p)}
               onChange={(patch) => update(p.id, patch)}
+              t={t}
             />
           ))}
         </section>
 
         <section className="rounded-md border bg-card p-3 md:rounded-lg md:p-5">
           <div className="flex items-center justify-between">
-            <div><p className="hidden text-xs font-bold uppercase text-primary md:block">Registro</p><h2 className="font-display text-base uppercase md:mt-1 md:text-lg">Actividades importadas</h2></div>
+            <div><p className="hidden text-xs font-bold uppercase text-primary md:block">{t("log")}</p><h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("importedActivities")}</h2></div>
             {imported.length > 0 && (
               <Button variant="ghost" size="sm" onClick={() => { setImported([]); setConns((c) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, { ...v, imported: 0 }])) as typeof c); }}>
-                Vaciar
+                {t("clear")}
               </Button>
             )}
           </div>
           {imported.length === 0 ? (
-            <div className="mt-3 flex min-h-24 flex-col items-center justify-center border border-dashed p-4 text-center md:mt-5 md:min-h-32 md:p-6"><Download className="mb-2 size-5 text-muted-foreground md:mb-3" /><p className="text-xs text-muted-foreground md:text-sm">Todavía no has importado actividades. Conecta una app y pulsa “Importar”.</p></div>
+            <div className="mt-3 flex min-h-24 flex-col items-center justify-center border border-dashed p-4 text-center md:mt-5 md:min-h-32 md:p-6"><Download className="mb-2 size-5 text-muted-foreground md:mb-3" /><p className="text-xs text-muted-foreground md:text-sm">{t("emptyImports")}</p></div>
           ) : (
             <ul className="mt-3 divide-y">
               {imported.slice(0, 12).map((a) => <ActivityRow key={a.id} a={a} />)}
@@ -158,6 +161,7 @@ function ConnectedApps() {
           toast.success(`${p.name} vinculado`);
           setImportFor(p);
         }}
+        t={t}
       />
       <ImportDialog
         provider={importFor}
@@ -168,6 +172,7 @@ function ConnectedApps() {
           setImportFor(null);
           toast.success(`${n || acts.length} actividades importadas desde ${p.name}`);
         }}
+        t={t}
       />
     </AppShell>
   );
@@ -187,9 +192,10 @@ function Stat({ label, value, detail, active = false }: { label: string; value: 
 
 const FREQ: Record<Frequency, string> = { realtime: "En tiempo real", hourly: "Cada hora", daily: "Una vez al día" };
 
-function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onSync, onImport, onChange }: {
+function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onSync, onImport, onChange, t }: {
   provider: Provider; conn: Connection; syncing: boolean;
   onConnect: () => void; onDisconnect: () => void; onSync: () => void; onImport: () => void; onChange: (p: Partial<Connection>) => void;
+  t: ReturnType<typeof usePreferences>["t"];
 }) {
   const on = conn.status === "connected";
   return (
@@ -201,11 +207,11 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 md:flex md:flex-wrap">
             <h3 className="truncate text-base font-bold md:text-lg">{p.name}</h3>
             {on ? (
-              <Badge className="gap-1"><CheckCircle2 className="size-3" /> Vinculado</Badge>
+              <Badge className="gap-1"><CheckCircle2 className="size-3" /> {t("linked")}</Badge>
             ) : conn.status === "error" ? (
-              <Badge variant="destructive" className="gap-1"><XCircle className="size-3" /> Error</Badge>
+              <Badge variant="destructive" className="gap-1"><XCircle className="size-3" /> {t("error")}</Badge>
             ) : (
-              <Badge variant="secondary" className="uppercase">Sin conexión</Badge>
+              <Badge variant="secondary" className="uppercase">{t("disconnected")}</Badge>
             )}
           </div>
           <p className="truncate text-[10px] uppercase text-muted-foreground md:text-xs">{on ? conn.account : p.kind}</p>
@@ -216,21 +222,21 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
       {on ? (
         <div className="mt-3 space-y-2 rounded-md border bg-muted/60 p-2.5 text-xs md:mt-4 md:space-y-3 md:p-3 md:text-sm">
           <div className="flex items-center justify-between">
-            <span className="font-semibold">Sincronización automática</span>
+            <span className="font-semibold">{t("autoSync")}</span>
             <Switch checked={conn.autoSync} onCheckedChange={(v) => onChange({ autoSync: v })} />
           </div>
           {conn.autoSync && (
             <div className="flex items-center justify-between gap-2">
-              <span className="text-muted-foreground">Frecuencia</span>
+              <span className="text-muted-foreground">{t("frequency")}</span>
               <Select value={conn.frequency} onValueChange={(v) => onChange({ frequency: v as Frequency })}>
               <SelectTrigger className="h-8 w-36 bg-card md:w-40"><SelectValue /></SelectTrigger>
-                <SelectContent>{Object.entries(FREQ).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}</SelectContent>
+                <SelectContent>{Object.keys(FREQ).map((k) => <SelectItem key={k} value={k}>{t(k as "realtime" | "hourly" | "daily")}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           )}
           <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2 font-mono text-[9px] uppercase text-muted-foreground md:text-[10px]">
-            <span className="truncate">Última sincronización: {syncing ? "sincronizando…" : relTime(conn.lastSync)}</span>
-            <span className="shrink-0 font-mono">{conn.imported} importadas</span>
+            <span className="truncate">{t("lastSync")}: {syncing ? t("syncing") : relTime(conn.lastSync)}</span>
+            <span className="shrink-0 font-mono">{conn.imported} {t("imported")}</span>
           </div>
         </div>
       ) : (
@@ -243,20 +249,20 @@ function ProviderCard({ provider: p, conn, syncing, onConnect, onDisconnect, onS
         {on ? (
           <>
             <Button size="sm" className="min-h-11 md:min-h-8" onClick={onSync} disabled={syncing}>
-              {syncing ? <Loader2 className="animate-spin" /> : <RefreshCw />} <span className="md:hidden">Sincronizar</span><span className="hidden md:inline">Sincronizar ahora</span>
+              {syncing ? <Loader2 className="animate-spin" /> : <RefreshCw />} <span className="md:hidden">{t("sync")}</span><span className="hidden md:inline">{t("syncNow")}</span>
             </Button>
-            <Button size="sm" variant="outline" className="min-h-11 md:min-h-8" onClick={onImport}><Download /> Importar</Button>
-            <Button size="icon" variant="ghost" className="ml-auto size-11 text-muted-foreground md:size-9" onClick={onDisconnect} title="Desvincular"><Unlink /><span className="sr-only">Desvincular {p.name}</span></Button>
+            <Button size="sm" variant="outline" className="min-h-11 md:min-h-8" onClick={onImport}><Download /> {t("import")}</Button>
+            <Button size="icon" variant="ghost" className="ml-auto size-11 text-muted-foreground md:size-9" onClick={onDisconnect} title={t("unlink")}><Unlink /><span className="sr-only">{t("unlink")} {p.name}</span></Button>
           </>
         ) : (
-          <Button size="sm" className="min-h-11 w-full md:min-h-8 md:w-auto" onClick={onConnect}><Link2 /> Conectar <span className="sr-only md:not-sr-only">{p.name}</span></Button>
+          <Button size="sm" className="min-h-11 w-full md:min-h-8 md:w-auto" onClick={onConnect}><Link2 /> {t("connect")} <span className="sr-only md:not-sr-only">{p.name}</span></Button>
         )}
       </div>
     </article>
   );
 }
 
-function ConnectDialog({ provider, onClose, onDone }: { provider: Provider | null; onClose: () => void; onDone: (p: Provider, account: string) => void }) {
+function ConnectDialog({ provider, onClose, onDone, t }: { provider: Provider | null; onClose: () => void; onDone: (p: Provider, account: string) => void; t: ReturnType<typeof usePreferences>["t"] }) {
   const [step, setStep] = useState<"consent" | "auth">("consent");
   useEffect(() => { if (provider) setStep("consent"); }, [provider]);
   if (!provider) return null;
@@ -273,30 +279,31 @@ function ConnectDialog({ provider, onClose, onDone }: { provider: Provider | nul
             <span className="text-muted-foreground">⇄</span>
             <span className="grid size-10 place-items-center rounded-xl bg-primary font-bold text-primary-foreground">R</span>
           </div>
-          <DialogTitle>Conectar {provider.name}</DialogTitle>
-          <DialogDescription>Te llevaremos a {provider.name} para que autorices a RUN. Podrás desvincularlo en cualquier momento.</DialogDescription>
+          <DialogTitle>{t("connect")} {provider.name}</DialogTitle>
+          <DialogDescription>{t("connectIntro")}</DialogDescription>
         </DialogHeader>
         {step === "consent" ? (
           <ul className="space-y-2 text-sm">
             {provider.scopes.map((s) => (
               <li key={s} className="flex items-center gap-2"><CheckCircle2 className="size-4 text-primary" /> Leer {s.toLowerCase()}</li>
             ))}
-            <li className="flex items-center gap-2 text-muted-foreground"><XCircle className="size-4" /> RUN nunca publica en tu cuenta sin permiso</li>
+            <li className="flex items-center gap-2 text-muted-foreground"><XCircle className="size-4" /> {t("neverPublishes")}</li>
           </ul>
         ) : (
-          <div className="flex items-center gap-3 rounded-lg bg-muted p-4 text-sm"><Loader2 className="size-4 animate-spin" /> Esperando autorización de {provider.name}…</div>
+          <div className="flex items-center gap-3 rounded-lg bg-muted p-4 text-sm"><Loader2 className="size-4 animate-spin" /> {t("waitingAuthorization")}</div>
         )}
         <DialogFooter>
-          <Button variant="ghost" onClick={onClose}>Cancelar</Button>
-          <Button onClick={authorize} disabled={step === "auth"}>Autorizar en {provider.name}</Button>
+          <Button variant="ghost" onClick={onClose}>{t("cancel")}</Button>
+          <Button onClick={authorize} disabled={step === "auth"}>{t("authorize")} {provider.name}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
 
-function ImportDialog({ provider, importedIds, onClose, onImport }: {
+function ImportDialog({ provider, importedIds, onClose, onImport, t }: {
   provider: Provider | null; importedIds: Set<string>; onClose: () => void; onImport: (p: Provider, a: RemoteActivity[]) => void;
+  t: ReturnType<typeof usePreferences>["t"];
 }) {
   const [range, setRange] = useState("30");
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -308,20 +315,18 @@ function ImportDialog({ provider, importedIds, onClose, onImport }: {
     <Dialog open onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>Importar desde {provider.name}</DialogTitle>
-          <DialogDescription>Elige el periodo y las actividades que quieres traer a RUN.</DialogDescription>
+          <DialogTitle>{t("import")} · {provider.name}</DialogTitle>
+          <DialogDescription>{t("choosePeriod")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-center justify-between gap-2">
           <Select value={range} onValueChange={setRange}>
             <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">Últimos 7 días</SelectItem>
-              <SelectItem value="30">Últimos 30 días</SelectItem>
-              <SelectItem value="90">Últimos 90 días</SelectItem>
+              {[7, 30, 90].map((days) => <SelectItem key={days} value={String(days)}>{t("lastDays").replace("{days}", String(days))}</SelectItem>)}
             </SelectContent>
           </Select>
           <Button variant="ghost" size="sm" onClick={() => setSelected(selected.size ? new Set() : new Set(list.filter((a) => !importedIds.has(a.id)).map((a) => a.id)))}>
-            {selected.size ? "Quitar selección" : "Seleccionar todo"}
+             {selected.size ? t("clearSelection") : t("selectAll")}
           </Button>
         </div>
         <ul className="max-h-80 divide-y overflow-y-auto rounded-lg border">
@@ -333,7 +338,7 @@ function ImportDialog({ provider, importedIds, onClose, onImport }: {
                   <Checkbox checked={done || selected.has(a.id)} disabled={done} onCheckedChange={() => toggle(a.id)} />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{a.name}</p>
-                    <p className="text-xs text-muted-foreground">{new Date(a.date).toLocaleDateString("es-ES", { day: "numeric", month: "short" })} · {a.type}{done ? " · ya importada" : ""}</p>
+                     <p className="text-xs text-muted-foreground">{new Date(a.date).toLocaleDateString(undefined, { day: "numeric", month: "short" })} · {a.type}{done ? ` · ${t("alreadyImported")}` : ""}</p>
                   </div>
                   <span className="font-mono text-xs">{a.distanceKm} km</span>
                 </label>
@@ -342,9 +347,9 @@ function ImportDialog({ provider, importedIds, onClose, onImport }: {
           })}
         </ul>
         <DialogFooter>
-          <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+          <Button variant="ghost" onClick={onClose}>{t("cancel")}</Button>
           <Button disabled={!selected.size} onClick={() => onImport(provider, list.filter((a) => selected.has(a.id)))}>
-            <Download /> Importar {selected.size} actividades
+            <Download /> {t("import")} {selected.size}
           </Button>
         </DialogFooter>
       </DialogContent>

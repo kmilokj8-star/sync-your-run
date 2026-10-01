@@ -1,0 +1,3 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { HelpPage } from "@/components/more-pages";
+export const Route = createFileRoute("/mas/ayuda")({ head: () => ({ meta: [{ title: "Ayuda — RUN" }, { name: "description", content: "Ayuda, soporte y versión de RUN." }, { property: "og:title", content: "Ayuda — RUN" }, { property: "og:description", content: "Ayuda, soporte y versión de RUN." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }), component: HelpPage });
