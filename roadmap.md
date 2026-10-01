@@ -7,3 +7,4 @@
 - [ ] Preserve and localize Inicio and Apps y dispositivos, including existing import/sync flows.
 - [ ] Update desktop and mobile navigation to include Más.
 - [ ] Verify core flows on mobile and desktop.
+- [ ] Configure the installable web app and generate an Android test APK.
