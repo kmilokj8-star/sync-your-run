@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Activity, CalendarDays, ChevronRight, Ellipsis, Home, LogOut, Settings, ShieldCheck, Trophy, Watch,
+  Activity, Bell, BookOpen, CalendarDays, ChevronRight, CircleDot, Ellipsis, Footprints, Gift, Home, LogOut, Settings, ShieldCheck, Trophy, Watch,
 } from "lucide-react";
+
+type NavHref = "/" | "/calendario" | "/registrar" | "/actividades" | "/equipo" | "/retos" | "/puntos" | "/planes" | "/notificaciones" | "/dispositivos" | "/mas";
 import logo from "@/assets/logo-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/lib/preferences";
@@ -34,14 +36,20 @@ export function TopBar() {
 }
 
 function Sidebar({ pathname }: { pathname: string }) {
-  const { t } = usePreferences();
-  const items = [
-    { icon: Home, label: t("home"), href: "/" as const },
-    { icon: Activity, label: t("activity") },
-    { icon: CalendarDays, label: "Calendario" },
-    { icon: Trophy, label: "Retos" },
-    { icon: Watch, label: t("appsDevices"), href: "/dispositivos" as const },
-    { icon: Ellipsis, label: t("more"), href: "/mas" as const },
+  const { t, locale } = usePreferences();
+  const L = (es: string, en: string) => (locale === "es" ? es : en);
+  const items: { icon: typeof Home; label: string; href?: NavHref }[] = [
+    { icon: Home, label: t("home"), href: "/" },
+    { icon: CalendarDays, label: L("Calendario", "Calendar"), href: "/calendario" },
+    { icon: CircleDot, label: L("Registrar", "Record"), href: "/registrar" },
+    { icon: Activity, label: L("Actividades", "Activities"), href: "/actividades" },
+    { icon: Footprints, label: L("Equipo", "Gear"), href: "/equipo" },
+    { icon: Trophy, label: L("Retos", "Challenges"), href: "/retos" },
+    { icon: Gift, label: L("Puntos", "Points"), href: "/puntos" },
+    { icon: BookOpen, label: L("Planes", "Plans"), href: "/planes" },
+    { icon: Bell, label: L("Notificaciones", "Notifications"), href: "/notificaciones" },
+    { icon: Watch, label: t("appsDevices"), href: "/dispositivos" },
+    { icon: Ellipsis, label: t("more"), href: "/mas" },
   ];
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar p-5 md:flex">
@@ -83,16 +91,17 @@ function Sidebar({ pathname }: { pathname: string }) {
 }
 
 function MobileNav({ pathname }: { pathname: string }) {
-  const { t } = usePreferences();
-  const items = [
-    { icon: Home, label: t("home"), href: "/" as const },
-    { icon: Activity, label: t("activity") },
-    { icon: Watch, label: t("devices"), href: "/dispositivos" as const },
-    { icon: Ellipsis, label: t("more"), href: "/mas" as const },
+  const { t, locale } = usePreferences();
+  const items: { icon: typeof Home; label: string; href?: NavHref }[] = [
+    { icon: Home, label: t("home"), href: "/" },
+    { icon: Activity, label: t("activity"), href: "/actividades" },
+    { icon: CircleDot, label: locale === "es" ? "Registrar" : "Record", href: "/registrar" },
+    { icon: Watch, label: t("devices"), href: "/dispositivos" },
+    { icon: Ellipsis, label: t("more"), href: "/mas" },
   ];
   return (
     <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-30 border-t bg-sidebar/95 shadow-[0_-8px_24px_color-mix(in_oklch,var(--background)_70%,transparent)] backdrop-blur-xl md:hidden">
-      <div className="grid min-h-17 grid-cols-4 items-stretch px-1 pb-[max(env(safe-area-inset-bottom),0.25rem)] pt-1">
+      <div className="grid min-h-17 grid-cols-5 items-stretch px-1 pb-[max(env(safe-area-inset-bottom),0.25rem)] pt-1">
          {items.map(({ icon: Icon, label, href }) => {
            const active = href === "/mas" ? pathname.startsWith("/mas") : href === pathname;
           const classes = `relative flex h-auto min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-md px-1 py-1.5 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"}`;
