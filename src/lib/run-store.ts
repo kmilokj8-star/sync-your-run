@@ -10,7 +10,7 @@ export type RunActivity = {
   durationMin: number;
   type: RemoteActivity["type"];
   source: ActivitySource;
-  shoeId?: string;
+  shoeId?: string | undefined;
   notes?: string;
 };
 export type PlannedWorkout = { id: string; date: string; title: string; distanceKm: number; done?: boolean; planId?: string };

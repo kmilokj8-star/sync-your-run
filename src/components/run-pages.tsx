@@ -130,7 +130,7 @@ function ActivityDialog({ open, onOpenChange, onSave, initial }: { open: boolean
   const save = () => {
     const distanceKm = parseFloat(km.replace(",", "."));
     const durationMin = parseFloat(min.replace(",", "."));
-    if (!(distanceKm > 0) || !(durationMin > 0)) return toast.error(L("Distancia y tiempo deben ser mayores que 0", "Distance and time must be greater than 0"));
+    if (!(distanceKm > 0) || !(durationMin > 0)) { toast.error(L("Distancia y tiempo deben ser mayores que 0", "Distance and time must be greater than 0")); return; }
     const def = shoes.find((s) => s.isDefault && !s.retired);
     onSave({ id: uid(), name: name.trim() || "Carrera", date: new Date(`${date}T08:00:00`).toISOString(), distanceKm, durationMin, type, source: initial?.source ?? "manual", shoeId: def?.id });
     toast.success(L("Actividad guardada", "Activity saved"));
@@ -265,7 +265,7 @@ export function CalendarPage() {
 
   const addPlan = () => {
     const n = parseFloat(km.replace(",", "."));
-    if (!title.trim() || !(n > 0)) return toast.error(L("Completa título y distancia", "Fill in title and distance"));
+    if (!title.trim() || !(n > 0)) { toast.error(L("Completa título y distancia", "Fill in title and distance")); return; }
     setPlanned((p) => [...p, { id: uid(), date: selected, title: title.trim().slice(0, 60), distanceKm: n }]);
     setTitle("");
     toast.success(L("Entreno planificado", "Workout planned"));
@@ -450,7 +450,7 @@ export function GearPage() {
   const [maxKm, setMaxKm] = useState("700");
   const used = (s: Shoe) => s.initialKm + all.filter((a) => a.shoeId === s.id).reduce((x, a) => x + a.distanceKm, 0);
   const add = () => {
-    if (!name.trim()) return toast.error(L("Escribe un nombre", "Enter a name"));
+    if (!name.trim()) { toast.error(L("Escribe un nombre", "Enter a name")); return; }
     setShoes((list) => [...list, { id: uid(), name: name.trim().slice(0, 50), brand: brand.trim().slice(0, 40), initialKm: parseFloat(initialKm) || 0, maxKm: parseFloat(maxKm) || 700, isDefault: list.length === 0, retired: false }]);
     setName(""); setBrand(""); setOpen(false);
   };
