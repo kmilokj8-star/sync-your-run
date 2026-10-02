@@ -10,8 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ActividadesRouteImport } from './routes/actividades'
+import { Route as CalendarioRouteImport } from './routes/calendario'
 import { Route as DispositivosRouteImport } from './routes/dispositivos'
+import { Route as EquipoRouteImport } from './routes/equipo'
 import { Route as MasRouteImport } from './routes/mas'
+import { Route as NotificacionesRouteImport } from './routes/notificaciones'
+import { Route as PlanesRouteImport } from './routes/planes'
+import { Route as PuntosRouteImport } from './routes/puntos'
+import { Route as RegistrarRouteImport } from './routes/registrar'
+import { Route as RetosRouteImport } from './routes/retos'
 import { Route as MasIndexRouteImport } from './routes/mas.index'
 import { Route as MasAyudaRouteImport } from './routes/mas.ayuda'
 import { Route as MasConfiguracionRouteImport } from './routes/mas.configuracion'
@@ -24,14 +32,54 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActividadesRoute = ActividadesRouteImport.update({
+  id: '/actividades',
+  path: '/actividades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarioRoute = CalendarioRouteImport.update({
+  id: '/calendario',
+  path: '/calendario',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DispositivosRoute = DispositivosRouteImport.update({
   id: '/dispositivos',
   path: '/dispositivos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EquipoRoute = EquipoRouteImport.update({
+  id: '/equipo',
+  path: '/equipo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MasRoute = MasRouteImport.update({
   id: '/mas',
   path: '/mas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificacionesRoute = NotificacionesRouteImport.update({
+  id: '/notificaciones',
+  path: '/notificaciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanesRoute = PlanesRouteImport.update({
+  id: '/planes',
+  path: '/planes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PuntosRoute = PuntosRouteImport.update({
+  id: '/puntos',
+  path: '/puntos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegistrarRoute = RegistrarRouteImport.update({
+  id: '/registrar',
+  path: '/registrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RetosRoute = RetosRouteImport.update({
+  id: '/retos',
+  path: '/retos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MasIndexRoute = MasIndexRouteImport.update({
@@ -67,8 +115,16 @@ const MasRendimientoRoute = MasRendimientoRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/actividades': typeof ActividadesRoute
+  '/calendario': typeof CalendarioRoute
   '/dispositivos': typeof DispositivosRoute
+  '/equipo': typeof EquipoRoute
   '/mas': typeof MasRouteWithChildren
+  '/notificaciones': typeof NotificacionesRoute
+  '/planes': typeof PlanesRoute
+  '/puntos': typeof PuntosRoute
+  '/registrar': typeof RegistrarRoute
+  '/retos': typeof RetosRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
@@ -78,7 +134,15 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/actividades': typeof ActividadesRoute
+  '/calendario': typeof CalendarioRoute
   '/dispositivos': typeof DispositivosRoute
+  '/equipo': typeof EquipoRoute
+  '/notificaciones': typeof NotificacionesRoute
+  '/planes': typeof PlanesRoute
+  '/puntos': typeof PuntosRoute
+  '/registrar': typeof RegistrarRoute
+  '/retos': typeof RetosRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
@@ -89,8 +153,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/actividades': typeof ActividadesRoute
+  '/calendario': typeof CalendarioRoute
   '/dispositivos': typeof DispositivosRoute
+  '/equipo': typeof EquipoRoute
   '/mas': typeof MasRouteWithChildren
+  '/notificaciones': typeof NotificacionesRoute
+  '/planes': typeof PlanesRoute
+  '/puntos': typeof PuntosRoute
+  '/registrar': typeof RegistrarRoute
+  '/retos': typeof RetosRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
@@ -102,8 +174,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/actividades'
+    | '/calendario'
     | '/dispositivos'
+    | '/equipo'
     | '/mas'
+    | '/notificaciones'
+    | '/planes'
+    | '/puntos'
+    | '/registrar'
+    | '/retos'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
@@ -113,7 +193,15 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/actividades'
+    | '/calendario'
     | '/dispositivos'
+    | '/equipo'
+    | '/notificaciones'
+    | '/planes'
+    | '/puntos'
+    | '/registrar'
+    | '/retos'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
@@ -123,8 +211,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/actividades'
+    | '/calendario'
     | '/dispositivos'
+    | '/equipo'
     | '/mas'
+    | '/notificaciones'
+    | '/planes'
+    | '/puntos'
+    | '/registrar'
+    | '/retos'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
@@ -135,8 +231,16 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ActividadesRoute: typeof ActividadesRoute
+  CalendarioRoute: typeof CalendarioRoute
   DispositivosRoute: typeof DispositivosRoute
+  EquipoRoute: typeof EquipoRoute
   MasRoute: typeof MasRouteWithChildren
+  NotificacionesRoute: typeof NotificacionesRoute
+  PlanesRoute: typeof PlanesRoute
+  PuntosRoute: typeof PuntosRoute
+  RegistrarRoute: typeof RegistrarRoute
+  RetosRoute: typeof RetosRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +252,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/actividades': {
+      id: '/actividades'
+      path: '/actividades'
+      fullPath: '/actividades'
+      preLoaderRoute: typeof ActividadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendario': {
+      id: '/calendario'
+      path: '/calendario'
+      fullPath: '/calendario'
+      preLoaderRoute: typeof CalendarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dispositivos': {
       id: '/dispositivos'
       path: '/dispositivos'
@@ -155,11 +273,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DispositivosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/equipo': {
+      id: '/equipo'
+      path: '/equipo'
+      fullPath: '/equipo'
+      preLoaderRoute: typeof EquipoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mas': {
       id: '/mas'
       path: '/mas'
       fullPath: '/mas'
       preLoaderRoute: typeof MasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notificaciones': {
+      id: '/notificaciones'
+      path: '/notificaciones'
+      fullPath: '/notificaciones'
+      preLoaderRoute: typeof NotificacionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planes': {
+      id: '/planes'
+      path: '/planes'
+      fullPath: '/planes'
+      preLoaderRoute: typeof PlanesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/puntos': {
+      id: '/puntos'
+      path: '/puntos'
+      fullPath: '/puntos'
+      preLoaderRoute: typeof PuntosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/registrar': {
+      id: '/registrar'
+      path: '/registrar'
+      fullPath: '/registrar'
+      preLoaderRoute: typeof RegistrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/retos': {
+      id: '/retos'
+      path: '/retos'
+      fullPath: '/retos'
+      preLoaderRoute: typeof RetosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mas/': {
@@ -229,8 +389,16 @@ const MasRouteWithChildren = MasRoute._addFileChildren(MasRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ActividadesRoute: ActividadesRoute,
+  CalendarioRoute: CalendarioRoute,
   DispositivosRoute: DispositivosRoute,
+  EquipoRoute: EquipoRoute,
   MasRoute: MasRouteWithChildren,
+  NotificacionesRoute: NotificacionesRoute,
+  PlanesRoute: PlanesRoute,
+  PuntosRoute: PuntosRoute,
+  RegistrarRoute: RegistrarRoute,
+  RetosRoute: RetosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
