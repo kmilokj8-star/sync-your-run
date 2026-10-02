@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { usePreferences } from "@/lib/preferences";
 import { CONNS_KEY, initialConnections, PROVIDERS } from "@/lib/integrations";
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { useStored } from "@/lib/run-store";
 
 type MoreRoute = "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
