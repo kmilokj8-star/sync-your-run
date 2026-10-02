@@ -17,6 +17,7 @@ import {
   type Connection, type Frequency, type Provider, type ProviderId, type RemoteActivity,
 } from "@/lib/integrations";
 import { usePreferences } from "@/lib/preferences";
+import { useStored } from "@/lib/run-store";
 
 export const Route = createFileRoute("/dispositivos")({
   head: () => ({
@@ -34,30 +35,14 @@ export const Route = createFileRoute("/dispositivos")({
 
 function ConnectedApps() {
   const { t } = usePreferences();
-  const [conns, setConns] = useState(initialConnections);
-  const [imported, setImported] = useState<RemoteActivity[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const [conns, setConns] = useStored<Record<ProviderId, Connection>>(CONNS_KEY, initialConnections());
+  const [imported, setImported] = useStored<RemoteActivity[]>(IMPORTED_KEY, []);
   const [syncing, setSyncing] = useState<ProviderId | null>(null);
   const [connectFor, setConnectFor] = useState<Provider | null>(null);
   const [importFor, setImportFor] = useState<Provider | null>(null);
 
-  useEffect(() => {
-    try {
-      const c = localStorage.getItem(CONNS_KEY);
-      if (c) setConns({ ...initialConnections(), ...JSON.parse(c) });
-      const i = localStorage.getItem(IMPORTED_KEY);
-      if (i) setImported(JSON.parse(i));
-    } catch { /* ignore */ }
-    setLoaded(true);
-  }, []);
-  useEffect(() => {
-    if (!loaded) return;
-    try {
-      localStorage.setItem(CONNS_KEY, JSON.stringify(conns));
-      localStorage.setItem(IMPORTED_KEY, JSON.stringify(imported));
-    } catch { /* ignore */ }
-  }, [conns, imported, loaded]);
-
+  // useStored keeps this page, Home, Activities and More in sync immediately
+  // when a connection or imported activity changes in another mounted view.
   const update = (id: ProviderId, patch: Partial<Connection>) => setConns((c) => ({ ...c, [id]: { ...c[id], ...patch } }));
 
   const addActivities = (id: ProviderId, acts: RemoteActivity[]) => {
@@ -165,7 +150,7 @@ function ConnectedApps() {
       />
       <ImportDialog
         provider={importFor}
-        importedIds={useMemo(() => new Set(imported.map((a) => a.id)), [imported])}
+        importedIds={new Set(imported.map((a) => a.id))}
         onClose={() => setImportFor(null)}
         onImport={(p, acts) => {
           const n = addActivities(p.id, acts);
