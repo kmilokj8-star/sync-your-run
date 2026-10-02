@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { ChevronRight, Download, Watch } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { ActivityRow, ProviderMark } from "@/components/activity-row";
@@ -9,6 +9,7 @@ import {
   type Connection, type RemoteActivity,
 } from "@/lib/integrations";
 import { usePreferences } from "@/lib/preferences";
+import { useStored } from "@/lib/run-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,17 +27,8 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, distance, pace } = usePreferences();
-  const [conns, setConns] = useState(initialConnections);
-  const [imported, setImported] = useState<RemoteActivity[]>([]);
-
-  useEffect(() => {
-    try {
-      const c = localStorage.getItem(CONNS_KEY);
-      if (c) setConns({ ...initialConnections(), ...JSON.parse(c) });
-      const i = localStorage.getItem(IMPORTED_KEY);
-      if (i) setImported(JSON.parse(i));
-    } catch { /* ignore */ }
-  }, []);
+  const [conns] = useStored(CONNS_KEY, initialConnections());
+  const [imported] = useStored<RemoteActivity[]>(IMPORTED_KEY, []);
 
   const week = useMemo(() => {
     const now = Date.now();

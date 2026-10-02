@@ -7,23 +7,18 @@ import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { usePreferences, type TranslationKey } from "@/lib/preferences";
+import { usePreferences } from "@/lib/preferences";
 import { CONNS_KEY, initialConnections, PROVIDERS } from "@/lib/integrations";
-import { useEffect, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
+import { useStored } from "@/lib/run-store";
 
 type MoreRoute = "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
 
 export function MoreHome() {
   const { t, locale } = usePreferences();
   const L = (es: string, en: string) => (locale === "es" ? es : en);
-  const [connected, setConnected] = useState(0);
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(CONNS_KEY);
-      const conns = stored ? { ...initialConnections(), ...JSON.parse(stored) } : initialConnections();
-      setConnected(PROVIDERS.filter((provider) => conns[provider.id].status === "connected").length);
-    } catch { setConnected(0); }
-  }, []);
+  const [conns] = useStored(CONNS_KEY, initialConnections());
+  const connected = PROVIDERS.filter((provider) => conns[provider.id].status === "connected").length;
 
   return (
     <Page title={t("moreTitle")} subtitle={t("moreSubtitle")}>

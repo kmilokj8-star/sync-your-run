@@ -79,10 +79,21 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const detected = navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
     setBrowserLanguage(detected);
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) setPreferences({ ...defaults, ...JSON.parse(saved) });
-    } catch { /* Keep defaults when storage is unavailable. */ }
+
+    const load = () => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) setPreferences({ ...defaults, ...JSON.parse(saved) });
+      } catch { /* Keep current preferences when storage is unavailable. */ }
+    };
+
+    load();
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === STORAGE_KEY) load();
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   const locale = preferences.language === "auto" ? browserLanguage : preferences.language;
