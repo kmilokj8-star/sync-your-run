@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import {
-  Activity, Bell, ChevronLeft, ChevronRight, CircleHelp, Gauge, Globe2, HeartPulse, Languages,
-  LockKeyhole, Map, Medal, Palette, Route, Ruler, ShieldCheck, SlidersHorizontal, Target, UserRound, Watch,
+  Activity, Bell, BookOpen, CalendarDays, ChevronLeft, ChevronRight, CircleHelp, Footprints, Gauge, Gift, Globe2, HeartPulse, Languages,
+  LockKeyhole, Map, Medal, Palette, Route, Ruler, ShieldCheck, SlidersHorizontal, Target, Trophy, UserRound, Watch,
 } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,11 @@ import { usePreferences, type TranslationKey } from "@/lib/preferences";
 import { CONNS_KEY, initialConnections, PROVIDERS } from "@/lib/integrations";
 import { useEffect, useState, type ReactNode } from "react";
 
-type MoreRoute = "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos";
+type MoreRoute = "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
 
 export function MoreHome() {
-  const { t } = usePreferences();
+  const { t, locale } = usePreferences();
+  const L = (es: string, en: string) => (locale === "es" ? es : en);
   const [connected, setConnected] = useState(0);
   useEffect(() => {
     try {
@@ -35,6 +36,16 @@ export function MoreHome() {
         <MenuRow to="/dispositivos" icon={<Watch />} title={t("devicesSensors")} subtitle={`${connected} ${connected === 1 ? t("connectedSingular") : t("connected")}`} />
         <MenuRow to="/mas/rendimiento" icon={<Gauge />} title={t("performance")} subtitle={t("performanceSummary")} />
         <MenuRow to="/mas/entrenamiento" icon={<Route />} title={t("tools")} subtitle={t("toolsSummary")} />
+      </MenuGroup>
+      <MenuGroup label={L("Entrenamiento", "Training")}>
+        <MenuRow to="/calendario" icon={<CalendarDays />} title={L("Calendario", "Calendar")} subtitle={L("Entrenos realizados y planificados", "Completed and planned workouts")} />
+        <MenuRow to="/planes" icon={<BookOpen />} title={L("Planes", "Plans")} subtitle={L("De 5K a maratón", "From 5K to marathon")} />
+        <MenuRow to="/equipo" icon={<Footprints />} title={L("Equipo", "Gear")} subtitle={L("Kilometraje de zapatillas", "Shoe mileage")} />
+      </MenuGroup>
+      <MenuGroup label={L("Comunidad", "Community")}>
+        <MenuRow to="/retos" icon={<Trophy />} title={L("Retos", "Challenges")} subtitle={L("Únete y gana puntos", "Join and earn points")} />
+        <MenuRow to="/puntos" icon={<Gift />} title={L("Puntos", "Points")} subtitle={L("Canjea Premium", "Redeem Premium")} />
+        <MenuRow to="/notificaciones" icon={<Bell />} title={L("Notificaciones", "Notifications")} subtitle={L("Avisos y novedades", "Alerts and updates")} />
       </MenuGroup>
       <MenuGroup label={t("settings")}>
         <MenuRow to="/mas/configuracion" icon={<SlidersHorizontal />} title={t("generalSettings")} subtitle={t("settingsSummary")} />
