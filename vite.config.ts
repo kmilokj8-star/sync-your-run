@@ -9,7 +9,16 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
     server: { entry: "server" },
+    // RUN is also packaged inside Capacitor. SPA mode provides a static shell for
+    // client-side navigation so every sidebar item works without a preview server.
+    spa: {
+      enabled: true,
+      prerender: {
+        outputPath: "/index.html",
+        crawlLinks: true,
+        retryCount: 1,
+      },
+    },
   },
 });
