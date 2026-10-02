@@ -60,6 +60,7 @@ const en: Dictionary = {
 };
 
 const STORAGE_KEY = "run_preferences_v1";
+const PREFERENCES_EVENT = "run-preferences-change";
 const defaults: Preferences = { language: "auto", units: "metric", notifications: true, activityVisibility: "private", theme: "performance" };
 
 type PreferencesContextValue = Preferences & {
@@ -79,10 +80,27 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const detected = navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
     setBrowserLanguage(detected);
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) setPreferences({ ...defaults, ...JSON.parse(saved) });
-    } catch { /* Keep defaults when storage is unavailable. */ }
+
+    const load = () => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) setPreferences({ ...defaults, ...JSON.parse(saved) });
+      } catch { /* Keep current preferences when storage is unavailable. */ }
+    };
+
+    load();
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.key === STORAGE_KEY) load();
+    };
+    const onPreferencesChange = () => load();
+
+    window.addEventListener("storage", onStorage);
+    window.addEventListener(PREFERENCES_EVENT, onPreferencesChange);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(PREFERENCES_EVENT, onPreferencesChange);
+    };
   }, []);
 
   const locale = preferences.language === "auto" ? browserLanguage : preferences.language;
@@ -96,7 +114,10 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     ...preferences,
     locale,
     t: (key) => (locale === "es" ? es : en)[key],
-    update: (patch) => setPreferences((current) => ({ ...current, ...patch })),
+    update: (patch) => {
+      setPreferences((current) => ({ ...current, ...patch }));
+      window.dispatchEvent(new CustomEvent(PREFERENCES_EVENT));
+    },
     distance: (km) => preferences.units === "metric" ? { value: km, unit: "km" } : { value: km * 0.621371, unit: "mi" },
     pace: (minutesPerKm) => {
       const value = preferences.units === "metric" ? minutesPerKm : minutesPerKm / 0.621371;
