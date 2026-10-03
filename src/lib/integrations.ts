@@ -1,4 +1,4 @@
-export type ProviderId = "garmin" | "strava" | "apple" | "coros";
+export type ProviderId = "garmin" | "strava" | "apple" | "coros" | "trainingpeaks" | "adidas" | "suunto" | "polar" | "amazfit" | "samsung" | "huawei";
 
 export type Provider = {
   id: ProviderId;
@@ -11,6 +11,13 @@ export type Provider = {
 };
 
 export const PROVIDERS: Provider[] = [
+  { id: "trainingpeaks", name: "TrainingPeaks", short: "TP", description: "Planes y análisis de entrenamiento estructurado.", kind: "Entrenamiento", scopes: ["Workouts","Planes","Actividades"], swatch: "#1677FF" },
+  { id: "adidas", name: "adidas Running", short: "A", description: "Carreras, objetivos y retos desde adidas Running.", kind: "Running app", scopes: ["Actividades","Perfil","Retos"], swatch: "#000000" },
+  { id: "suunto", name: "Suunto", short: "S", description: "Relojes outdoor con GPS, rutas y entrenamiento.", kind: "Reloj GPS", scopes: ["Actividades","Rutas","Entrenamientos"], swatch: "#111111" },
+  { id: "polar", name: "Polar Flow", short: "P", description: "Entrenamiento, frecuencia cardiaca y recuperación.", kind: "Reloj GPS", scopes: ["Actividades","FC","Sueño"], swatch: "#D71920" },
+  { id: "amazfit", name: "Amazfit", short: "A", description: "Relojes y datos deportivos de Amazfit.", kind: "Reloj GPS", scopes: ["Actividades","FC","Sueño"], swatch: "#1A1A1A" },
+  { id: "samsung", name: "Samsung Health", short: "S", description: "Entrenamientos y salud desde Galaxy Watch y Samsung Health.", kind: "Salud / Wearable", scopes: ["Entrenamientos","FC","Salud"], swatch: "#1428A0" },
+  { id: "huawei", name: "Huawei Health", short: "H", description: "Entrenamientos y salud desde wearables Huawei.", kind: "Salud / Wearable", scopes: ["Entrenamientos","FC","Salud"], swatch: "#CF0A2C" },
   {
     id: "garmin",
     name: "Garmin Connect",
