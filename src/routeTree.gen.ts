@@ -147,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/web': typeof WebRoute
   '/app': typeof AppRoute
+  '/app': typeof AppRoute
   '/actividades': typeof ActividadesRoute
   '/calendario': typeof CalendarioRoute
   '/dispositivos': typeof DispositivosRoute
@@ -218,6 +219,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/web'
+    | '/app'
     | '/actividades'
     | '/calendario'
     | '/dispositivos'
@@ -240,6 +242,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/app'
     | '/web'
     | '/actividades'
     | '/calendario'
@@ -261,6 +264,7 @@ export interface FileRouteTypes {
     | '/mas'
   id:
     | '__root__'
+    | '/app'
     | '/'
     | '/web'
     | '/actividades'
