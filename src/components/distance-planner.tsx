@@ -116,7 +116,7 @@ export function DistancePlannerPage() {
   }, [loops, selected, start, ready]);
 
   const useGps = () => {
-    if (!navigator.geolocation) return toast.error(L("GPS no disponible", "GPS unavailable"));
+    if (!navigator.geolocation) { toast.error(L("GPS no disponible", "GPS unavailable")); return; }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       (p) => { const s: LatLng = [p.coords.latitude, p.coords.longitude]; setStart(s); setLoops([]); mapRef.current?.setView(s, 15); setLocating(false); },
@@ -126,7 +126,7 @@ export function DistancePlannerPage() {
   };
 
   const generate = async () => {
-    if (!start) return toast.error(L("Marca un punto de partida", "Set a starting point"));
+    if (!start) { toast.error(L("Marca un punto de partida", "Set a starting point")); return; }
     setLoading(true);
     const seed = Math.random() * 120;
     const res = await Promise.all([0, 120, 240].map((b) => buildLoop(start, km, b + seed)));
