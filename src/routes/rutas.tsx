@@ -43,7 +43,7 @@ function RoutesPage() {
     void init();
     return () => { cancelled = true; map?.remove(); };
   }, []);
-  const path = useMemo(() => selectedRoute.points.map((p) => \`\${p.x},\${p.y}\`).join(" "), [selectedRoute]);
+  const path = useMemo(() => selectedRoute.points.map((p) => `${p.x},${p.y}`).join(" "), [selectedRoute]);
 
   const addPoint = (e: React.MouseEvent<SVGSVGElement>) => {
     if (!builder) return;
@@ -61,27 +61,27 @@ function RoutesPage() {
       <section className="grid gap-3 md:grid-cols-4">
         <Stat icon={<RouteIcon />} label={es ? "Recorridos" : "Routes"} value="28" />
         <Stat icon={<Navigation />} label={es ? "Distancia" : "Distance"} value="184 km" />
-        <Stat icon={<Layers3 />} label={es ? "Territorio" : "Territory"} value={\`\${territory}%\`} />
+        <Stat icon={<Layers3 />} label={es ? "Territorio" : "Territory"} value={`${territory}%`} />
         <Stat icon={<Flame />} label={es ? "Racha" : "Streak"} value="9 días" />
       </section>
       <section className="grid gap-4 lg:grid-cols-[1.4fr_.6fr]">
         <div className="overflow-hidden rounded-md border bg-card">
-          <div className="flex items-center justify-between border-b px-3 py-3"><div><p className="text-xs font-bold uppercase text-primary">{builder ? (es ? "Creador de recorrido" : "Route builder") : (es ? "Mapa de actividad" : "Activity map")}</p><h2 className="font-display uppercase">{builder ? (es ? "Dibuja tu próximo recorrido" : "Draw your next route") : selectedRoute.name}</h2></div><span className="font-mono text-xs text-muted-foreground">{builder ? \`\${route.length} pts\` : selectedRoute.distance}</span></div>
+          <div className="flex items-center justify-between border-b px-3 py-3"><div><p className="text-xs font-bold uppercase text-primary">{builder ? (es ? "Creador de recorrido" : "Route builder") : (es ? "Mapa de actividad" : "Activity map")}</p><h2 className="font-display uppercase">{builder ? (es ? "Dibuja tu próximo recorrido" : "Draw your next route") : selectedRoute.name}</h2></div><span className="font-mono text-xs text-muted-foreground">{builder ? `${route.length} pts` : selectedRoute.distance}</span></div>
           <div className="relative aspect-[16/10] bg-muted/30"><div ref={mapRef} className="absolute inset-0 z-0" />
             <svg viewBox="0 0 100 100" className="relative z-10 h-full w-full opacity-0" onClick={addPoint}>
               <defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="currentColor" strokeOpacity=".08" strokeWidth=".35"/></pattern></defs>
               <rect width="100" height="100" fill="url(#grid)" />
               <path d="M5 18 C20 8 28 20 40 12 S70 18 95 8 M4 82 C22 72 35 92 54 82 S80 90 96 74 M8 48 C30 40 44 54 62 43 S82 50 94 44" fill="none" stroke="currentColor" strokeOpacity=".12" strokeWidth="4"/>
               {!builder && <polyline points={path} fill="none" stroke="hsl(var(--primary))" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />}
-              {builder && route.length > 1 && <polyline points={route.map((p)=>\`\${p.x},\${p.y}\`).join(" ")} fill="none" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
+              {builder && route.length > 1 && <polyline points={route.map((p)=>`${p.x},${p.y}`).join(" ")} fill="none" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
               {(builder ? route : selectedRoute.points).map((p,i)=><circle key={i} cx={p.x} cy={p.y} r={i===0||i===(builder?route.length:selectedRoute.points.length)-1 ? 2 : .8} fill="hsl(var(--primary))" />)}
             </svg>
             {builder && <div className="absolute bottom-3 left-3 right-3 rounded-md border bg-background/90 p-3 text-xs">{es ? "Haz clic en el mapa para añadir puntos. Después podrás convertir el recorrido en entrenamiento." : "Click the map to add points. Then you can turn the route into a workout."}</div>}
           </div>
         </div>
         <aside className="space-y-3">
-          <section className="rounded-md border bg-card p-4"><h2 className="font-display uppercase">{es ? "Tus recorridos" : "Your routes"}</h2><div className="mt-3 space-y-2">{samples.map((r,i)=><button key={r.name} onClick={()=>setSelected(i)} className={\`flex w-full items-center justify-between rounded-md border p-3 text-left \${selected===i && !builder ? "border-primary bg-primary/5" : "hover:bg-muted/50"}\`}><span><span className="block text-sm font-semibold">{r.name}</span><span className="text-xs text-muted-foreground">{r.distance} · {i ? "14" : "21"} actividades</span></span><RouteIcon className="size-4 text-primary" /></button>)}</div></section>
-          <section className="rounded-md border border-primary/30 bg-primary/5 p-4"><div className="flex gap-3"><Trophy className="size-5 text-primary" /><div><h2 className="font-display uppercase">{es ? "Modo territorio" : "Territory mode"}</h2><p className="mt-1 text-xs text-muted-foreground">{es ? "Inspirado en INTVL: tus recorridos pueden convertirse en territorio, retos y objetivos sociales. RUN lo integrará con tus actividades reales." : "Inspired by INTVL: routes can become territory, challenges and social goals tied to your real activities."}</p></div></div><div className="mt-3 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{width:\`\${territory}%\`}} /></div><p className="mt-2 text-xs font-semibold">{territory}% {es ? "de tu zona explorada" : "of your area explored"}</p></section>
+          <section className="rounded-md border bg-card p-4"><h2 className="font-display uppercase">{es ? "Tus recorridos" : "Your routes"}</h2><div className="mt-3 space-y-2">{samples.map((r,i)=><button key={r.name} onClick={()=>setSelected(i)} className={`flex w-full items-center justify-between rounded-md border p-3 text-left ${selected===i && !builder ? "border-primary bg-primary/5" : "hover:bg-muted/50"}`}><span><span className="block text-sm font-semibold">{r.name}</span><span className="text-xs text-muted-foreground">{r.distance} · {i ? "14" : "21"} actividades</span></span><RouteIcon className="size-4 text-primary" /></button>)}</div></section>
+          <section className="rounded-md border border-primary/30 bg-primary/5 p-4"><div className="flex gap-3"><Trophy className="size-5 text-primary" /><div><h2 className="font-display uppercase">{es ? "Modo territorio" : "Territory mode"}</h2><p className="mt-1 text-xs text-muted-foreground">{es ? "Inspirado en INTVL: tus recorridos pueden convertirse en territorio, retos y objetivos sociales. RUN lo integrará con tus actividades reales." : "Inspired by INTVL: routes can become territory, challenges and social goals tied to your real activities."}</p></div></div><div className="mt-3 h-2 overflow-hidden rounded-full bg-muted"><div className="h-full rounded-full bg-primary" style={{width:`${territory}%`}} /></div><p className="mt-2 text-xs font-semibold">{territory}% {es ? "de tu zona explorada" : "of your area explored"}</p></section>
           {builder && <Button className="w-full" disabled={route.length<2} onClick={()=>{ setTerritory((v)=>Math.min(100,v+3)); setBuilder(false); setRoute([]); }}>{es ? "Guardar recorrido" : "Save route"}</Button>}
         </aside>
       </section>
