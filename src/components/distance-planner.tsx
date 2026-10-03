@@ -108,7 +108,13 @@ export function DistancePlannerPage() {
       setReady(true);
     })();
     return () => { cancelled = true; mapRef.current?.remove(); mapRef.current = null; setReady(false); };
-  }, [access.allowed, savedStart]);
+  }, [access.allowed]);
+
+  useEffect(() => {
+    if (savedStartLoaded && savedStart && mapRef.current) {
+      mapRef.current.setView(savedStart, 14);
+    }
+  }, [savedStartLoaded, savedStart]);
 
   useEffect(() => {
     const Lf = libRef.current, layer = layerRef.current, map = mapRef.current;
