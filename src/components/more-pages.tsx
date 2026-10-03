@@ -27,6 +27,7 @@ export function MoreHome() {
         <div className="min-w-0 flex-1"><p className="font-semibold">{t("profileSummary")}</p><p className="text-xs text-muted-foreground">{t("runnerSince")}</p></div>
         <ChevronRight className="size-5 text-muted-foreground" />
       </Link>
+      <QuickSettings connected={connected} />
       <MenuGroup label={t("account")}>
         <MenuRow to="/dispositivos" icon={<Watch />} title={t("devicesSensors")} subtitle={`${connected} ${connected === 1 ? t("connectedSingular") : t("connected")}`} />
         <MenuRow to="/mas/rendimiento" icon={<Gauge />} title={t("performance")} subtitle={t("performanceSummary")} />
@@ -112,3 +113,34 @@ function MenuRow({ to, icon, title, subtitle }: { to: MoreRoute; icon: ReactNode
 function InfoRow({ icon, title, value }: { icon: ReactNode; title: string; value: string }) { return <div className="flex min-h-16 items-center gap-3 px-3 py-2.5"><span className="text-primary [&>svg]:size-5">{icon}</span><span className="min-w-0 flex-1 text-sm font-semibold">{title}</span><span className="max-w-[45%] text-right font-mono text-xs text-muted-foreground">{value}</span></div>; }
 function Metric({ label, value, active = false }: { label: string; value: string; active?: boolean }) { return <div className={`min-w-0 rounded-md border p-3 ${active ? "border-primary/30 bg-primary/10" : "bg-card"}`}><p className={`truncate text-[9px] font-bold uppercase ${active ? "text-primary" : "text-muted-foreground"}`}>{label}</p><p className={`mt-1 font-mono text-xl font-semibold ${active ? "text-primary" : "text-foreground"}`}>{value}</p></div>; }
 function SettingsGroup({ label, description, icon, action, children }: { label: string; description?: string; icon: ReactNode; action?: ReactNode; children?: ReactNode }) { return <section className="border-y bg-card p-3 md:rounded-md md:border"><div className="flex items-center gap-3"><span className="text-primary [&>svg]:size-5">{icon}</span><div className="min-w-0 flex-1"><h2 className="text-sm font-semibold">{label}</h2>{description && <p className="text-xs text-muted-foreground">{description}</p>}</div>{action}</div>{children && <div className="mt-3">{children}</div>}</section>; }
+function QuickSettings({ connected }: { connected: number }) {
+  const p = usePreferences();
+  const L = (es: string, en: string) => (p.locale === "es" ? es : en);
+  const chip = (active: boolean) => `min-h-11 flex-1 rounded-md border px-2 text-xs font-semibold transition-colors ${active ? "border-primary bg-primary/15 text-primary" : "bg-card text-muted-foreground hover:text-foreground"}`;
+  return (
+    <section aria-label={L("Ajustes rápidos", "Quick settings")} className="space-y-3 rounded-md border bg-card p-3">
+      <p className="text-[10px] font-bold uppercase text-muted-foreground">{L("Ajustes rápidos", "Quick settings")}</p>
+      <div>
+        <p className="mb-1.5 flex items-center gap-1.5 text-xs"><Languages className="size-3.5" />{p.t("language")}</p>
+        <div className="flex gap-2">
+          {(["auto", "es", "en"] as const).map((v) => <button key={v} type="button" onClick={() => p.update({ language: v })} className={chip(p.language === v)}>{v === "auto" ? "Auto" : v.toUpperCase()}</button>)}
+        </div>
+      </div>
+      <div>
+        <p className="mb-1.5 flex items-center gap-1.5 text-xs"><Palette className="size-3.5" />{L("Color y tema", "Color and theme")}</p>
+        <div className="flex gap-2">
+          <button type="button" onClick={() => p.update({ theme: "performance" })} className={chip(p.theme === "performance")}>{p.t("performanceTheme")}</button>
+          <button type="button" onClick={() => p.update({ theme: "contrast" })} className={chip(p.theme === "contrast")}>{p.t("contrastTheme")}</button>
+        </div>
+      </div>
+      <div>
+        <p className="mb-1.5 flex items-center gap-1.5 text-xs"><Ruler className="size-3.5" />{p.t("units")}</p>
+        <div className="flex gap-2">
+          <button type="button" onClick={() => p.update({ units: "metric" })} className={chip(p.units === "metric")}>km</button>
+          <button type="button" onClick={() => p.update({ units: "imperial" })} className={chip(p.units === "imperial")}>mi</button>
+        </div>
+      </div>
+      <Button asChild className="min-h-11 w-full"><Link to="/dispositivos"><Watch />{L("Vincular Garmin, Strava y más", "Link Garmin, Strava and more")} · {connected}</Link></Button>
+    </section>
+  );
+}
