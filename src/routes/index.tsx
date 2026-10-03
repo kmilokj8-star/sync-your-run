@@ -32,47 +32,83 @@ function PerformanceOverview() {
   const { all } = useAllActivities();
   const fmtTime = (m: number) => (m >= 60 ? `${Math.floor(m / 60)}h ${String(Math.round(m % 60)).padStart(2, "0")}m` : `${Math.round(m)}m`);
   const last = all[0];
-  const runs = all.filter((a) => a.distanceKm > 0);
+  const runs = all.filter((a) => a.distanceKm > 0 && a.durationMin >= 0);
   const totalKm = runs.reduce((s, a) => s + a.distanceKm, 0);
   const totalMin = runs.reduce((s, a) => s + a.durationMin, 0);
   const longest = runs.reduce((m, a) => Math.max(m, a.distanceKm), 0);
   const best = runs.reduce((m, a) => Math.min(m, a.durationMin / a.distanceKm), Infinity);
+  const recent7 = runs.filter((a) => Date.now() - new Date(a.date).getTime() <= 7 * 86400000);
+  const recent30 = runs.filter((a) => Date.now() - new Date(a.date).getTime() <= 30 * 86400000);
+  const previous7 = runs.filter((a) => {
+    const age = Date.now() - new Date(a.date).getTime();
+    return age > 7 * 86400000 && age <= 14 * 86400000;
+  });
+  const recentKm = recent7.reduce((s, a) => s + a.distanceKm, 0);
+  const previousKm = previous7.reduce((s, a) => s + a.distanceKm, 0);
+  const trend = previousKm > 0 ? ((recentKm - previousKm) / previousKm) * 100 : null;
+  const activeDays30 = new Set(recent30.map((a) => new Date(a.date).toISOString().slice(0, 10))).size;
+  const activeWeeks8 = new Set(
+    runs.filter((a) => Date.now() - new Date(a.date).getTime() <= 56 * 86400000)
+      .map((a) => {
+        const d = new Date(a.date);
+        const day = d.getUTCDay();
+        d.setUTCDate(d.getUTCDate() - day);
+        return d.toISOString().slice(0, 10);
+      }),
+  ).size;
   const d = (km: number) => { const x = distance(km); return `${x.value.toFixed(1)} ${x.unit}`; };
   const p = (v: number) => { const x = pace(v); return `${x.value} ${x.unit}`; };
+  const sourceLabel = (source: string) => source === "manual" ? L("Manual", "Manual") : source === "record" ? L("Registrada", "Recorded") : source;
   return (
-    <section aria-label={L("Estadísticas y rendimiento", "Stats & performance")} className="grid gap-4 md:grid-cols-2">
-      <div className="rounded-md border bg-card p-3 md:p-5">
-        <p className="text-[10px] font-bold uppercase text-primary">{L("Última actividad", "Last activity")}</p>
-        {last ? (
-          <>
-            <h2 className="mt-1 truncate font-display text-base uppercase md:text-lg">{last.name}</h2>
-            <p className="font-mono text-[10px] uppercase text-muted-foreground">{new Date(last.date).toLocaleDateString(locale)}</p>
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              <StatCard label={L("Distancia", "Distance")} value={distance(last.distanceKm).value.toFixed(2)} detail={distance(last.distanceKm).unit} active />
-              <StatCard label={L("Tiempo", "Time")} value={fmtTime(last.durationMin)} detail="" />
-              <StatCard label={L("Ritmo", "Pace")} value={last.distanceKm > 0 ? pace(last.durationMin / last.distanceKm).value : "—"} detail={last.distanceKm > 0 ? pace(1).unit : ""} />
-            </div>
-          </>
-        ) : <p className="mt-3 text-xs text-muted-foreground">{L("Registra o importa tu primera actividad para ver sus métricas.", "Record or import your first activity to see its metrics.")}</p>}
+    <section aria-label={L("Estadísticas y rendimiento", "Stats & performance")} className="space-y-3 md:space-y-4">
+      <div className="flex items-end justify-between gap-2">
+        <div>
+          <p className="text-[10px] font-bold uppercase text-primary">{L("Rendimiento", "Performance")}</p>
+          <h2 className="font-display text-base uppercase md:text-xl">{L("Estadísticas y rendimiento", "Stats & performance")}</h2>
+        </div>
+        <Link to="/mas/rendimiento" className="text-xs font-semibold text-primary hover:underline">{L("Ver análisis", "View analysis")}</Link>
       </div>
-      <div className="rounded-md border bg-card p-3 md:p-5">
-        <div className="flex items-end justify-between gap-2">
-          <p className="text-[10px] font-bold uppercase text-primary">{L("Rendimiento global", "Overall performance")}</p>
-          <Link to="/mas/rendimiento" className="text-xs font-semibold text-primary hover:underline">{L("Detalles", "Details")}</Link>
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="rounded-md border bg-card p-3 md:p-5">
+          <p className="text-[10px] font-bold uppercase text-primary">{L("Última actividad", "Last activity")}</p>
+          {last ? (
+            <>
+              <div className="mt-1 flex items-baseline justify-between gap-2">
+                <h3 className="truncate font-display text-base uppercase md:text-lg">{last.name}</h3>
+                <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{new Date(last.date).toLocaleDateString(locale)}</span>
+              </div>
+              <p className="mt-1 text-[10px] uppercase text-muted-foreground">{last.type} · {sourceLabel(last.source)}</p>
+              <div className="mt-3 grid grid-cols-3 gap-2">
+                <StatCard label={L("Distancia", "Distance")} value={distance(last.distanceKm).value.toFixed(2)} detail={distance(last.distanceKm).unit} active />
+                <StatCard label={L("Tiempo", "Time")} value={fmtTime(last.durationMin)} detail="" />
+                <StatCard label={L("Ritmo", "Pace")} value={last.distanceKm > 0 ? pace(last.durationMin / last.distanceKm).value : "—"} detail={last.distanceKm > 0 ? pace(1).unit : ""} />
+              </div>
+            </>
+          ) : <p className="mt-3 text-xs text-muted-foreground">{L("Registra o importa tu primera actividad para ver sus métricas.", "Record or import your first activity to see its metrics.")}</p>}
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-2">
-          <StatCard label={L("Actividades", "Activities")} value={String(runs.length)} detail="" />
-          <StatCard label={L("Distancia total", "Total distance")} value={d(totalKm)} detail="" active />
-          <StatCard label={L("Tiempo total", "Total time")} value={fmtTime(totalMin)} detail="" />
-          <StatCard label={L("Ritmo medio", "Avg pace")} value={totalKm ? p(totalMin / totalKm) : "—"} detail="" />
-          <StatCard label={L("Mejor ritmo", "Best pace")} value={Number.isFinite(best) ? p(best) : "—"} detail="" />
-          <StatCard label={L("Más larga", "Longest")} value={longest ? d(longest) : "—"} detail="" />
+
+        <div className="rounded-md border bg-card p-3 md:p-5">
+          <p className="text-[10px] font-bold uppercase text-primary">{L("Historial global", "Global history")}</p>
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <StatCard label={L("Actividades", "Activities")} value={String(runs.length)} detail="" />
+            <StatCard label={L("Distancia total", "Total distance")} value={d(totalKm)} detail="" active />
+            <StatCard label={L("Tiempo total", "Total time")} value={fmtTime(totalMin)} detail="" />
+            <StatCard label={L("Ritmo medio", "Avg pace")} value={totalKm ? p(totalMin / totalKm) : "—"} detail="" />
+            <StatCard label={L("Mejor ritmo", "Best pace")} value={Number.isFinite(best) ? p(best) : "—"} detail="" />
+            <StatCard label={L("Más larga", "Longest")} value={longest ? d(longest) : "—"} detail="" />
+          </div>
         </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+        <StatCard label={L("Últimos 7 días", "Last 7 days")} value={d(recentKm)} detail="" active />
+        <StatCard label={L("Últimos 30 días", "Last 30 days")} value={d(recent30.reduce((s, a) => s + a.distanceKm, 0))} detail="" />
+        <StatCard label={L("Tendencia semanal", "Weekly trend")} value={trend === null ? "—" : `${trend >= 0 ? "+" : ""}${trend.toFixed(0)}%`} detail={L("vs. semana previa", "vs prior week")} />
+        <StatCard label={L("Constancia", "Consistency")} value={`${activeDays30}/30`} detail={L("días activos · 8 sem.", "active days · 8 wks")} />
       </div>
     </section>
   );
 }
-
 function Home() {
   const { t, distance, pace, locale } = usePreferences();
   const L = (es: string, en: string) => (locale === "es" ? es : en);
