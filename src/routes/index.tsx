@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { ChevronRight, Download, Watch } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
+import { RunPlusCard } from "@/components/premium-card";
 import { ActivityRow, ProviderMark } from "@/components/activity-row";
 import { Button } from "@/components/ui/button";
 import {
@@ -134,6 +135,8 @@ function Home() {
             )}
           </section>
         </div>
+
+        <RunPlusCard compact />
 
         <section aria-label="Actividades recientes" className="rounded-md border bg-card p-3 md:rounded-lg md:p-5">
           <div className="flex items-end justify-between gap-2">
