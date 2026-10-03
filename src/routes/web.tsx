@@ -20,6 +20,7 @@ export const Route = createFileRoute("/web")({
   component: PublicWebsite,
 });
 
+const EN: Record<string,string> = {"Funciones":"Features","Deportistas":"Athletes","Entrenadores":"Coaches","Comunidad":"Community","Planes":"Plans","Ayuda":"Help","Iniciar sesión":"Sign in","Crear cuenta":"Create account","Crear cuenta gratis":"Create your free account","Conocer RUN":"Explore RUN","Para corredores":"For runners","Tu entrenamiento.":"Your training.","Tu progreso.":"Your progress.","Tu camino.":"Your journey.","Todo en un solo lugar":"Everything in one place","Herramientas para correr mejor":"Tools to help you run better","Para deportistas":"For athletes","Para entrenadores":"For coaches","Confianza":"Trust","Entrenadores verificados":"Verified coaches","Próximamente":"Coming soon","Descarga RUN":"Download RUN","Lleva RUN contigo.":"Take RUN with you.","Preguntas frecuentes":"Frequently asked questions","Producto":"Product","Legal":"Legal","Términos":"Terms","Privacidad":"Privacy","Cookies":"Cookies","Contacto":"Contact","Todos los derechos reservados.":"All rights reserved.","Entrena":"Train","Registra":"Record","Progresa":"Progress","Conecta":"Connect","Retos":"Challenges","Logros":"Achievements","Puntos":"Points","Rutas":"Routes","Entrenamiento":"Training","Maratón":"Marathon","Gratis":"Free","Premium":"Premium","Recomendado":"Recommended","Comenzar gratis":"Start free","Conocer RUN+":"Explore RUN+","Principiantes":"Beginners","Corredores recreativos":"Recreational runners","Corredores competitivos":"Competitive runners","Preparación de carreras":"Race preparation","Soy entrenador":"I'm a coach","Empezar con RUN":"Get started with RUN","Avísame cuando esté disponible":"Notify me when available"};
 const features = [
   [Activity, "Registra tus actividades", "Guarda tus carreras y consulta distancia, tiempo, ritmo y otros datos de cada sesión."],
   [Dumbbell, "Entrenamiento", "Organiza tus sesiones y trabaja con planes para diferentes objetivos y distancias."],
@@ -155,6 +156,10 @@ function FeatureIllustration({ index }: { index: number }) {
 }
 
 export function PublicWebsite() {
+  const [language,setLanguage]=useState<"en"|"es">("en");
+  const tr=(s:string)=>language==="en"?(EN[s]??s):s;
+  const changeLanguage=(v:"en"|"es")=>{setLanguage(v);try{localStorage.setItem("run-language",v)}catch{}};
+  useEffect(()=>{try{const v=localStorage.getItem("run-language");if(v==="en"||v==="es")setLanguage(v)}catch{}},[]);
   const [menu, setMenu] = useState(false);
   const [faq, setFaq] = useState<number | null>(null);
 
@@ -190,12 +195,12 @@ export function PublicWebsite() {
             <span className="font-display text-2xl uppercase tracking-tight">run</span>
           </a>
           <nav className="hidden items-center gap-7 lg:flex">
-            {nav.map(([label, href]) => <a key={label} href={href} className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">{label}</a>)}
+            {nav.map(([label, href]) => <a key={label} href={href} className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground">{tr(label)}</a>)}
           </nav>
           <div className="hidden items-center gap-2 lg:flex">
-            <button className="rounded-lg px-4 py-2.5 text-sm font-semibold text-muted-foreground hover:text-foreground">ES ▾</button>
-            <Link to="/app" className="rounded-lg px-4 py-2.5 text-sm font-semibold">Iniciar sesión</Link>
-            <a href="#descarga" className="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">Crear cuenta</a>
+            <select aria-label="Language" value={language} onChange={e=>changeLanguage(e.target.value as "en"|"es")} className="rounded-lg bg-transparent px-3 py-2.5 text-sm font-semibold text-muted-foreground outline-none"><option value="en">EN</option><option value="es">ES</option></select>
+            <Link to="/app" className="rounded-lg px-4 py-2.5 text-sm font-semibold">{tr("Iniciar sesión")}</Link>
+            <a href="#descarga" className="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">{tr("Crear cuenta")}</a>
           </div>
           <button className="flex size-11 items-center justify-center rounded-lg border lg:hidden" onClick={() => setMenu(!menu)} aria-label="Abrir menú" aria-expanded={menu}>
             {menu ? <X /> : <Menu />}
@@ -205,8 +210,8 @@ export function PublicWebsite() {
           <nav className="mx-auto flex max-w-7xl flex-col gap-1">
             {nav.map(([label, href]) => <a key={label} href={href} onClick={() => setMenu(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-muted">{label}</a>)}
             <div className="mt-2 grid grid-cols-2 gap-2">
-              <Link to="/app" className="rounded-lg border px-4 py-3 text-center font-semibold">Iniciar sesión</Link>
-              <a href="#descarga" onClick={() => setMenu(false)} className="rounded-lg bg-primary px-4 py-3 text-center font-bold text-primary-foreground">Crear cuenta</a>
+              <Link to="/app" className="rounded-lg border px-4 py-3 text-center font-semibold">{tr("Iniciar sesión")}</Link>
+              <a href="#descarga" onClick={() => setMenu(false)} className="rounded-lg bg-primary px-4 py-3 text-center font-bold text-primary-foreground">{tr("Crear cuenta")}</a>
             </div>
           </nav>
         </div>}
@@ -221,14 +226,14 @@ export function PublicWebsite() {
               <CircleCheck className="size-4" /> Para corredores
             </div>
             <h1 className="max-w-3xl font-display text-5xl uppercase leading-[.95] tracking-tight sm:text-6xl lg:text-7xl">
-              Tu entrenamiento.<br /><span className="text-primary">Tu progreso.</span><br />Tu camino.
+              Tu entrenamiento.<br /><span className="text-primary">{tr("Tu progreso.")}</span><br />Tu camino.
             </h1>
             <p className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground">
               RUN reúne tus actividades, entrenamiento, objetivos, rutas, dispositivos y comunidad en una experiencia creada para corredores.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#descarga" className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-1 hover:shadow-xl">Crear cuenta gratis <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
-              <a href="#funciones" className="rounded-xl border bg-card px-6 py-3.5 font-bold transition-all hover:-translate-y-0.5 hover:bg-muted">Conocer RUN</a>
+              <a href="#funciones" className="rounded-xl border bg-card px-6 py-3.5 font-bold transition-all hover:-translate-y-0.5 hover:bg-muted">{tr("Conocer RUN")}</a>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
               <span className="flex items-center gap-2"><ShieldCheck className="size-4 text-primary" /> Privacidad y control</span>
@@ -260,8 +265,8 @@ export function PublicWebsite() {
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Map className="mb-4 size-5 text-primary" /><p className="font-bold">Rutas</p><p className="mt-1 text-xs text-muted-foreground">Tus recorridos</p></div>
-                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Trophy className="mb-4 size-5 text-primary" /><p className="font-bold">Retos</p><p className="mt-1 text-xs text-muted-foreground">Sigue avanzando</p></div>
+                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Map className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Rutas")}</p><p className="mt-1 text-xs text-muted-foreground">Tus recorridos</p></div>
+                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Trophy className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Retos")}</p><p className="mt-1 text-xs text-muted-foreground">Sigue avanzando</p></div>
                     </div>
                   </div>
                 </div>
@@ -277,9 +282,9 @@ export function PublicWebsite() {
       <section className="border-y bg-muted/30">
         <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
           {([["Entrena", "Organiza tu camino", Dumbbell], ["Registra", "Conserva cada sesión", Activity], ["Progresa", "Mide tu evolución", Zap], ["Conecta", "Corre acompañado", Users]] as const).map(([title, text, Icon]) => (
-            <div key={title as string} className="group flex items-center gap-3">
+            <div key={tr(title as string)} className="group flex items-center gap-3">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110"><Icon className="size-4" /></span>
-              <div><p className="font-bold">{title as string}</p><p className="text-sm text-muted-foreground">{text as string}</p></div>
+              <div><p className="font-bold">{title as string}</p><p className="text-sm text-muted-foreground">{tr(text as string)}</p></div>
             </div>
           ))}
         </div>
@@ -287,7 +292,7 @@ export function PublicWebsite() {
 
       <section id="funciones" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <Reveal>
-          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-widest text-primary">Todo en un solo lugar</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Herramientas para correr mejor</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">La plataforma crece contigo, desde tu primera carrera hasta tus próximos grandes objetivos.</p></div>
+          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Todo en un solo lugar")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Herramientas para correr mejor")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">La plataforma crece contigo, desde tu primera carrera hasta tus próximos grandes objetivos.</p></div>
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map(([Icon, title, text], i) => (
@@ -306,7 +311,7 @@ export function PublicWebsite() {
         <div className="pointer-events-none absolute -right-24 top-0 size-96 rounded-full bg-primary/15 blur-3xl" />
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">Para deportistas</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Para deportistas")}</p>
             <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Empieza donde estás. Avanza hacia donde quieres llegar.</h2>
             <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">RUN está pensado para acompañarte sin importar si estás empezando, entrenando por salud o preparando una nueva marca.</p>
             <a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">Empezar con RUN <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
@@ -328,7 +333,7 @@ export function PublicWebsite() {
       <section id="entrenadores" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">Para entrenadores</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Entrena. Acompaña. Haz crecer a tus atletas.</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">RUN también está pensado para profesionales que quieren centralizar su relación con sus deportistas.</p><a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">Soy entrenador <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Para entrenadores")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Entrena. Acompaña. Haz crecer a tus atletas.</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">RUN también está pensado para profesionales que quieren centralizar su relación con sus deportistas.</p><a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">Soy entrenador <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
             <div className="mt-10 h-44 max-w-md text-primary opacity-80"><svg viewBox="0 0 520 220" className="h-full w-full"><path d="M30 184h460" stroke="currentColor" strokeWidth="2" opacity=".15" /><path d="M55 158 145 116l76 31 91-75 104 34" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /><circle cx="145" cy="116" r="7" fill="currentColor" /><circle cx="221" cy="147" r="7" fill="currentColor" /><circle cx="312" cy="72" r="7" fill="currentColor" /><circle cx="416" cy="106" r="7" fill="currentColor" /><path d="M55 158 145 116 221 147 312 72 416 106" fill="none" stroke="currentColor" strokeWidth="14" opacity=".07" /></svg></div>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -347,7 +352,7 @@ export function PublicWebsite() {
       <section className="bg-muted/30">
         <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
           <Reveal>
-            <div className="mx-auto max-w-2xl text-center"><div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary"><ShieldCheck /></div><p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">Confianza</p><h2 className="mt-2 font-display text-4xl uppercase">Entrenadores verificados</h2><p className="mt-4 leading-7 text-muted-foreground">La insignia identifica los perfiles que han pasado por el proceso de revisión de RUN.</p></div>
+            <div className="mx-auto max-w-2xl text-center"><div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary"><ShieldCheck /></div><p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{tr("Confianza")}</p><h2 className="mt-2 font-display text-4xl uppercase">{tr("Entrenadores verificados")}</h2><p className="mt-4 leading-7 text-muted-foreground">La insignia identifica los perfiles que han pasado por el proceso de revisión de RUN.</p></div>
           </Reveal>
           <Reveal delay={100}>
             <div className="mx-auto mt-10 max-w-md rounded-2xl border bg-card p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-xl">
@@ -361,8 +366,8 @@ export function PublicWebsite() {
       <section id="comunidad" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
         <div className="grid items-center gap-10 rounded-3xl border bg-card p-8 shadow-sm sm:p-12 lg:grid-cols-[1fr_.9fr] lg:p-16">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">Comunidad</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Corre acompañado.</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.</p>
-            <div className="mt-8 grid grid-cols-3 gap-3">{[["Retos", Trophy], ["Logros", Target], ["Puntos", Zap]].map(([x, Icon]) => <div key={x as string} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Comunidad")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Corre acompañado.</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.</p>
+            <div className="mt-8 grid grid-cols-3 gap-3">{[["Retos", Trophy], ["Logros", Target], ["Puntos", Zap]].map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
           </Reveal>
           <Reveal delay={120} className="text-primary">
             <div className="h-56 sm:h-64"><CommunityIllustration /></div>
@@ -373,8 +378,8 @@ export function PublicWebsite() {
       <section className="overflow-hidden bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-16 lg:grid-cols-[1fr_.8fr] lg:px-8">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest opacity-70">Próximamente</p><h2 className="mt-2 font-display text-4xl uppercase">RUN también llegará al ciclismo.</h2><p className="mt-3 max-w-2xl opacity-80">Estamos preparando la próxima evolución de RUN para ampliar la experiencia deportiva.</p>
-            <button className="mt-7 rounded-xl bg-foreground px-6 py-3.5 font-bold text-background transition-all hover:-translate-y-1">Avísame cuando esté disponible</button>
+            <p className="text-xs font-bold uppercase tracking-widest opacity-70">{tr("Próximamente")}</p><h2 className="mt-2 font-display text-4xl uppercase">RUN también llegará al ciclismo.</h2><p className="mt-3 max-w-2xl opacity-80">Estamos preparando la próxima evolución de RUN para ampliar la experiencia deportiva.</p>
+            <button className="mt-7 rounded-xl bg-foreground px-6 py-3.5 font-bold text-background transition-all hover:-translate-y-1">{tr("Avísame cuando esté disponible")}</button>
           </Reveal>
           <Reveal delay={100} className="text-primary-foreground">
             <div className="run-float h-48"><CyclingIllustration /></div>
@@ -384,13 +389,13 @@ export function PublicWebsite() {
 
       <section id="planes" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <Reveal>
-          <div className="text-center"><p className="text-xs font-bold uppercase tracking-widest text-primary">Planes</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">Empieza gratis. Crece cuando quieras.</h2><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">Una experiencia clara para comenzar, con opciones adicionales para quienes quieren profundizar en su entrenamiento.</p></div>
+          <div className="text-center"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Planes")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">Empieza gratis. Crece cuando quieras.</h2><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">Una experiencia clara para comenzar, con opciones adicionales para quienes quieren profundizar en su entrenamiento.</p></div>
         </Reveal>
         <div className="mx-auto mt-12 grid max-w-4xl gap-4 md:grid-cols-2">
           {[["Gratis", "RUN Free", ["Registro de actividades", "Estadísticas básicas", "Planes y objetivos", "Metas y logros", "Funciones de comunidad"], false], ["Premium", "RUN+", ["Todo lo incluido en Free", "Funciones avanzadas", "Planes personalizados", "Analíticas ampliadas", "Experiencia sin anuncios*"], true]].map(([eyebrow, title, items, featured], i) => (
             <Reveal key={title as string} delay={i * 100}>
               <div className={`relative h-full rounded-2xl border ${featured ? "border-2 border-primary shadow-xl shadow-primary/10" : "bg-card"} p-7 transition-transform hover:-translate-y-2`}>
-                {featured && <span className="absolute right-5 top-5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase text-primary-foreground">Recomendado</span>}
+                {featured && <span className="absolute right-5 top-5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase text-primary-foreground">{tr("Recomendado")}</span>}
                 <p className={`text-sm font-bold uppercase tracking-wider ${featured ? "text-primary" : "text-muted-foreground"}`}>{eyebrow as string}</p><h3 className="mt-3 font-display text-3xl uppercase">{title as string}</h3>
                 <ul className="mt-7 space-y-3 text-sm">{(items as string[]).map(x => <li key={x} className="flex gap-2"><Check className="size-4 shrink-0 text-primary" />{x}</li>)}</ul>
                 <a href="#descarga" className={`mt-8 block rounded-xl px-5 py-3 text-center font-bold transition-all hover:-translate-y-0.5 ${featured ? "bg-primary text-primary-foreground" : "border"}`}>{featured ? "Conocer RUN+" : "Comenzar gratis"}</a>
@@ -405,7 +410,7 @@ export function PublicWebsite() {
         <div className="pointer-events-none absolute right-0 top-0 size-96 rounded-full bg-primary/10 blur-3xl" />
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 lg:grid-cols-[1fr_auto] lg:px-8 lg:py-24">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">Descarga RUN</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">Lleva RUN contigo.</h2><p className="mt-5 max-w-xl text-lg leading-8 opacity-70">Empieza a registrar tus carreras y a construir tu camino desde donde estés.</p><div className="mt-8 flex flex-wrap gap-3"><button className="transition-all hover:-translate-y-1 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground"><Download className="mr-2 inline size-4" /> Google Play</button><button className="transition-all hover:-translate-y-1 rounded-xl border border-background/20 px-6 py-3.5 font-bold"><Download className="mr-2 inline size-4" /> App Store</button></div>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Descarga RUN")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">{tr("Lleva RUN contigo.")}</h2><p className="mt-5 max-w-xl text-lg leading-8 opacity-70">Empieza a registrar tus carreras y a construir tu camino desde donde estés.</p><div className="mt-8 flex flex-wrap gap-3"><button className="transition-all hover:-translate-y-1 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground"><Download className="mr-2 inline size-4" /> Google Play</button><button className="transition-all hover:-translate-y-1 rounded-xl border border-background/20 px-6 py-3.5 font-bold"><Download className="mr-2 inline size-4" /> App Store</button></div>
           </Reveal>
           <Reveal delay={100}>
             <div className="relative mx-auto flex size-44 items-center justify-center">
@@ -419,19 +424,19 @@ export function PublicWebsite() {
 
       <section id="faq" className="mx-auto max-w-4xl px-5 py-20 lg:py-24">
         <Reveal>
-          <div className="text-center"><p className="text-xs font-bold uppercase tracking-widest text-primary">Ayuda</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">Preguntas frecuentes</h2></div>
+          <div className="text-center"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Ayuda")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">{tr("Preguntas frecuentes")}</h2></div>
         </Reveal>
         <div className="mt-10 divide-y rounded-2xl border bg-card">
-          {faqs.map(([q, a], i) => <div key={q}><button className="flex w-full items-center justify-between gap-5 px-5 py-5 text-left font-bold" onClick={() => setFaq(faq === i ? null : i)} aria-expanded={faq === i}><span>{q}</span><ChevronDown className={`size-5 shrink-0 transition-transform duration-300 ${faq === i ? "rotate-180 text-primary" : ""}`} /></button>{faq === i && <div className="px-5 pb-5 leading-7 text-muted-foreground">{a}</div>}</div>)}
+          {faqs.map(([q, a], i) => <div key={q}><button className="flex w-full items-center justify-between gap-5 px-5 py-5 text-left font-bold" onClick={() => setFaq(faq === i ? null : i)} aria-expanded={faq === i}><span>{tr(q)}</span><ChevronDown className={`size-5 shrink-0 transition-transform duration-300 ${faq === i ? "rotate-180 text-primary" : ""}`} /></button>{faq === i && <div className="px-5 pb-5 leading-7 text-muted-foreground">{tr(a)}</div>}</div>)}
         </div>
       </section>
 
       <footer className="border-t bg-muted/30">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:px-8">
           <div><div className="flex items-center gap-2"><span className="size-7 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} /><span className="font-display text-xl uppercase">run</span></div><p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">Entrena. Progresa. Conecta.</p></div>
-          <div><p className="font-bold">Producto</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#funciones" className="block hover:text-foreground">Funciones</a><a href="#planes" className="block hover:text-foreground">Planes</a><a href="#entrenadores" className="block hover:text-foreground">Entrenadores</a><a href="#comunidad" className="block hover:text-foreground">Comunidad</a></div></div>
-          <div><p className="font-bold">Ayuda</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#faq" className="block hover:text-foreground">Preguntas frecuentes</a><a href="mailto:soporte@run.app" className="block hover:text-foreground">Contacto</a></div></div>
-          <div><p className="font-bold">Legal</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#" className="block hover:text-foreground">Términos</a><a href="#" className="block hover:text-foreground">Privacidad</a><a href="#" className="block hover:text-foreground">Cookies</a></div></div>
+          <div><p className="font-bold">{tr("Producto")}</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#funciones" className="block hover:text-foreground">{tr("Funciones")}</a><a href="#planes" className="block hover:text-foreground">{tr("Planes")}</a><a href="#entrenadores" className="block hover:text-foreground">{tr("Entrenadores")}</a><a href="#comunidad" className="block hover:text-foreground">{tr("Comunidad")}</a></div></div>
+          <div><p className="font-bold">{tr("Ayuda")}</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#faq" className="block hover:text-foreground">{tr("Preguntas frecuentes")}</a><a href="mailto:soporte@run.app" className="block hover:text-foreground">{tr("Contacto")}</a></div></div>
+          <div><p className="font-bold">{tr("Legal")}</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#" className="block hover:text-foreground">{tr("Términos")}</a><a href="#" className="block hover:text-foreground">{tr("Privacidad")}</a><a href="#" className="block hover:text-foreground">{tr("Cookies")}</a></div></div>
         </div>
         <div className="border-t px-5 py-5 text-center text-xs text-muted-foreground">© {new Date().getFullYear()} RUN. Todos los derechos reservados.</div>
       </footer>
