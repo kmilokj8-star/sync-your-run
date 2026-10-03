@@ -237,6 +237,7 @@ function DashboardLayout({
   const [layout, setLayout, loaded] = useStored<DashboardLayout>(DASHBOARD_KEY, fallback);
   const [editing, setEditing] = useState(false);
   const dragId = useRef<DashboardId | null>(null);
+  const hoverId = useRef<DashboardId | null>(null);
 
   useEffect(() => {
     if (!loaded) return;
@@ -263,9 +264,9 @@ function DashboardLayout({
       if (!id) return;
       const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-dashboard-id]");
       const targetId = target?.dataset.dashboardId as DashboardId | undefined;
-      if (targetId && targetId !== id && layout.order.includes(targetId)) move(id, targetId);
+      if (targetId && targetId !== id && targetId !== hoverId.current && layout.order.includes(targetId)) { hoverId.current = targetId; move(id, targetId); }
     };
-    const onUp = () => { dragId.current = null; };
+    const onUp = () => { dragId.current = null; hoverId.current = null; };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
     return () => { window.removeEventListener("pointermove", onMove); window.removeEventListener("pointerup", onUp); };
@@ -297,7 +298,7 @@ function DashboardLayout({
       {visible.map((id) => (
         <div key={id} data-dashboard-id={id} className={editing ? "relative rounded-lg ring-1 ring-transparent transition hover:ring-primary/40" : ""}>
           {editing && <div className="pointer-events-none absolute left-2 top-2 z-20 flex items-center gap-1 rounded-md border bg-card/95 px-1.5 py-1 shadow-sm">
-            <span role="button" tabIndex={0} aria-label={T("Arrastrar módulo", "Drag module")} onPointerDown={(e) => { e.preventDefault(); dragId.current = id; }} className="pointer-events-auto cursor-grab touch-none p-1 text-muted-foreground active:cursor-grabbing"><GripVertical className="size-4" /></span>
+            <span role="button" tabIndex={0} aria-label={T("Arrastrar módulo", "Drag module")} onPointerDown={(e) => { e.preventDefault(); dragId.current = id; hoverId.current = null; }} className="pointer-events-auto cursor-grab touch-none p-1 text-muted-foreground active:cursor-grabbing"><GripVertical className="size-4" /></span>
             <button type="button" onClick={() => hide(id)} className="pointer-events-auto rounded p-1 text-muted-foreground hover:text-foreground" aria-label={T("Ocultar", "Hide")}><EyeOff className="size-3.5" /></button>
           </div>}
           {blocks[id]}
