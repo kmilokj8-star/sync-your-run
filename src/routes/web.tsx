@@ -276,7 +276,7 @@ export function PublicWebsite() {
 
       <section className="border-y bg-muted/30">
         <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
-          {[["Entrena", "Organiza tu camino", Dumbbell], ["Registra", "Conserva cada sesión", Activity], ["Progresa", "Mide tu evolución", Zap], ["Conecta", "Corre acompañado", Users]].map(([title, text, Icon]) => (
+          {([["Entrena", "Organiza tu camino", Dumbbell], ["Registra", "Conserva cada sesión", Activity], ["Progresa", "Mide tu evolución", Zap], ["Conecta", "Corre acompañado", Users]] as const).map(([title, text, Icon]) => (
             <div key={title as string} className="group flex items-center gap-3">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110"><Icon className="size-4" /></span>
               <div><p className="font-bold">{title as string}</p><p className="text-sm text-muted-foreground">{text as string}</p></div>
