@@ -20,12 +20,14 @@ import { Route as PlanesRouteImport } from './routes/planes'
 import { Route as PuntosRouteImport } from './routes/puntos'
 import { Route as RegistrarRouteImport } from './routes/registrar'
 import { Route as RetosRouteImport } from './routes/retos'
+import { Route as RutasRouteImport } from './routes/rutas'
 import { Route as MasIndexRouteImport } from './routes/mas.index'
 import { Route as MasAyudaRouteImport } from './routes/mas.ayuda'
 import { Route as MasConfiguracionRouteImport } from './routes/mas.configuracion'
 import { Route as MasEntrenamientoRouteImport } from './routes/mas.entrenamiento'
 import { Route as MasPerfilRouteImport } from './routes/mas.perfil'
 import { Route as MasRendimientoRouteImport } from './routes/mas.rendimiento'
+import { Route as MasSuscripcionRouteImport } from './routes/mas.suscripcion'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +84,11 @@ const RetosRoute = RetosRouteImport.update({
   path: '/retos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RutasRoute = RutasRouteImport.update({
+  id: '/rutas',
+  path: '/rutas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MasIndexRoute = MasIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -112,6 +119,11 @@ const MasRendimientoRoute = MasRendimientoRouteImport.update({
   path: '/rendimiento',
   getParentRoute: () => MasRoute,
 } as any)
+const MasSuscripcionRoute = MasSuscripcionRouteImport.update({
+  id: '/suscripcion',
+  path: '/suscripcion',
+  getParentRoute: () => MasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -125,11 +137,13 @@ export interface FileRoutesByFullPath {
   '/puntos': typeof PuntosRoute
   '/registrar': typeof RegistrarRoute
   '/retos': typeof RetosRoute
+  '/rutas': typeof RutasRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
+  '/mas/suscripcion': typeof MasSuscripcionRoute
   '/mas/': typeof MasIndexRoute
 }
 export interface FileRoutesByTo {
@@ -143,11 +157,13 @@ export interface FileRoutesByTo {
   '/puntos': typeof PuntosRoute
   '/registrar': typeof RegistrarRoute
   '/retos': typeof RetosRoute
+  '/rutas': typeof RutasRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
+  '/mas/suscripcion': typeof MasSuscripcionRoute
   '/mas': typeof MasIndexRoute
 }
 export interface FileRoutesById {
@@ -163,11 +179,13 @@ export interface FileRoutesById {
   '/puntos': typeof PuntosRoute
   '/registrar': typeof RegistrarRoute
   '/retos': typeof RetosRoute
+  '/rutas': typeof RutasRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
+  '/mas/suscripcion': typeof MasSuscripcionRoute
   '/mas/': typeof MasIndexRoute
 }
 export interface FileRouteTypes {
@@ -184,11 +202,13 @@ export interface FileRouteTypes {
     | '/puntos'
     | '/registrar'
     | '/retos'
+    | '/rutas'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
+    | '/mas/suscripcion'
     | '/mas/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -202,11 +222,13 @@ export interface FileRouteTypes {
     | '/puntos'
     | '/registrar'
     | '/retos'
+    | '/rutas'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
+    | '/mas/suscripcion'
     | '/mas'
   id:
     | '__root__'
@@ -221,11 +243,13 @@ export interface FileRouteTypes {
     | '/puntos'
     | '/registrar'
     | '/retos'
+    | '/rutas'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
+    | '/mas/suscripcion'
     | '/mas/'
   fileRoutesById: FileRoutesById
 }
@@ -241,6 +265,7 @@ export interface RootRouteChildren {
   PuntosRoute: typeof PuntosRoute
   RegistrarRoute: typeof RegistrarRoute
   RetosRoute: typeof RetosRoute
+  RutasRoute: typeof RutasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -322,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RetosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rutas': {
+      id: '/rutas'
+      path: '/rutas'
+      fullPath: '/rutas'
+      preLoaderRoute: typeof RutasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mas/': {
       id: '/mas/'
       path: '/'
@@ -364,6 +396,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MasRendimientoRouteImport
       parentRoute: typeof MasRoute
     }
+    '/mas/suscripcion': {
+      id: '/mas/suscripcion'
+      path: '/suscripcion'
+      fullPath: '/mas/suscripcion'
+      preLoaderRoute: typeof MasSuscripcionRouteImport
+      parentRoute: typeof MasRoute
+    }
   }
 }
 
@@ -373,6 +412,7 @@ interface MasRouteChildren {
   MasEntrenamientoRoute: typeof MasEntrenamientoRoute
   MasPerfilRoute: typeof MasPerfilRoute
   MasRendimientoRoute: typeof MasRendimientoRoute
+  MasSuscripcionRoute: typeof MasSuscripcionRoute
   MasIndexRoute: typeof MasIndexRoute
 }
 
@@ -382,6 +422,7 @@ const MasRouteChildren: MasRouteChildren = {
   MasEntrenamientoRoute: MasEntrenamientoRoute,
   MasPerfilRoute: MasPerfilRoute,
   MasRendimientoRoute: MasRendimientoRoute,
+  MasSuscripcionRoute: MasSuscripcionRoute,
   MasIndexRoute: MasIndexRoute,
 }
 
@@ -399,6 +440,7 @@ const rootRouteChildren: RootRouteChildren = {
   PuntosRoute: PuntosRoute,
   RegistrarRoute: RegistrarRoute,
   RetosRoute: RetosRoute,
+  RutasRoute: RutasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
