@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WebRouteImport } from './routes/web'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as ActividadesRouteImport } from './routes/actividades'
 import { Route as CalendarioRouteImport } from './routes/calendario'
 import { Route as DispositivosRouteImport } from './routes/dispositivos'
@@ -34,6 +35,11 @@ import { Route as MasSuscripcionRouteImport } from './routes/mas.suscripcion'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WebRoute = WebRouteImport.update({
@@ -140,6 +146,7 @@ const MasSuscripcionRoute = MasSuscripcionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/web': typeof WebRoute
+  '/app': typeof AppRoute
   '/actividades': typeof ActividadesRoute
   '/calendario': typeof CalendarioRoute
   '/dispositivos': typeof DispositivosRoute
@@ -280,6 +287,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   WebRoute: typeof WebRoute
+  AppRoute: typeof AppRoute
   ActividadesRoute: typeof ActividadesRoute
   CalendarioRoute: typeof CalendarioRoute
   DispositivosRoute: typeof DispositivosRoute
@@ -300,6 +308,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/web': {
@@ -472,6 +487,7 @@ const MasRouteWithChildren = MasRoute._addFileChildren(MasRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   WebRoute: WebRoute,
+  AppRoute: AppRoute,
   ActividadesRoute: ActividadesRoute,
   CalendarioRoute: CalendarioRoute,
   DispositivosRoute: DispositivosRoute,
