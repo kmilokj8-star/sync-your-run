@@ -77,128 +77,87 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 
 function RunnerIllustration() {
   return (
-    <svg viewBox="0 0 620 500" className="h-full w-full drop-shadow-[0_24px_45px_rgba(0,0,0,.12)]" aria-label="RUN athlete illustration" role="img">
+    <svg viewBox="0 0 680 520" className="h-full w-full" aria-label="RUN athlete illustration" role="img">
       <defs>
-        <linearGradient id="runnerSurface" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="currentColor" stopOpacity=".20" />
-          <stop offset="1" stopColor="currentColor" stopOpacity=".02" />
-        </linearGradient>
-        <linearGradient id="runnerTrail" x1="0" x2="1">
-          <stop offset="0" stopColor="currentColor" stopOpacity=".04" />
-          <stop offset=".55" stopColor="currentColor" stopOpacity=".22" />
-          <stop offset="1" stopColor="currentColor" stopOpacity="0" />
-        </linearGradient>
-        <filter id="runnerBlur"><feGaussianBlur stdDeviation="18" /></filter>
+        <linearGradient id="heroSky" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="currentColor" stopOpacity=".02"/><stop offset=".65" stopColor="currentColor" stopOpacity=".14"/><stop offset="1" stopColor="currentColor" stopOpacity=".02"/></linearGradient>
+        <linearGradient id="heroTrail" x1="0" x2="1"><stop stopColor="currentColor" stopOpacity="0"/><stop offset=".45" stopColor="currentColor" stopOpacity=".42"/><stop offset="1" stopColor="currentColor" stopOpacity=".04"/></linearGradient>
+        <filter id="heroGlow"><feGaussianBlur stdDeviation="22"/></filter>
       </defs>
-      <ellipse cx="330" cy="415" rx="235" ry="34" fill="currentColor" opacity=".08" />
-      <circle cx="458" cy="120" r="96" fill="currentColor" opacity=".055" filter="url(#runnerBlur)" />
-      <circle cx="458" cy="120" r="62" fill="url(#runnerSurface)" stroke="currentColor" strokeOpacity=".10" />
-      <path d="M60 374 C155 304 205 426 296 351 S466 270 570 332" fill="none" stroke="url(#runnerTrail)" strokeWidth="42" strokeLinecap="round" />
-      <path d="M54 374 C152 307 203 421 294 350 S465 270 574 330" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="8 13" opacity=".26" className="run-dash" />
-      <path d="M96 410h150M410 405h108" stroke="currentColor" strokeWidth="2" opacity=".13" />
-      <g transform="translate(185 72)">
-        <circle cx="116" cy="38" r="35" fill="currentColor" />
-        <path d="M112 77c-7 29-26 56-54 82l-55 48 27 32 76-49 49-57 27 67 49 86 35-18-39-99-35-72c-11-23-31-35-57-36Z" fill="currentColor" opacity=".92" />
-        <path d="M65 116 2 101l-68 30-12-25 79-45c10-6 22-6 32-2l61 24-29 33Z" fill="currentColor" opacity=".78" />
-        <path d="M83 203 23 256l-62 10-2 25 80 2 81-50-37-40Z" fill="currentColor" />
-        <path d="M184 224 243 263l67 2 1 25-83 3-78-36 34-33Z" fill="currentColor" opacity=".96" />
-        <path d="M82 88c20 8 47 10 70 4" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" opacity=".35" />
+      <rect x="35" y="35" width="610" height="410" rx="48" fill="url(#heroSky)" stroke="currentColor" strokeOpacity=".08"/>
+      <circle cx="520" cy="112" r="74" fill="currentColor" opacity=".08" filter="url(#heroGlow)"/>
+      <circle cx="520" cy="112" r="46" fill="currentColor" opacity=".07"/>
+      <path d="M48 380 C160 286 210 435 320 338 S520 255 640 330" fill="none" stroke="url(#heroTrail)" strokeWidth="54" strokeLinecap="round"/>
+      <path d="M48 380 C160 286 210 435 320 338 S520 255 640 330" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="7 12" opacity=".42" className="run-dash"/>
+      <g transform="translate(196 75)">
+        <circle cx="118" cy="38" r="34" fill="currentColor"/>
+        <path d="M113 75c-8 31-26 56-55 83l-55 49 29 33 77-50 48-58 26 69 49 83 35-19-39-98-34-75c-11-22-31-34-56-36Z" fill="currentColor" opacity=".93"/>
+        <path d="M67 116 6 98l-72 30-12-25 82-47c9-5 20-6 30-2l62 24-29 38Z" fill="currentColor" opacity=".78"/>
+        <path d="M83 205 20 259l-67 10-2 26 85 2 83-53-37-39Z" fill="currentColor"/>
+        <path d="M184 225 245 265l67 2 1 26-84 2-78-36 34-34Z" fill="currentColor" opacity=".96"/>
+        <path d="M92 88c19 9 45 10 67 5" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" opacity=".28"/>
       </g>
-      <g transform="translate(432 278)">
-        <rect width="128" height="72" rx="18" fill="currentColor" opacity=".09" stroke="currentColor" strokeOpacity=".15" />
-        <circle cx="24" cy="36" r="10" fill="currentColor" opacity=".18" />
-        <path d="M20 39 24 28l4 11" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-        <text x="44" y="31" fontSize="10" fontWeight="700" fill="currentColor" opacity=".52">PACE</text>
-        <text x="44" y="50" fontSize="18" fontWeight="800" fill="currentColor">5:02</text>
+      <g transform="translate(54 72)">
+        <rect width="142" height="76" rx="20" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".13"/>
+        <circle cx="26" cy="38" r="11" fill="currentColor" opacity=".16"/>
+        <path d="M21 41 26 27l6 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+        <text x="49" y="31" fontSize="10" fontWeight="700" fill="currentColor" opacity=".5">DISTANCE</text>
+        <text x="49" y="53" fontSize="20" fontWeight="800" fill="currentColor">10.2 km</text>
       </g>
-      <circle cx="93" cy="130" r="6" fill="currentColor" opacity=".35" />
-      <circle cx="119" cy="108" r="3.5" fill="currentColor" opacity=".25" />
-      <circle cx="548" cy="178" r="5" fill="currentColor" opacity=".3" />
-      <path d="M70 164h72M42 190h47M493 214h82" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".18" />
+      <g transform="translate(486 290)">
+        <rect width="134" height="78" rx="20" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".14"/>
+        <text x="18" y="30" fontSize="10" fontWeight="700" fill="currentColor" opacity=".5">PACE</text>
+        <text x="18" y="55" fontSize="21" fontWeight="800" fill="currentColor">5:32 /km</text>
+        <circle cx="111" cy="25" r="7" fill="currentColor" opacity=".65"/>
+      </g>
+      <circle cx="112" cy="206" r="5" fill="currentColor" opacity=".35"/>
+      <circle cx="140" cy="180" r="3" fill="currentColor" opacity=".22"/>
+      <circle cx="594" cy="188" r="5" fill="currentColor" opacity=".28"/>
     </svg>
   );
 }
 
 function CommunityIllustration() {
   return (
-    <svg viewBox="0 0 620 330" className="h-full w-full" aria-label="RUN community illustration" role="img">
-      <defs>
-        <linearGradient id="communityLine" x1="0" x2="1">
-          <stop offset="0" stopColor="currentColor" stopOpacity=".05" />
-          <stop offset=".5" stopColor="currentColor" stopOpacity=".35" />
-          <stop offset="1" stopColor="currentColor" stopOpacity=".06" />
-        </linearGradient>
-      </defs>
-      <path d="M52 260 C140 152 220 280 300 174 S465 116 570 205" fill="none" stroke="url(#communityLine)" strokeWidth="26" strokeLinecap="round" />
-      <path d="M52 260 C140 152 220 280 300 174 S465 116 570 205" fill="none" stroke="currentColor" strokeWidth="2.5" strokeDasharray="7 11" opacity=".34" className="run-dash" />
-      {[{x:96,y:208,r:35},{x:238,y:126,r:43},{x:366,y:214,r:38},{x:506,y:150,r:42}].map((p, i) => (
-        <g key={i} transform={`translate(${p.x} ${p.y})`}>
-          <circle r={p.r + 18} fill="currentColor" opacity=".035" />
-          <circle r={p.r} fill="currentColor" opacity=".09" stroke="currentColor" strokeOpacity=".14" />
-          <circle cy="-8" r={p.r * .25} fill="currentColor" />
-          <path d={`M-${p.r*.56} ${p.r*.68} Q0 ${p.r*.10} ${p.r*.56} ${p.r*.68}`} fill="currentColor" opacity=".85" />
-          {i === 1 && <path d="M-13 -31h26" stroke="currentColor" strokeWidth="5" strokeLinecap="round" opacity=".45" />}
-        </g>
-      ))}
-      <g transform="translate(274 38)">
-        <rect width="110" height="54" rx="16" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".16" />
-        <circle cx="22" cy="27" r="7" fill="currentColor" />
-        <path d="M38 27h43" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".25" />
-        <circle cx="88" cy="27" r="7" fill="currentColor" opacity=".3" />
-      </g>
-      <circle cx="166" cy="72" r="5" fill="currentColor" opacity=".35" />
-      <circle cx="452" cy="78" r="4" fill="currentColor" opacity=".3" />
+    <svg viewBox="0 0 680 360" className="h-full w-full" aria-label="RUN community illustration" role="img">
+      <defs><linearGradient id="communityGlow" x1="0" x2="1"><stop stopColor="currentColor" stopOpacity=".02"/><stop offset=".5" stopColor="currentColor" stopOpacity=".28"/><stop offset="1" stopColor="currentColor" stopOpacity=".03"/></linearGradient></defs>
+      <path d="M42 286 C132 162 228 315 330 185 S518 105 638 226" fill="none" stroke="url(#communityGlow)" strokeWidth="58" strokeLinecap="round"/>
+      <path d="M42 286 C132 162 228 315 330 185 S518 105 638 226" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="8 12" opacity=".45" className="run-dash"/>
+      {[{x:105,y:228,r:36},{x:255,y:130,r:44},{x:392,y:218,r:39},{x:540,y:146,r:45}].map((p,i)=><g key={i} transform={`translate(${p.x} ${p.y})`}><circle r={p.r+20} fill="currentColor" opacity=".035"/><circle r={p.r} fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".15"/><circle cy="-10" r={p.r*.24} fill="currentColor"/><path d={`M-${p.r*.58} ${p.r*.68} Q0 ${p.r*.08} ${p.r*.58} ${p.r*.68}`} fill="currentColor" opacity=".9"/>{i===1&&<path d="M-15 -35h30" stroke="currentColor" strokeWidth="5" strokeLinecap="round" opacity=".42"/>}</g>)}
+      <g transform="translate(286 40)"><rect width="116" height="58" rx="17" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".15"/><circle cx="24" cy="29" r="8" fill="currentColor"/><path d="M43 29h39" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".25"/><circle cx="94" cy="29" r="8" fill="currentColor" opacity=".3"/></g>
+      <circle cx="168" cy="78" r="5" fill="currentColor" opacity=".32"/><circle cx="485" cy="72" r="4" fill="currentColor" opacity=".26"/>
     </svg>
   );
 }
 
 function CyclingIllustration() {
   return (
-    <svg viewBox="0 0 620 300" className="h-full w-full" aria-label="RUN cycling illustration" role="img">
-      <defs>
-        <linearGradient id="bikeTrail" x1="0" x2="1">
-          <stop offset="0" stopColor="currentColor" stopOpacity="0" />
-          <stop offset=".5" stopColor="currentColor" stopOpacity=".35" />
-          <stop offset="1" stopColor="currentColor" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path d="M44 238h532" stroke="currentColor" strokeWidth="3" opacity=".18" />
-      <path d="M40 202 C138 130 228 238 325 152 S486 112 580 176" fill="none" stroke="url(#bikeTrail)" strokeWidth="30" strokeLinecap="round" />
-      <path d="M40 202 C138 130 228 238 325 152 S486 112 580 176" fill="none" stroke="currentColor" strokeWidth="2.5" strokeDasharray="9 13" opacity=".34" className="run-dash" />
-      <g transform="translate(0 -2)" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="184" cy="214" r="57" strokeWidth="7" opacity=".9" />
-        <circle cx="426" cy="214" r="57" strokeWidth="7" opacity=".9" />
-        <path d="M184 214 260 126 329 214 184 214 426 214 354 128 329 214" strokeWidth="7" />
-        <path d="M260 126 293 111h31M354 128l23-34h35" strokeWidth="7" />
-        <path d="M276 93c15-20 38-30 62-24l24 7" strokeWidth="8" />
-        <circle cx="329" cy="214" r="13" fill="currentColor" stroke="none" opacity=".92" />
-        <path d="M329 214 298 244M329 214l34 28" strokeWidth="5" />
+    <svg viewBox="0 0 680 330" className="h-full w-full" aria-label="RUN cycling illustration" role="img">
+      <defs><linearGradient id="cyclingTrail" x1="0" x2="1"><stop stopColor="currentColor" stopOpacity="0"/><stop offset=".5" stopColor="currentColor" stopOpacity=".32"/><stop offset="1" stopColor="currentColor" stopOpacity="0"/></linearGradient></defs>
+      <path d="M35 262h610" stroke="currentColor" strokeWidth="3" opacity=".18"/>
+      <path d="M28 224 C130 140 235 260 344 164 S520 118 652 188" fill="none" stroke="url(#cyclingTrail)" strokeWidth="34" strokeLinecap="round"/>
+      <path d="M28 224 C130 140 235 260 344 164 S520 118 652 188" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="9 13" opacity=".38" className="run-dash"/>
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="192" cy="238" r="59" strokeWidth="7"/><circle cx="458" cy="238" r="59" strokeWidth="7"/>
+        <path d="M192 238 276 142 350 238 192 238 458 238 379 144 350 238" strokeWidth="7"/>
+        <path d="M276 142 309 126h34M379 144l24-36h38" strokeWidth="7"/>
+        <path d="M292 108c17-20 42-30 67-23l25 7" strokeWidth="8"/>
+        <circle cx="350" cy="238" r="13" fill="currentColor" stroke="none"/><path d="M350 238 318 270M350 238l36 32" strokeWidth="5"/>
       </g>
-      <g transform="translate(430 38)">
-        <rect width="122" height="56" rx="16" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".16" />
-        <text x="18" y="23" fontSize="9" fontWeight="700" fill="currentColor" opacity=".55">NEXT SPORT</text>
-        <text x="18" y="43" fontSize="16" fontWeight="800" fill="currentColor">CYCLING</text>
-      </g>
+      <g transform="translate(480 38)"><rect width="145" height="66" rx="18" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".15"/><text x="18" y="25" fontSize="9" fontWeight="700" fill="currentColor" opacity=".5">COMING NEXT</text><text x="18" y="48" fontSize="18" fontWeight="800" fill="currentColor">CYCLING</text></g>
     </svg>
   );
 }
 
 function FeatureIllustration({ index }: { index: number }) {
   const scenes = [
-    <svg viewBox="0 0 240 120" className="h-full w-full"><path d="M18 91 C60 62 78 104 113 76 S175 52 221 77" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="6 8" opacity=".28" /><path d="M22 98h80" stroke="currentColor" strokeWidth="2" opacity=".13" /><rect x="142" y="22" width="70" height="54" rx="14" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".14" /><text x="155" y="43" fontSize="8" fontWeight="700" fill="currentColor" opacity=".5">DISTANCE</text><text x="155" y="63" fontSize="15" fontWeight="800" fill="currentColor">8.4 KM</text><circle cx="54" cy="46" r="17" fill="currentColor" opacity=".13" /><path d="M49 48l5-10 6 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" /></svg>,
-    <svg viewBox="0 0 240 120" className="h-full w-full"><path d="M24 92h192" stroke="currentColor" strokeWidth="2" opacity=".12" /><path d="M38 76 78 61l42 16 42-38 42 20" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity=".7" /><circle cx="78" cy="61" r="5" fill="currentColor" /><circle cx="120" cy="77" r="5" fill="currentColor" /><circle cx="162" cy="39" r="5" fill="currentColor" /><rect x="29" y="25" width="54" height="24" rx="12" fill="currentColor" opacity=".08" /><text x="42" y="41" fontSize="8" fontWeight="700" fill="currentColor">PLAN</text></svg>,
-    <svg viewBox="0 0 240 120" className="h-full w-full"><path d="M16 92 C48 48 74 108 106 62 S166 35 220 72" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" opacity=".08" /><path d="M16 92 C48 48 74 108 106 62 S166 35 220 72" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="6 8" opacity=".7" className="run-dash" /><circle cx="48" cy="48" r="7" fill="currentColor" /><circle cx="166" cy="38" r="7" fill="currentColor" opacity=".45" /></svg>,
-    <svg viewBox="0 0 240 120" className="h-full w-full"><rect x="42" y="23" width="76" height="76" rx="22" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".15" /><circle cx="80" cy="61" r="24" fill="none" stroke="currentColor" strokeWidth="5" opacity=".75" /><path d="M80 39v22l14 8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" /><path d="M139 62h67" stroke="currentColor" strokeWidth="3" strokeDasharray="6 8" opacity=".25" /></svg>,
-    <svg viewBox="0 0 240 120" className="h-full w-full"><circle cx="66" cy="60" r="30" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".16" /><path d="M66 38 73 53l17 2-13 11 4 17-15-9-15 9 4-17-13-11 17-2Z" fill="currentColor" opacity=".75" /><path d="M118 80 149 50l27 20 43-47" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".55" /><circle cx="149" cy="50" r="5" fill="currentColor" /></svg>,
-    <svg viewBox="0 0 240 120" className="h-full w-full"><circle cx="64" cy="50" r="18" fill="currentColor" opacity=".14" /><circle cx="64" cy="46" r="7" fill="currentColor" /><path d="M47 74q17-22 34 0" fill="currentColor" /><circle cx="125" cy="61" r="25" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".16" /><circle cx="125" cy="56" r="8" fill="currentColor" opacity=".7" /><path d="M102 83q23-29 46 0" fill="currentColor" opacity=".7" /><path d="M88 61h12M153 61h36" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".3" /></svg>,
+    <svg viewBox="0 0 280 130" className="h-full w-full"><path d="M12 103C66 65 94 115 140 77S220 50 268 79" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="6 8" opacity=".28"/><circle cx="62" cy="55" r="22" fill="currentColor" opacity=".11"/><path d="M54 61l8-18 9 20" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/><rect x="150" y="22" width="104" height="67" rx="16" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".14"/><text x="166" y="45" fontSize="9" fontWeight="700" fill="currentColor" opacity=".5">DISTANCE</text><text x="166" y="68" fontSize="18" fontWeight="800" fill="currentColor">10.2 KM</text></svg>,
+    <svg viewBox="0 0 280 130" className="h-full w-full"><path d="M25 101h230" stroke="currentColor" strokeWidth="2" opacity=".12"/><path d="M38 82 88 62l48 18 48-45 48 22" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity=".75"/><circle cx="88" cy="62" r="5" fill="currentColor"/><circle cx="136" cy="80" r="5" fill="currentColor"/><circle cx="184" cy="35" r="5" fill="currentColor"/><rect x="29" y="24" width="66" height="27" rx="13" fill="currentColor" opacity=".08"/><text x="45" y="42" fontSize="9" fontWeight="700" fill="currentColor">TRAINING</text></svg>,
+    <svg viewBox="0 0 280 130" className="h-full w-full"><path d="M18 96C58 45 82 111 124 63S196 31 262 72" fill="none" stroke="currentColor" strokeWidth="11" strokeLinecap="round" opacity=".08"/><path d="M18 96C58 45 82 111 124 63S196 31 262 72" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="6 8" opacity=".72" className="run-dash"/><circle cx="54" cy="50" r="8" fill="currentColor"/><circle cx="202" cy="34" r="8" fill="currentColor" opacity=".42"/></svg>,
+    <svg viewBox="0 0 280 130" className="h-full w-full"><rect x="42" y="22" width="86" height="86" rx="24" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".15"/><circle cx="85" cy="65" r="27" fill="none" stroke="currentColor" strokeWidth="5" opacity=".78"/><path d="M85 41v24l15 9" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/><path d="M151 65h88" stroke="currentColor" strokeWidth="3" strokeDasharray="6 8" opacity=".28"/><circle cx="236" cy="65" r="6" fill="currentColor" opacity=".45"/></svg>,
+    <svg viewBox="0 0 280 130" className="h-full w-full"><circle cx="75" cy="65" r="34" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".16"/><path d="m75 39 8 18 20 2-15 13 5 20-18-10-18 10 5-20-15-13 20-2Z" fill="currentColor" opacity=".78"/><path d="M131 92 168 55l30 22 54-57" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".55"/><circle cx="168" cy="55" r="5" fill="currentColor"/></svg>,
+    <svg viewBox="0 0 280 130" className="h-full w-full"><circle cx="62" cy="51" r="19" fill="currentColor" opacity=".14"/><circle cx="62" cy="47" r="7" fill="currentColor"/><path d="M44 77q18-24 36 0" fill="currentColor"/><circle cx="135" cy="64" r="28" fill="currentColor" opacity=".08" stroke="currentColor" strokeOpacity=".16"/><circle cx="135" cy="58" r="9" fill="currentColor" opacity=".7"/><path d="M110 88q25-31 50 0" fill="currentColor" opacity=".7"/><path d="M89 64h18M163 64h50" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity=".3"/></svg>
   ];
-  return (
-    <div className="relative h-28 overflow-hidden rounded-2xl bg-primary/5 text-primary">
-      <div className="absolute inset-0 opacity-50 [background-image:radial-gradient(circle_at_20%_20%,currentColor_1px,transparent_1px)] [background-size:18px_18px]" />
-      <div className="relative h-full transition-transform duration-500 group-hover:scale-[1.04]">{scenes[index]}</div>
-      <span className="absolute right-5 top-4 size-2 rounded-full bg-primary animate-pulse motion-reduce:animate-none" />
-    </div>
-  );
+  return <div className="relative h-32 overflow-hidden rounded-2xl bg-primary/5 text-primary"><div className="absolute inset-0 opacity-40 [background-image:radial-gradient(circle_at_20%_20%,currentColor_1px,transparent_1px)] [background-size:20px_20px]"/><div className="relative h-full transition-transform duration-500 group-hover:scale-[1.05]">{scenes[index]}</div><span className="absolute right-5 top-4 size-2 rounded-full bg-primary animate-pulse motion-reduce:animate-none"/></div>;
 }
 
 export function PublicWebsite() {
