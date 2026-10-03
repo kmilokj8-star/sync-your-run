@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Activity, Bell, BookOpen, CalendarDays, ChevronRight, CircleDot, Ellipsis, Footprints, Gift, Home, LogOut, Settings, ShieldCheck, Trophy, Watch,
+  Activity, Bell, BookOpen, CalendarDays, ChevronRight, CircleDot, Ellipsis, Footprints, Gift, Home, LogOut, Settings, ShieldCheck, Sparkles, Trophy, Watch,
 } from "lucide-react";
 
 type NavHref = "/" | "/calendario" | "/registrar" | "/actividades" | "/equipo" | "/retos" | "/puntos" | "/planes" | "/notificaciones" | "/dispositivos" | "/mas";
