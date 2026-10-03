@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { ChevronRight, Download, Map as MapIcon, Watch, Activity, BarChart3, Gauge, Flame, Route as RouteIcon } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronRight, Download, Map as MapIcon, Watch, Activity, BarChart3, Gauge, Flame, Route as RouteIcon, GripVertical, Eye, EyeOff, Pencil, RotateCcw, Check, Settings2 } from "lucide-react";
 import {
   BarChart, Bar, LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip,
   CartesianGrid, AreaChart, Area,
@@ -15,6 +15,11 @@ import {
 } from "@/lib/integrations";
 import { usePreferences } from "@/lib/preferences";
 import { useAllActivities, useStored } from "@/lib/run-store";
+
+const DASHBOARD_KEY = "run_dashboard_layout_v1";
+const DEFAULT_DASHBOARD = ["summary", "performance", "maps", "weekly", "connections", "plus", "activities"] as const;
+type DashboardId = typeof DEFAULT_DASHBOARD[number];
+type DashboardLayout = { order: DashboardId[]; hidden: DashboardId[] };
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -219,6 +224,93 @@ function PerformanceOverview() {
     </section>
   );
 }
+function DashboardLayout({
+  blocks,
+  labels,
+  locale,
+}: {
+  blocks: Record<DashboardId, React.ReactNode>;
+  labels: Record<DashboardId, string>;
+  locale: string;
+}) {
+  const fallback: DashboardLayout = { order: [...DEFAULT_DASHBOARD], hidden: [] };
+  const [layout, setLayout, loaded] = useStored<DashboardLayout>(DASHBOARD_KEY, fallback);
+  const [editing, setEditing] = useState(false);
+  const dragId = useRef<DashboardId | null>(null);
+
+  useEffect(() => {
+    if (!loaded) return;
+    const valid = new Set(DEFAULT_DASHBOARD);
+    const order = [...layout.order.filter((id) => valid.has(id)), ...DEFAULT_DASHBOARD.filter((id) => !layout.order.includes(id))];
+    const hidden = layout.hidden.filter((id) => valid.has(id));
+    if (order.join("|") !== layout.order.join("|") || hidden.join("|") !== layout.hidden.join("|")) setLayout({ order, hidden });
+  }, [loaded, layout.order, layout.hidden, setLayout]);
+
+  const move = (from: DashboardId, to: DashboardId) => setLayout((prev) => {
+    const next = [...prev.order];
+    const a = next.indexOf(from), b = next.indexOf(to);
+    if (a < 0 || b < 0 || a === b) return prev;
+    next.splice(a, 1); next.splice(b, 0, from);
+    return { ...prev, order: next };
+  });
+  const hide = (id: DashboardId) => setLayout((prev) => ({ ...prev, hidden: prev.hidden.includes(id) ? prev.hidden.filter((x) => x !== id) : [...prev.hidden, id] }));
+  const restore = () => setLayout(fallback);
+  const visible = layout.order.filter((id) => !layout.hidden.includes(id));
+  useEffect(() => {
+    if (!editing) return;
+    const onMove = (event: PointerEvent) => {
+      const id = dragId.current;
+      if (!id) return;
+      const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-dashboard-id]");
+      const targetId = target?.dataset.dashboardId as DashboardId | undefined;
+      if (targetId && targetId !== id && layout.order.includes(targetId)) move(id, targetId);
+    };
+    const onUp = () => { dragId.current = null; };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    return () => { window.removeEventListener("pointermove", onMove); window.removeEventListener("pointerup", onUp); };
+  }, [editing, layout.order]);
+  const T = (es: string, en: string) => (locale === "es" ? es : en);
+
+  return (
+    <div className="space-y-3 md:space-y-4">
+      <div className={`flex items-center justify-between gap-2 rounded-md border p-2.5 ${editing ? "border-primary/40 bg-primary/5" : "border-transparent"}`}>
+        <div className="flex items-center gap-2">
+          <Settings2 className={`size-4 ${editing ? "text-primary" : "text-muted-foreground"}`} />
+          {editing && <span className="text-[10px] font-bold uppercase text-primary">{T("Arrastra para ordenar · toca el ojo para mostrar/ocultar", "Drag to reorder · tap the eye to show/hide")}</span>}
+        </div>
+        <div className="flex items-center gap-1.5">
+          {editing && <button type="button" onClick={restore} className="min-h-9 rounded-md border px-2.5 text-[10px] font-bold uppercase hover:bg-muted"><RotateCcw className="mr-1 inline size-3.5" />{T("Restaurar", "Restore")}</button>}
+          <button type="button" onClick={() => setEditing((v) => !v)} className="min-h-9 rounded-md border px-2.5 text-[10px] font-bold uppercase hover:bg-muted">
+            {editing ? <><Check className="mr-1 inline size-3.5" />{T("Guardar", "Save")}</> : <><Pencil className="mr-1 inline size-3.5" />{T("Personalizar", "Customize")}</>}
+          </button>
+        </div>
+      </div>
+      {editing && (
+        <div className="rounded-md border border-dashed bg-card/50 p-2">
+          <p className="mb-2 px-1 text-[9px] font-bold uppercase text-muted-foreground">{T("Módulos del dashboard", "Dashboard modules")}</p>
+          <div className="flex flex-wrap gap-1.5">
+            {layout.order.map((id) => <button key={id} type="button" onClick={() => hide(id)} className={`inline-flex min-h-9 items-center gap-1.5 rounded-md border px-2.5 text-[10px] font-semibold ${layout.hidden.includes(id) ? "opacity-50" : "bg-primary/10 border-primary/20"}`}>{layout.hidden.includes(id) ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5 text-primary" />}{labels[id]}</button>)}
+          </div>
+        </div>
+      )}
+      {visible.map((id) => (
+        <div key={id} data-dashboard-id={id} className={editing ? "relative rounded-lg ring-1 ring-transparent transition hover:ring-primary/40" : ""}>
+          {editing && <div className="pointer-events-none absolute left-2 top-2 z-20 flex items-center gap-1 rounded-md border bg-card/95 px-1.5 py-1 shadow-sm">
+            <span role="button" tabIndex={0} aria-label={T("Arrastrar módulo", "Drag module")} onPointerDown={(e) => { e.preventDefault(); dragId.current = id; }} className="pointer-events-auto cursor-grab touch-none p-1 text-muted-foreground active:cursor-grabbing"><GripVertical className="size-4" /></span>
+            <button type="button" onClick={() => hide(id)} className="pointer-events-auto rounded p-1 text-muted-foreground hover:text-foreground" aria-label={T("Ocultar", "Hide")}><EyeOff className="size-3.5" /></button>
+          </div>}
+          {blocks[id]}
+        </div>
+      ))}
+      {editing && layout.hidden.length > 0 && <div className="rounded-md border border-dashed p-3">
+        <p className="mb-2 text-[9px] font-bold uppercase text-muted-foreground">{T("Ocultos · toca para mostrar", "Hidden · tap to show")}</p>
+        <div className="flex flex-wrap gap-1.5">{layout.hidden.map((id) => <button key={id} type="button" onClick={() => hide(id)} className="inline-flex min-h-9 items-center gap-1.5 rounded-md border px-2.5 text-[10px] font-semibold"><Eye className="size-3.5 text-primary" />{labels[id]}</button>)}</div>
+      </div>}
+    </div>
+  );
+}
+
 function Home() {
   const { t, distance, pace, locale } = usePreferences();
   const L = (es: string, en: string) => (locale === "es" ? es : en);
@@ -265,103 +357,19 @@ function Home() {
           </p>
         </header>
 
-        <section aria-label="Resumen semanal" className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
-           <StatCard label={t("week")} value={displayTotal.value.toFixed(1)} detail={displayTotal.unit} active />
-           <StatCard label={t("time")} value={timeStr} detail={t("moving")} />
-           <StatCard label={t("avgPace")} value={displayPace?.value ?? "—"} detail={displayPace?.unit ?? (displayTotal.unit === "km" ? "min/km" : "min/mi")} />
-           <StatCard label={t("sessions")} value={String(totalRuns)} detail={t("thisWeek")} />
-        </section>
-
-        <PerformanceOverview />
-
-        <Link to="/rutas" className="flex min-h-16 items-center gap-3 rounded-md border border-primary/30 bg-primary/5 p-3 transition-colors hover:bg-primary/10">
-          <MapIcon className="size-6 shrink-0 text-primary" />
-          <span className="min-w-0 flex-1"><span className="block font-display text-sm uppercase">{L("Mapas y recorridos", "Maps & routes")}</span><span className="block truncate text-xs text-muted-foreground">{L("Planifica rutas, revisa trayectos y territorio", "Plan routes, review tracks and territory")}</span></span>
-          <ChevronRight className="size-4 text-muted-foreground" />
-        </Link>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          <section aria-label="Volumen semanal" className="rounded-md border bg-card p-3 md:col-span-2 md:rounded-lg md:p-5">
-            <div className="flex items-end justify-between gap-2">
-              <div>
-                <p className="hidden text-xs font-bold uppercase text-primary md:block">Entrenamiento</p>
-                 <h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("last7")}</h2>
-              </div>
-               <span className="shrink-0 font-mono text-[10px] text-muted-foreground md:text-xs">{displayTotal.value.toFixed(1)} {displayTotal.unit.toUpperCase()} {t("totalKm")}</span>
-            </div>
-            <div className="mt-4 flex h-28 items-end gap-1.5 md:mt-6 md:h-44 md:gap-3">
-              {week.map((d) => (
-                <div key={d.key} className="flex min-w-0 flex-1 flex-col items-center gap-1.5">
-                  <span className="h-4 font-mono text-[9px] leading-4 text-primary md:h-5 md:text-[10px] md:leading-5">{d.km > 0 ? d.km.toFixed(1) : ""}</span>
-                  <div className="flex w-full flex-1 items-end">
-                    <div
-                      className={`w-full rounded-sm ${d.km > 0 ? "bg-primary/80" : "bg-muted"}`}
-                      style={{ height: `${d.km > 0 ? Math.max(10, (d.km / maxKm) * 100) : 6}%` }}
-                    />
-                  </div>
-                  <span className="text-[9px] font-semibold text-muted-foreground md:text-[10px]">{d.label}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section aria-label="Conexiones" className="rounded-md border bg-card p-3 md:rounded-lg md:p-5">
-            <div className="flex items-end justify-between gap-2">
-              <div>
-                <p className="hidden text-xs font-bold uppercase text-primary md:block">Integraciones</p>
-                 <h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("connections")}</h2>
-              </div>
-               <Link to="/dispositivos" className="shrink-0 text-xs font-semibold text-primary hover:underline">{t("manage")}</Link>
-            </div>
-            {connected.length === 0 ? (
-              <div className="mt-4 rounded-md border border-dashed p-4 text-center">
-                <Watch className="mx-auto mb-2 size-5 text-muted-foreground" />
-                 <p className="text-xs text-muted-foreground md:text-sm">{t("noDevices")}</p>
-                 <Button asChild size="sm" className="mt-3 min-h-11 md:min-h-8"><Link to="/dispositivos">{t("connectDevice")}</Link></Button>
-              </div>
-            ) : (
-              <ul className="mt-2 divide-y md:mt-3">
-                {connected.map((p) => (
-                  <li key={p.id}>
-                     <Link to="/dispositivos" className="flex w-full items-center gap-3 rounded-md px-1 py-2.5 text-left transition-colors hover:bg-muted/50">
-                      <ProviderMark p={p} size="size-8 md:size-9" />
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold">{p.name}</p>
-                        <p className="truncate font-mono text-[10px] uppercase text-muted-foreground">{relTime(conns[p.id].lastSync)}</p>
-                      </div>
-                      <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
-                     </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-        </div>
-
-        <RunPlusCard compact />
-
-        <section aria-label="Actividades recientes" className="rounded-md border bg-card p-3 md:rounded-lg md:p-5">
-          <div className="flex items-end justify-between gap-2">
-            <div>
-              <p className="hidden text-xs font-bold uppercase text-primary md:block">Registro</p>
-               <h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("recentActivities")}</h2>
-            </div>
-            {imported.length > 0 && (
-               <Link to="/dispositivos" className="shrink-0 text-xs font-semibold text-primary hover:underline">{t("viewAll")}</Link>
-            )}
-          </div>
-          {imported.length === 0 ? (
-            <div className="mt-4 flex min-h-24 flex-col items-center justify-center border border-dashed p-4 text-center md:mt-5 md:min-h-32 md:p-6">
-              <Download className="mb-2 size-5 text-muted-foreground md:mb-3" />
-               <p className="text-xs text-muted-foreground md:text-sm">{t("noActivities")}</p>
-               <Button asChild size="sm" variant="outline" className="mt-3 min-h-11 md:min-h-8"><Link to="/dispositivos">{t("importNow")}</Link></Button>
-            </div>
-          ) : (
-            <ul className="mt-2 divide-y md:mt-3">
-              {imported.slice(0, 5).map((a) => <ActivityRow key={a.id} a={a} />)}
-            </ul>
-          )}
-        </section>
+        <DashboardLayout
+          locale={locale}
+          labels={{ summary: L("Resumen semanal", "Weekly summary"), performance: L("Estadísticas y rendimiento", "Stats & performance"), maps: L("Mapas y recorridos", "Maps & routes"), weekly: L("Volumen semanal", "Weekly volume"), connections: L("Integraciones", "Integrations"), plus: "RUN+", activities: L("Actividades recientes", "Recent activities") }}
+          blocks={{
+            summary: <section aria-label="Resumen semanal" className="grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3"><StatCard label={t("week")} value={displayTotal.value.toFixed(1)} detail={displayTotal.unit} active /><StatCard label={t("time")} value={timeStr} detail={t("moving")} /><StatCard label={t("avgPace")} value={displayPace?.value ?? "—"} detail={displayPace?.unit ?? (displayTotal.unit === "km" ? "min/km" : "min/mi")} /><StatCard label={t("sessions")} value={String(totalRuns)} detail={t("thisWeek")} /></section>,
+            performance: <PerformanceOverview />,
+            maps: <Link to="/rutas" className="flex min-h-16 items-center gap-3 rounded-md border border-primary/30 bg-primary/5 p-3 transition-colors hover:bg-primary/10"><MapIcon className="size-6 shrink-0 text-primary" /><span className="min-w-0 flex-1"><span className="block font-display text-sm uppercase">{L("Mapas y recorridos", "Maps & routes")}</span><span className="block truncate text-xs text-muted-foreground">{L("Planifica rutas, revisa trayectos y territorio", "Plan routes, review tracks and territory")}</span></span><ChevronRight className="size-4 text-muted-foreground" /></Link>,
+            weekly: <section aria-label="Volumen semanal" className="rounded-md border bg-card p-3 md:rounded-lg md:p-5"><div className="flex items-end justify-between gap-2"><div><p className="hidden text-xs font-bold uppercase text-primary md:block">Entrenamiento</p><h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("last7")}</h2></div><span className="shrink-0 font-mono text-[10px] text-muted-foreground md:text-xs">{displayTotal.value.toFixed(1)} {displayTotal.unit.toUpperCase()} {t("totalKm")}</span></div><div className="mt-4 flex h-28 items-end gap-1.5 md:mt-6 md:h-44 md:gap-3">{week.map((d) => <div key={d.key} className="flex min-w-0 flex-1 flex-col items-center gap-1.5"><span className="h-4 font-mono text-[9px] leading-4 text-primary md:h-5 md:text-[10px] md:leading-5">{d.km > 0 ? d.km.toFixed(1) : ""}</span><div className="flex w-full flex-1 items-end"><div className={`w-full rounded-sm ${d.km > 0 ? "bg-primary/80" : "bg-muted"}`} style={{ height: `${d.km > 0 ? Math.max(10, (d.km / maxKm) * 100) : 6}%` }} /></div><span className="text-[9px] font-semibold text-muted-foreground md:text-[10px]">{d.label}</span></div>)}</div></section>,
+            connections: <section aria-label="Conexiones" className="rounded-md border bg-card p-3 md:rounded-lg md:p-5"><div className="flex items-end justify-between gap-2"><div><p className="hidden text-xs font-bold uppercase text-primary md:block">Integraciones</p><h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("connections")}</h2></div><Link to="/dispositivos" className="shrink-0 text-xs font-semibold text-primary hover:underline">{t("manage")}</Link></div>{connected.length === 0 ? <div className="mt-4 rounded-md border border-dashed p-4 text-center"><Watch className="mx-auto mb-2 size-5 text-muted-foreground" /><p className="text-xs text-muted-foreground md:text-sm">{t("noDevices")}</p><Button asChild size="sm" className="mt-3 min-h-11 md:min-h-8"><Link to="/dispositivos">{t("connectDevice")}</Link></Button></div> : <ul className="mt-2 divide-y md:mt-3">{connected.map((p) => <li key={p.id}><Link to="/dispositivos" className="flex w-full items-center gap-3 rounded-md px-1 py-2.5 text-left transition-colors hover:bg-muted/50"><ProviderMark p={p} size="size-8 md:size-9" /><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{p.name}</p><p className="truncate font-mono text-[10px] uppercase text-muted-foreground">{relTime(conns[p.id].lastSync)}</p></div><ChevronRight className="size-4 shrink-0 text-muted-foreground" /></Link></li>)}</ul>}</section>,
+            plus: <RunPlusCard compact />,
+            activities: <section aria-label="Actividades recientes" className="rounded-md border bg-card p-3 md:rounded-lg md:p-5"><div className="flex items-end justify-between gap-2"><div><p className="hidden text-xs font-bold uppercase text-primary md:block">Registro</p><h2 className="font-display text-base uppercase md:mt-1 md:text-lg">{t("recentActivities")}</h2></div>{imported.length > 0 && <Link to="/dispositivos" className="shrink-0 text-xs font-semibold text-primary hover:underline">{t("viewAll")}</Link>}</div>{imported.length === 0 ? <div className="mt-4 flex min-h-24 flex-col items-center justify-center border border-dashed p-4 text-center md:mt-5 md:min-h-32 md:p-6"><Download className="mb-2 size-5 text-muted-foreground md:mb-3" /><p className="text-xs text-muted-foreground md:text-sm">{t("noActivities")}</p><Button asChild size="sm" variant="outline" className="mt-3 min-h-11 md:min-h-8"><Link to="/dispositivos">{t("importNow")}</Link></Button></div> : <ul className="mt-2 divide-y md:mt-3">{imported.slice(0, 5).map((a) => <ActivityRow key={a.id} a={a} />)}</ul>}</section>,
+          }}
+        />
       </div>
     </AppShell>
   );
