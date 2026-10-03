@@ -38,23 +38,27 @@ jobs:
       - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Build debug APK
+      - name: Build release APK
         working-directory: android
-        run: ./gradlew assembleDebug --no-daemon
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Verify APK signature
+        working-directory: android
+        run: apksigner verify --verbose app/build/outputs/apk/release/app-release.apk
+
+      - name: Verify APK exists
+        run: test -s android/app/build/outputs/apk/release/app-release.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: RUN-Android-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
 
       - name: Publish APK release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view android-latest -R "${{ github.repository }}" >/dev/null 2>&1; then
-            gh release upload android-latest android/app/build/outputs/apk/debug/app-debug.apk --clobber -R "${{ github.repository }}"
-          else
-            gh release create android-latest android/app/build/outputs/apk/debug/app-debug.apk               --title "RUN Android APK"               --notes "RUN Android APK generated automatically from main."               --latest               -R "${{ github.repository }}"
-          fi
+          gh release view android-latest -R "${{ github.repository }}" >/dev/null 2>&1 ||             gh release create android-latest --title "RUN Android APK" --notes "RUN Android APK generated automatically from main." --latest -R "${{ github.repository }}"
+          gh release upload android-latest android/app/build/outputs/apk/release/app-release.apk --clobber -R "${{ github.repository }}"
