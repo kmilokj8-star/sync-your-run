@@ -23,7 +23,7 @@ export const Route = createFileRoute("/dispositivos")({
   head: () => ({
     meta: [
       { title: "Apps y dispositivos — RUN" },
-      { name: "description", content: "Conecta Garmin, Strava, Apple Health y Coros a RUN y sincroniza tus actividades." },
+      { name: "description", content: "Conecta Garmin, Strava, Apple Health, COROS, TrainingPeaks, adidas Running, Suunto, Polar, Amazfit, Samsung Health y Huawei Health." },
       { property: "og:title", content: "Apps y dispositivos — RUN" },
       { property: "og:description", content: "Conecta tus relojes y apps de running a RUN." },
       { property: "og:type", content: "website" },
