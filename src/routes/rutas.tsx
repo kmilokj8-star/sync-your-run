@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { Map, Navigation, Route as RouteIcon, Trophy, Plus, Flame, Layers3 } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/lib/preferences";
+import "leaflet/dist/leaflet.css";
 
 export const Route = createFileRoute("/rutas")({
   head: () => ({ meta: [{ title: "Mapas y recorridos — RUN" }, { name: "description", content: "Explora tus trayectos, crea rutas y juega con el territorio de RUN." }] }),
@@ -48,8 +50,8 @@ function RoutesPage() {
       <section className="grid gap-4 lg:grid-cols-[1.4fr_.6fr]">
         <div className="overflow-hidden rounded-md border bg-card">
           <div className="flex items-center justify-between border-b px-3 py-3"><div><p className="text-xs font-bold uppercase text-primary">{builder ? (es ? "Creador de recorrido" : "Route builder") : (es ? "Mapa de actividad" : "Activity map")}</p><h2 className="font-display uppercase">{builder ? (es ? "Dibuja tu próximo recorrido" : "Draw your next route") : selectedRoute.name}</h2></div><span className="font-mono text-xs text-muted-foreground">{builder ? \`\${route.length} pts\` : selectedRoute.distance}</span></div>
-          <div className="relative aspect-[16/10] bg-muted/30">
-            <svg viewBox="0 0 100 100" className="h-full w-full" onClick={addPoint}>
+          <div className="relative aspect-[16/10] bg-muted/30"><div ref={mapRef} className="absolute inset-0 z-0" />
+            <svg viewBox="0 0 100 100" className="relative z-10 h-full w-full opacity-0" onClick={addPoint}>
               <defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="currentColor" strokeOpacity=".08" strokeWidth=".35"/></pattern></defs>
               <rect width="100" height="100" fill="url(#grid)" />
               <path d="M5 18 C20 8 28 20 40 12 S70 18 95 8 M4 82 C22 72 35 92 54 82 S80 90 96 74 M8 48 C30 40 44 54 62 43 S82 50 94 44" fill="none" stroke="currentColor" strokeOpacity=".12" strokeWidth="4"/>
@@ -69,6 +71,6 @@ function RoutesPage() {
     </div>
   </AppShell>;
 }
-function Stat({icon,label,value}:{icon:React.ReactNode;label:string;value:string}) {
+function Stat({icon,label,value}:{icon:ReactNode;label:string;value:string}) {
   return <div className="rounded-md border bg-card p-3"><div className="flex items-center gap-2 text-primary">{icon}<span className="text-[10px] font-bold uppercase text-muted-foreground">{label}</span></div><p className="mt-1 font-mono text-xl font-semibold">{value}</p></div>;
 }
