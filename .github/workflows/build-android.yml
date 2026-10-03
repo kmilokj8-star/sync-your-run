@@ -33,7 +33,7 @@ jobs:
         run: npm run build
 
       - name: Verify Capacitor web shell
-        run: test -f .output/public/index.html
+        run: test -f dist/client/index.html
 
       - name: Sync Capacitor Android
         run: npx cap sync android
