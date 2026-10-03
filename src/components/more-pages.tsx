@@ -13,7 +13,7 @@ import { CONNS_KEY, initialConnections, PROVIDERS } from "@/lib/integrations";
 import { type ReactNode } from "react";
 import { useStored } from "@/lib/run-store";
 
-type MoreRoute = "/rutas" | "/mas/suscripcion" | "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
+type MoreRoute = "/rutas" | "/mas/distancia" | "/mas/suscripcion" | "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
 
 export function MoreHome() {
   const { t, locale } = usePreferences();
@@ -35,9 +35,9 @@ export function MoreHome() {
         <MenuRow to="/mas/rendimiento" icon={<Gauge />} title={t("performance")} subtitle={t("performanceSummary")} />
         <MenuRow to="/mas/entrenamiento" icon={<Route />} title={t("tools")} subtitle={t("toolsSummary")} />
       </MenuGroup>
-      <MenuGroup label={L("Mapas y recorridos", "Maps & routes")}>
+      <MenuGroup label={L("Herramientas", "Tools")}>
+        <MenuRow to="/mas/distancia" icon={<Route />} title={L("Distancia", "Distance")} subtitle={L("Recorridos circulares a tu medida · 1 mes gratis", "Custom loop routes · 1 month free")} />
         <MenuRow to="/mas/suscripcion" icon={<Map />} title="RUN+" subtitle={L("Premium, planes y ventajas", "Premium, plans and perks")} />
-        <MenuRow to="/rutas" icon={<Map />} title={L("Mapas y recorridos", "Maps & routes")} subtitle={L("Tus trayectos, rutas y territorio", "Your routes, trails and territory")} />
       </MenuGroup>
       <MenuGroup label={L("Entrenamiento", "Training")}>
         <MenuRow to="/calendario" icon={<CalendarDays />} title={L("Calendario", "Calendar")} subtitle={L("Entrenos realizados y planificados", "Completed and planned workouts")} />

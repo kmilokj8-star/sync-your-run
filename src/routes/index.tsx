@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { ChevronRight, Download, Watch } from "lucide-react";
+import { ChevronRight, Download, Map as MapIcon, Watch } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { RunPlusCard } from "@/components/premium-card";
 import { ActivityRow, ProviderMark } from "@/components/activity-row";
@@ -10,7 +10,7 @@ import {
   type Connection, type RemoteActivity,
 } from "@/lib/integrations";
 import { usePreferences } from "@/lib/preferences";
-import { useStored } from "@/lib/run-store";
+import { useAllActivities, useStored } from "@/lib/run-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,8 +26,56 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+function PerformanceOverview() {
+  const { distance, pace, locale } = usePreferences();
+  const L = (es: string, en: string) => (locale === "es" ? es : en);
+  const { all } = useAllActivities();
+  const fmtTime = (m: number) => (m >= 60 ? `${Math.floor(m / 60)}h ${String(Math.round(m % 60)).padStart(2, "0")}m` : `${Math.round(m)}m`);
+  const last = all[0];
+  const runs = all.filter((a) => a.distanceKm > 0);
+  const totalKm = runs.reduce((s, a) => s + a.distanceKm, 0);
+  const totalMin = runs.reduce((s, a) => s + a.durationMin, 0);
+  const longest = runs.reduce((m, a) => Math.max(m, a.distanceKm), 0);
+  const best = runs.reduce((m, a) => Math.min(m, a.durationMin / a.distanceKm), Infinity);
+  const d = (km: number) => { const x = distance(km); return `${x.value.toFixed(1)} ${x.unit}`; };
+  const p = (v: number) => { const x = pace(v); return `${x.value} ${x.unit}`; };
+  return (
+    <section aria-label={L("Estadísticas y rendimiento", "Stats & performance")} className="grid gap-4 md:grid-cols-2">
+      <div className="rounded-md border bg-card p-3 md:p-5">
+        <p className="text-[10px] font-bold uppercase text-primary">{L("Última actividad", "Last activity")}</p>
+        {last ? (
+          <>
+            <h2 className="mt-1 truncate font-display text-base uppercase md:text-lg">{last.name}</h2>
+            <p className="font-mono text-[10px] uppercase text-muted-foreground">{new Date(last.date).toLocaleDateString(locale)}</p>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <StatCard label={L("Distancia", "Distance")} value={distance(last.distanceKm).value.toFixed(2)} detail={distance(last.distanceKm).unit} active />
+              <StatCard label={L("Tiempo", "Time")} value={fmtTime(last.durationMin)} detail="" />
+              <StatCard label={L("Ritmo", "Pace")} value={last.distanceKm > 0 ? pace(last.durationMin / last.distanceKm).value : "—"} detail={last.distanceKm > 0 ? pace(1).unit : ""} />
+            </div>
+          </>
+        ) : <p className="mt-3 text-xs text-muted-foreground">{L("Registra o importa tu primera actividad para ver sus métricas.", "Record or import your first activity to see its metrics.")}</p>}
+      </div>
+      <div className="rounded-md border bg-card p-3 md:p-5">
+        <div className="flex items-end justify-between gap-2">
+          <p className="text-[10px] font-bold uppercase text-primary">{L("Rendimiento global", "Overall performance")}</p>
+          <Link to="/mas/rendimiento" className="text-xs font-semibold text-primary hover:underline">{L("Detalles", "Details")}</Link>
+        </div>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          <StatCard label={L("Actividades", "Activities")} value={String(runs.length)} detail="" />
+          <StatCard label={L("Distancia total", "Total distance")} value={d(totalKm)} detail="" active />
+          <StatCard label={L("Tiempo total", "Total time")} value={fmtTime(totalMin)} detail="" />
+          <StatCard label={L("Ritmo medio", "Avg pace")} value={totalKm ? p(totalMin / totalKm) : "—"} detail="" />
+          <StatCard label={L("Mejor ritmo", "Best pace")} value={Number.isFinite(best) ? p(best) : "—"} detail="" />
+          <StatCard label={L("Más larga", "Longest")} value={longest ? d(longest) : "—"} detail="" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Home() {
-  const { t, distance, pace } = usePreferences();
+  const { t, distance, pace, locale } = usePreferences();
+  const L = (es: string, en: string) => (locale === "es" ? es : en);
   const [conns] = useStored(CONNS_KEY, initialConnections());
   const [imported] = useStored<RemoteActivity[]>(IMPORTED_KEY, []);
 
@@ -77,6 +125,14 @@ function Home() {
            <StatCard label={t("avgPace")} value={displayPace?.value ?? "—"} detail={displayPace?.unit ?? (displayTotal.unit === "km" ? "min/km" : "min/mi")} />
            <StatCard label={t("sessions")} value={String(totalRuns)} detail={t("thisWeek")} />
         </section>
+
+        <PerformanceOverview />
+
+        <Link to="/rutas" className="flex min-h-16 items-center gap-3 rounded-md border border-primary/30 bg-primary/5 p-3 transition-colors hover:bg-primary/10">
+          <MapIcon className="size-6 shrink-0 text-primary" />
+          <span className="min-w-0 flex-1"><span className="block font-display text-sm uppercase">{L("Mapas y recorridos", "Maps & routes")}</span><span className="block truncate text-xs text-muted-foreground">{L("Planifica rutas, revisa trayectos y territorio", "Plan routes, review tracks and territory")}</span></span>
+          <ChevronRight className="size-4 text-muted-foreground" />
+        </Link>
 
         <div className="grid gap-4 md:grid-cols-3">
           <section aria-label="Volumen semanal" className="rounded-md border bg-card p-3 md:col-span-2 md:rounded-lg md:p-5">

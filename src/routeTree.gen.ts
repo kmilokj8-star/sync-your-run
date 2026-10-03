@@ -24,6 +24,7 @@ import { Route as RutasRouteImport } from './routes/rutas'
 import { Route as MasIndexRouteImport } from './routes/mas.index'
 import { Route as MasAyudaRouteImport } from './routes/mas.ayuda'
 import { Route as MasConfiguracionRouteImport } from './routes/mas.configuracion'
+import { Route as MasDistanciaRouteImport } from './routes/mas.distancia'
 import { Route as MasEntrenamientoRouteImport } from './routes/mas.entrenamiento'
 import { Route as MasPerfilRouteImport } from './routes/mas.perfil'
 import { Route as MasRendimientoRouteImport } from './routes/mas.rendimiento'
@@ -104,6 +105,11 @@ const MasConfiguracionRoute = MasConfiguracionRouteImport.update({
   path: '/configuracion',
   getParentRoute: () => MasRoute,
 } as any)
+const MasDistanciaRoute = MasDistanciaRouteImport.update({
+  id: '/distancia',
+  path: '/distancia',
+  getParentRoute: () => MasRoute,
+} as any)
 const MasEntrenamientoRoute = MasEntrenamientoRouteImport.update({
   id: '/entrenamiento',
   path: '/entrenamiento',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/rutas': typeof RutasRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
+  '/mas/distancia': typeof MasDistanciaRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/rutas': typeof RutasRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
+  '/mas/distancia': typeof MasDistanciaRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/rutas': typeof RutasRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
+  '/mas/distancia': typeof MasDistanciaRoute
   '/mas/entrenamiento': typeof MasEntrenamientoRoute
   '/mas/perfil': typeof MasPerfilRoute
   '/mas/rendimiento': typeof MasRendimientoRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/rutas'
     | '/mas/ayuda'
     | '/mas/configuracion'
+    | '/mas/distancia'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
@@ -225,6 +235,7 @@ export interface FileRouteTypes {
     | '/rutas'
     | '/mas/ayuda'
     | '/mas/configuracion'
+    | '/mas/distancia'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
@@ -246,6 +257,7 @@ export interface FileRouteTypes {
     | '/rutas'
     | '/mas/ayuda'
     | '/mas/configuracion'
+    | '/mas/distancia'
     | '/mas/entrenamiento'
     | '/mas/perfil'
     | '/mas/rendimiento'
@@ -375,6 +387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MasConfiguracionRouteImport
       parentRoute: typeof MasRoute
     }
+    '/mas/distancia': {
+      id: '/mas/distancia'
+      path: '/distancia'
+      fullPath: '/mas/distancia'
+      preLoaderRoute: typeof MasDistanciaRouteImport
+      parentRoute: typeof MasRoute
+    }
     '/mas/entrenamiento': {
       id: '/mas/entrenamiento'
       path: '/entrenamiento'
@@ -409,6 +428,7 @@ declare module '@tanstack/react-router' {
 interface MasRouteChildren {
   MasAyudaRoute: typeof MasAyudaRoute
   MasConfiguracionRoute: typeof MasConfiguracionRoute
+  MasDistanciaRoute: typeof MasDistanciaRoute
   MasEntrenamientoRoute: typeof MasEntrenamientoRoute
   MasPerfilRoute: typeof MasPerfilRoute
   MasRendimientoRoute: typeof MasRendimientoRoute
@@ -419,6 +439,7 @@ interface MasRouteChildren {
 const MasRouteChildren: MasRouteChildren = {
   MasAyudaRoute: MasAyudaRoute,
   MasConfiguracionRoute: MasConfiguracionRoute,
+  MasDistanciaRoute: MasDistanciaRoute,
   MasEntrenamientoRoute: MasEntrenamientoRoute,
   MasPerfilRoute: MasPerfilRoute,
   MasRendimientoRoute: MasRendimientoRoute,

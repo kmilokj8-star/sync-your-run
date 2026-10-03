@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
-  Activity, Bell, BookOpen, CalendarDays, ChevronRight, CircleDot, Ellipsis, Footprints, Gift, Home, LogOut, Settings, ShieldCheck, Sparkles, Trophy, Watch,
+  Activity, Bell, BookOpen, CalendarDays, ChevronRight, CircleDot, Ellipsis, Footprints, Gift, Home, LogOut, Map as MapIcon, Settings, ShieldCheck, Sparkles, Trophy, Watch,
 } from "lucide-react";
 
-type NavHref = "/" | "/calendario" | "/registrar" | "/actividades" | "/equipo" | "/retos" | "/puntos" | "/planes" | "/notificaciones" | "/dispositivos" | "/mas";
+type NavHref = "/" | "/rutas" | "/calendario" | "/registrar" | "/actividades" | "/equipo" | "/retos" | "/puntos" | "/planes" | "/notificaciones" | "/dispositivos" | "/mas";
 import logo from "@/assets/logo-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/lib/preferences";
@@ -40,6 +40,7 @@ function Sidebar({ pathname }: { pathname: string }) {
   const L = (es: string, en: string) => (locale === "es" ? es : en);
   const items: { icon: typeof Home; label: string; href?: NavHref }[] = [
     { icon: Home, label: t("home"), href: "/" },
+    { icon: MapIcon, label: L("Mapas y rutas", "Maps & routes"), href: "/rutas" },
     { icon: CalendarDays, label: L("Calendario", "Calendar"), href: "/calendario" },
     { icon: CircleDot, label: L("Registrar", "Record"), href: "/registrar" },
     { icon: Activity, label: L("Actividades", "Activities"), href: "/actividades" },
@@ -97,7 +98,7 @@ function MobileNav({ pathname }: { pathname: string }) {
     { icon: Home, label: t("home"), href: "/" },
     { icon: Activity, label: t("activity"), href: "/actividades" },
     { icon: CircleDot, label: locale === "es" ? "Registrar" : "Record", href: "/registrar" },
-    { icon: Watch, label: t("devices"), href: "/dispositivos" },
+    { icon: MapIcon, label: locale === "es" ? "Mapas" : "Maps", href: "/rutas" },
     { icon: Ellipsis, label: t("more"), href: "/mas" },
   ];
   return (
