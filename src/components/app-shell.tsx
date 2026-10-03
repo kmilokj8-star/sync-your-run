@@ -79,6 +79,7 @@ function Sidebar({ pathname }: { pathname: string }) {
           );
         })}
       </nav>
+      <Link to="/mas/suscripcion" className="mb-4 flex items-center gap-3 rounded-md border border-primary/30 bg-primary/5 px-3 py-2.5 text-sm font-semibold text-primary hover:bg-primary/10"><Sparkles className="size-4" /><span className="flex-1">RUN+</span><ChevronRight className="size-3" /></Link>
       <div className="mt-auto space-y-4">
         <div className="rounded-md border bg-muted/40 p-3">
            <div className="flex items-center gap-2 text-xs font-semibold text-primary"><ShieldCheck className="size-4" /> {t("protectedData")}</div>
