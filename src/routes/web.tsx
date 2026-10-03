@@ -37,7 +37,7 @@ const faqs = [
   ["¿Mis datos están protegidos?", "RUN incorpora controles de privacidad y gestión de preferencias dentro de la aplicación. Consulta las políticas oficiales antes de utilizar el servicio."],
 ];
 
-function PublicWebsite() {
+export function PublicWebsite() {
   const [menu, setMenu] = useState(false);
   const [faq, setFaq] = useState<number | null>(null);
 
