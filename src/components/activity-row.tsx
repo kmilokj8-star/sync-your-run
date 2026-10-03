@@ -2,9 +2,9 @@ import { PROVIDERS, type Provider, type RemoteActivity, type ProviderId } from "
 import { usePreferences } from "@/lib/preferences";
 
 export function ProviderMark({ p, size = "size-11" }: { p: Provider; size?: string }) {
-  const brandClass: Record<ProviderId, string> = { garmin: "bg-sky-600", strava: "bg-orange-600", apple: "bg-rose-500", coros: "bg-neutral-800" };
+  const brandClass: Partial<Record<ProviderId, string>> = { garmin: "bg-sky-600", strava: "bg-orange-600", apple: "bg-rose-500", coros: "bg-neutral-800" };
   return (
-    <div className={`${size} ${brandClass[p.id]} grid shrink-0 place-items-center rounded-lg text-lg font-bold text-primary-foreground`}>
+    <div className={`${size} ${brandClass[p.id] ?? "bg-muted"} grid shrink-0 place-items-center rounded-lg text-lg font-bold text-primary-foreground`}>
       {p.id === "apple" ? "♥" : p.short}
     </div>
   );
