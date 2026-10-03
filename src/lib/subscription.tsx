@@ -10,6 +10,7 @@ export type Entitlement =
   | "aiInsights"
   | "customDashboard"
   | "advancedPredictions"
+  | "routeGenerator"
   | "coachWorkspace";
 
 export const SUBSCRIPTION_KEY = "run_subscription_v1";
@@ -22,6 +23,7 @@ const PLUS_ENTITLEMENTS: Entitlement[] = [
   "aiInsights",
   "customDashboard",
   "advancedPredictions",
+  "routeGenerator",
 ];
 const COACH_ENTITLEMENTS: Entitlement[] = [...PLUS_ENTITLEMENTS, "coachWorkspace"];
 
