@@ -63,7 +63,7 @@ export function PublicWebsite() {
           </nav>
           <div className="hidden items-center gap-2 lg:flex">
             <button className="rounded-lg px-4 py-2.5 text-sm font-semibold text-muted-foreground hover:text-foreground">ES ▾</button>
-            <Link to="/" className="rounded-lg px-4 py-2.5 text-sm font-semibold">Iniciar sesión</Link>
+            <Link to="/app" className="rounded-lg px-4 py-2.5 text-sm font-semibold">Iniciar sesión</Link>
             <a href="#descarga" className="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-transform hover:-translate-y-0.5">Crear cuenta</a>
           </div>
           <button className="flex size-11 items-center justify-center rounded-lg border lg:hidden" onClick={() => setMenu(!menu)} aria-label="Abrir menú" aria-expanded={menu}>
@@ -74,7 +74,7 @@ export function PublicWebsite() {
           <nav className="mx-auto flex max-w-7xl flex-col gap-1">
             {nav.map(([label, href]) => <a key={label} href={href} onClick={() => setMenu(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-muted">{label}</a>)}
             <div className="mt-2 grid grid-cols-2 gap-2">
-              <Link to="/" className="rounded-lg border px-4 py-3 text-center font-semibold">Iniciar sesión</Link>
+              <Link to="/app" className="rounded-lg border px-4 py-3 text-center font-semibold">Iniciar sesión</Link>
               <a href="#descarga" onClick={() => setMenu(false)} className="rounded-lg bg-primary px-4 py-3 text-center font-bold text-primary-foreground">Crear cuenta</a>
             </div>
           </nav>
