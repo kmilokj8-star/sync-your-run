@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ChevronLeft, Crosshair, Loader2, Lock, MapPin, Route as RouteIcon, Sparkles } from "lucide-react";
+import { ChevronLeft, Crosshair, Loader2, Lock, MapPin, Route as RouteIcon, Sparkles, Star } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,10 @@ import "leaflet/dist/leaflet.css";
 
 type LatLng = [number, number];
 type Loop = { coords: LatLng[]; km: number };
+type SavedLoop = { start: LatLng; loop: Loop; savedAt: string };
 const FIRST_USE_KEY = "run_distance_first_use_v1";
+const START_KEY = "run_distance_start_v1";
+const FAVORITE_KEY = "run_distance_favorite_v1";
 const FREE_DAYS = 30;
 const PRESETS = [3, 5, 8, 10, 15, 21.1];
 const COLORS = ["var(--primary)", "#38bdf8", "#f97316"];
@@ -61,13 +64,15 @@ async function buildLoop(start: LatLng, km: number, bearing: number) {
 export function useDistanceAccess() {
   const { can } = useSubscription();
   const [firstUse, setFirstUse, loaded] = useStored<string>(FIRST_USE_KEY, "");
-  useEffect(() => { if (loaded && !firstUse) setFirstUse(new Date().toISOString()); }, [loaded, firstUse, setFirstUse]);
   const daysUsed = firstUse ? Math.floor((Date.now() - new Date(firstUse).getTime()) / 86400000) : 0;
-  const daysLeft = Math.max(0, FREE_DAYS - daysUsed);
+  const daysLeft = firstUse ? Math.max(0, FREE_DAYS - daysUsed) : FREE_DAYS;
   const premium = can("routeGenerator");
-  return { loaded, premium, daysLeft, allowed: premium || daysLeft > 0 };
+  const allowed = premium || !firstUse || daysLeft > 0;
+  const markUsed = () => {
+    if (!firstUse) setFirstUse(new Date().toISOString());
+  };
+  return { loaded, premium, daysLeft, allowed, markUsed };
 }
-
 export function DistancePlannerPage() {
   const { locale, distance } = usePreferences();
   const L = (es: string, en: string) => (locale === "es" ? es : en);
@@ -78,6 +83,8 @@ export function DistancePlannerPage() {
   const layerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const [ready, setReady] = useState(false);
   const [start, setStart] = useState<LatLng | null>(null);
+  const [savedStart, setSavedStart, savedStartLoaded] = useStored<LatLng | null>(START_KEY, null);
+  const [favorite, setFavorite] = useStored<SavedLoop | null>(FAVORITE_KEY, null);
   const [km, setKm] = useState(5);
   const [loops, setLoops] = useState<Loop[]>([]);
   const [selected, setSelected] = useState(0);
@@ -85,19 +92,23 @@ export function DistancePlannerPage() {
   const [locating, setLocating] = useState(false);
 
   useEffect(() => {
+    if (savedStartLoaded && savedStart && !start) setStart(savedStart);
+  }, [savedStartLoaded, savedStart, start]);
+
+  useEffect(() => {
     if (!access.allowed) return;
     let cancelled = false;
     void (async () => {
       const Lf = await import("leaflet");
       if (cancelled || !mapEl.current || mapRef.current) return;
-      const map = Lf.map(mapEl.current).setView([4.65, -74.08], 13);
+      const map = Lf.map(mapEl.current).setView(savedStart ?? [28.60, -81.30], savedStart ? 14 : 10);
       Lf.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "&copy; OpenStreetMap contributors", maxZoom: 19 }).addTo(map);
-      map.on("click", (e) => { setStart([e.latlng.lat, e.latlng.lng]); setLoops([]); });
+      map.on("click", (e) => { const s: LatLng = [e.latlng.lat, e.latlng.lng]; setStart(s); setSavedStart(s); setLoops([]); });
       libRef.current = Lf; mapRef.current = map; layerRef.current = Lf.layerGroup().addTo(map);
       setReady(true);
     })();
     return () => { cancelled = true; mapRef.current?.remove(); mapRef.current = null; setReady(false); };
-  }, [access.allowed]);
+  }, [access.allowed, savedStart]);
 
   useEffect(() => {
     const Lf = libRef.current, layer = layerRef.current, map = mapRef.current;
@@ -119,7 +130,7 @@ export function DistancePlannerPage() {
     if (!navigator.geolocation) { toast.error(L("GPS no disponible", "GPS unavailable")); return; }
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
-      (p) => { const s: LatLng = [p.coords.latitude, p.coords.longitude]; setStart(s); setLoops([]); mapRef.current?.setView(s, 15); setLocating(false); },
+      (p) => { const s: LatLng = [p.coords.latitude, p.coords.longitude]; setStart(s); setSavedStart(s); setLoops([]); mapRef.current?.setView(s, 15); setLocating(false); },
       () => { setLocating(false); toast.error(L("No se pudo obtener tu ubicación", "Could not get your location")); },
       { enableHighAccuracy: true, timeout: 10000 },
     );
@@ -127,10 +138,19 @@ export function DistancePlannerPage() {
 
   const generate = async () => {
     if (!start) { toast.error(L("Marca un punto de partida", "Set a starting point")); return; }
+    access.markUsed();
     setLoading(true);
     const seed = Math.random() * 120;
     const res = await Promise.all([0, 120, 240].map((b) => buildLoop(start, km, b + seed)));
     setLoops(res); setSelected(0); setLoading(false);
+  };
+
+  const saveFavorite = () => {
+    if (!start || !loops[selected]) return;
+    const next = { start, loop: loops[selected]!, savedAt: new Date().toISOString() };
+    setFavorite(next);
+    setSavedStart(start);
+    toast.success(L("Recorrido guardado como preferido", "Route saved as favorite"));
   };
 
   return (
@@ -184,7 +204,15 @@ export function DistancePlannerPage() {
                       </button>
                     ))}
                   </div>
-                  <Button variant="ghost" className="mt-2 w-full" onClick={generate} disabled={loading}>{L("Ver otras opciones", "Show other options")}</Button>
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    <Button variant="outline" className="min-h-11" onClick={saveFavorite} disabled={loading || !loops[selected]}>
+                      <Star className={favorite && favorite.loop === loops[selected] ? "fill-current" : ""} />{L("Preferida", "Favorite")}
+                    </Button>
+                    <Button variant="ghost" className="min-h-11" onClick={generate} disabled={loading}>{L("Otras opciones", "Other options")}</Button>
+                  </div>
+                  {favorite && (
+                    <p className="mt-2 flex items-center gap-1.5 text-[10px] text-primary"><Star className="size-3 fill-current" />{L("Tienes un recorrido preferido guardado.", "You have a saved favorite route.")}</p>
+                  )}
                 </section>
               )}
             </aside>
