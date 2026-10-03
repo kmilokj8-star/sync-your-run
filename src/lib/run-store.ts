@@ -31,7 +31,11 @@ const EVENT = "run-store-change";
 function read<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : fallback;
+    if (!raw) return fallback;
+    const parsed = JSON.parse(raw) as T;
+    const isObj = (v: unknown) => v !== null && typeof v === "object" && !Array.isArray(v);
+    // Merge saved objects over defaults so newly added keys (e.g. new providers) always exist.
+    return isObj(fallback) && isObj(parsed) ? ({ ...fallback, ...parsed } as T) : parsed;
   } catch {
     return fallback;
   }

@@ -8,7 +8,7 @@ import { usePreferences } from "@/lib/preferences";
 import "leaflet/dist/leaflet.css";
 
 export const Route = createFileRoute("/rutas")({
-  head: () => ({ meta: [{ title: "Mapas y recorridos — RUN" }, { name: "description", content: "Explora tus trayectos, crea rutas y juega con el territorio de RUN." }] }),
+  head: () => ({ meta: [{ title: "Mapas y recorridos — RUN" }, { name: "description", content: "Explora tus trayectos, crea rutas y juega con el territorio de RUN." }, { property: "og:title", content: "Mapas y recorridos — RUN" }, { property: "og:description", content: "Explora tus trayectos, crea rutas y juega con el territorio de RUN." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: RoutesPage,
 });
 
@@ -68,13 +68,11 @@ function RoutesPage() {
         <div className="overflow-hidden rounded-md border bg-card">
           <div className="flex items-center justify-between border-b px-3 py-3"><div><p className="text-xs font-bold uppercase text-primary">{builder ? (es ? "Creador de recorrido" : "Route builder") : (es ? "Mapa de actividad" : "Activity map")}</p><h2 className="font-display uppercase">{builder ? (es ? "Dibuja tu próximo recorrido" : "Draw your next route") : selectedRoute.name}</h2></div><span className="font-mono text-xs text-muted-foreground">{builder ? `${route.length} pts` : selectedRoute.distance}</span></div>
           <div className="relative aspect-[16/10] bg-muted/30"><div ref={mapRef} className="absolute inset-0 z-0" />
-            <svg viewBox="0 0 100 100" className="relative z-10 h-full w-full opacity-0" onClick={addPoint}>
-              <defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="currentColor" strokeOpacity=".08" strokeWidth=".35"/></pattern></defs>
-              <rect width="100" height="100" fill="url(#grid)" />
-              <path d="M5 18 C20 8 28 20 40 12 S70 18 95 8 M4 82 C22 72 35 92 54 82 S80 90 96 74 M8 48 C30 40 44 54 62 43 S82 50 94 44" fill="none" stroke="currentColor" strokeOpacity=".12" strokeWidth="4"/>
-              {!builder && <polyline points={path} fill="none" stroke="hsl(var(--primary))" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />}
-              {builder && route.length > 1 && <polyline points={route.map((p)=>`${p.x},${p.y}`).join(" ")} fill="none" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
-              {(builder ? route : selectedRoute.points).map((p,i)=><circle key={i} cx={p.x} cy={p.y} r={i===0||i===(builder?route.length:selectedRoute.points.length)-1 ? 2 : .8} fill="hsl(var(--primary))" />)}
+            <svg viewBox="0 0 100 100" className={`relative z-10 h-full w-full ${builder ? "cursor-crosshair" : "pointer-events-none"}`} preserveAspectRatio="none" onClick={addPoint}>
+              
+              {!builder && <polyline points={path} fill="none" stroke="var(--primary)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />}
+              {builder && route.length > 1 && <polyline points={route.map((p)=>`${p.x},${p.y}`).join(" ")} fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />}
+              {(builder ? route : selectedRoute.points).map((p,i)=><circle key={i} cx={p.x} cy={p.y} r={i===0||i===(builder?route.length:selectedRoute.points.length)-1 ? 2 : .8} fill="var(--primary)" />)}
             </svg>
             {builder && <div className="absolute bottom-3 left-3 right-3 rounded-md border bg-background/90 p-3 text-xs">{es ? "Haz clic en el mapa para añadir puntos. Después podrás convertir el recorrido en entrenamiento." : "Click the map to add points. Then you can turn the route into a workout."}</div>}
           </div>
