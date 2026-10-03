@@ -13,7 +13,7 @@ import { CONNS_KEY, initialConnections, PROVIDERS } from "@/lib/integrations";
 import { type ReactNode } from "react";
 import { useStored } from "@/lib/run-store";
 
-type MoreRoute = "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
+type MoreRoute = "/rutas" | "/mas/perfil" | "/mas/rendimiento" | "/mas/entrenamiento" | "/mas/configuracion" | "/mas/ayuda" | "/dispositivos" | "/calendario" | "/planes" | "/equipo" | "/retos" | "/puntos" | "/notificaciones";
 
 export function MoreHome() {
   const { t, locale } = usePreferences();
@@ -34,6 +34,9 @@ export function MoreHome() {
         <MenuRow to="/dispositivos" icon={<Watch />} title={t("devicesSensors")} subtitle={`${connected} ${connected === 1 ? t("connectedSingular") : t("connected")}`} />
         <MenuRow to="/mas/rendimiento" icon={<Gauge />} title={t("performance")} subtitle={t("performanceSummary")} />
         <MenuRow to="/mas/entrenamiento" icon={<Route />} title={t("tools")} subtitle={t("toolsSummary")} />
+      </MenuGroup>
+      <MenuGroup label={L("Mapas y recorridos", "Maps & routes")}>
+        <MenuRow to="/rutas" icon={<Map />} title={L("Mapas y recorridos", "Maps & routes")} subtitle={L("Tus trayectos, rutas y territorio", "Your routes, trails and territory")} />
       </MenuGroup>
       <MenuGroup label={L("Entrenamiento", "Training")}>
         <MenuRow to="/calendario" icon={<CalendarDays />} title={L("Calendario", "Calendar")} subtitle={L("Entrenos realizados y planificados", "Completed and planned workouts")} />
