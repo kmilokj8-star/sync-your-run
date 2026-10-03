@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 import { Check, Sparkles } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -69,7 +70,7 @@ function SubscriptionPage() {
   );
 }
 
-function PlanCard({ title, subtitle, items, active, button }: { title: string; subtitle: string; items: string[]; active: boolean; button: React.ReactNode }) {
+function PlanCard({ title, subtitle, items, active, button }: { title: string; subtitle: string; items: string[]; active: boolean; button: ReactNode }) {
   return (
     <section className={`rounded-md border bg-card p-4 md:p-5 ${active ? "border-primary/50" : ""}`}>
       <div className="flex items-start justify-between gap-3">
