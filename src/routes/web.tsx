@@ -10,9 +10,9 @@ import logo from "@/assets/logo-mark.png.asset.json";
 export const Route = createFileRoute("/web")({
   head: () => ({
     meta: [
-      { title: "RUN — Entrena. Progresa. Conecta." },
+      { title: "RUN — Train. Progress. Connect." },
       { name: "description", content: "RUN es una plataforma para corredores: registra actividades, conecta dispositivos, organiza entrenamientos, alcanza objetivos y conecta con entrenadores." },
-      { property: "og:title", content: "RUN — Entrena. Progresa. Conecta." },
+      { property: "og:title", content: "RUN — Train. Progress. Connect." },
       { property: "og:description", content: "Todo lo que necesitas para llevar tu running al siguiente nivel." },
       { property: "og:type", content: "website" },
     ],
@@ -20,23 +20,23 @@ export const Route = createFileRoute("/web")({
   component: PublicWebsite,
 });
 
-const EN: Record<string,string> = {"Funciones":"Features","Deportistas":"Athletes","Entrenadores":"Coaches","Comunidad":"Community","Planes":"Plans","Ayuda":"Help","Iniciar sesión":"Sign in","Crear cuenta":"Create account","Crear cuenta gratis":"Create your free account","Conocer RUN":"Explore RUN","Para corredores":"For runners","Tu entrenamiento.":"Your training.","Tu progreso.":"Your progress.","Tu camino.":"Your journey.","Todo en un solo lugar":"Everything in one place","Herramientas para correr mejor":"Tools to help you run better","Para deportistas":"For athletes","Para entrenadores":"For coaches","Confianza":"Trust","Entrenadores verificados":"Verified coaches","Próximamente":"Coming soon","Descarga RUN":"Download RUN","Lleva RUN contigo.":"Take RUN with you.","Preguntas frecuentes":"Frequently asked questions","Producto":"Product","Legal":"Legal","Términos":"Terms","Privacidad":"Privacy","Cookies":"Cookies","Contacto":"Contact","Todos los derechos reservados.":"All rights reserved.","Entrena":"Train","Registra":"Record","Progresa":"Progress","Conecta":"Connect","Retos":"Challenges","Logros":"Achievements","Puntos":"Points","Rutas":"Routes","Entrenamiento":"Training","Maratón":"Marathon","Gratis":"Free","Premium":"Premium","Recomendado":"Recommended","Comenzar gratis":"Start free","Conocer RUN+":"Explore RUN+","Principiantes":"Beginners","Corredores recreativos":"Recreational runners","Corredores competitivos":"Competitive runners","Preparación de carreras":"Race preparation","Soy entrenador":"I'm a coach","Empezar con RUN":"Get started with RUN","Avísame cuando esté disponible":"Notify me when available","RUN reúne tus actividades, entrenamiento, objetivos, rutas, dispositivos y comunidad en una experiencia creada para corredores.":"RUN brings your activities, training, goals, routes, devices and community together in one experience built for runners.","La plataforma crece contigo, desde tu primera carrera hasta tus próximos grandes objetivos.":"The platform grows with you, from your first run to your next big goals.","Guarda tus carreras y consulta distancia, tiempo, ritmo y otros datos de cada sesión.":"Save your runs and review distance, time, pace and other data from every session.","Organiza tus sesiones y trabaja con planes para diferentes objetivos y distancias.":"Organize your sessions and work with plans for different goals and distances.","Registra tus recorridos y conserva tu historial de entrenamiento.":"Record your routes and keep your training history.","RUN ya contempla conexiones con Garmin, Strava, Apple Health y Coros.":"RUN supports connections with Garmin, Strava, Apple Health and Coros.","Convierte la constancia en motivación con retos, logros y puntos.":"Turn consistency into motivation with challenges, achievements and points.","Conecta con profesionales y lleva tu entrenamiento acompañado.":"Connect with professionals and train with guidance.","RUN está pensado para acompañarte sin importar si estás empezando, entrenando por salud o preparando una nueva marca.":"RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.","RUN también está pensado para profesionales que quieren centralizar su relación con sus deportistas.":"RUN is also designed for professionals who want to centralize their relationship with athletes.","Organiza el trabajo de tus atletas.":"Organize your athletes' training.","Ten la información de entrenamiento centralizada.":"Keep training information centralized.","Mantén el contacto con tus deportistas.":"Stay connected with your athletes.","Presenta tu experiencia y especialidades.":"Showcase your experience and specialties.","La insignia identifica los perfiles que han pasado por el proceso de revisión de RUN.":"The badge identifies profiles that have completed RUN's review process.","Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.":"Join challenges, earn achievements, collect points and find new reasons to keep moving.","Estamos preparando la próxima evolución de RUN para ampliar la experiencia deportiva.":"We are preparing the next evolution of RUN to expand your sports experience.","Una experiencia clara para comenzar, con opciones adicionales para quienes quieren profundizar en su entrenamiento.":"A clear experience to get started, with additional options for those who want to go deeper into their training.","Empieza a registrar tus carreras y a construir tu camino desde donde estés.":"Start recording your runs and building your journey wherever you are."};
+const EN: Record<string,string> = {"Funciones":"Features","Deportistas":"Athletes","Entrenadores":"Coaches","Comunidad":"Community","Planes":"Plans","Ayuda":"Help","Iniciar sesión":"Sign in","Crear cuenta":"Create account","Create your free account":"Create your free account","Conocer RUN":"Explore RUN","For runners":"For runners","Your training.":"Your training.","Tu progreso.":"Your progress.","Your journey.":"Your journey.","Everything in one place":"Everything in one place","Tools to help you run better":"Tools to help you run better","Para deportistas":"For athletes","Para entrenadores":"For coaches","Confianza":"Trust","Entrenadores verificados":"Verified coaches","Próximamente":"Coming soon","Descarga RUN":"Download RUN","Lleva RUN contigo.":"Take RUN with you.","Preguntas frecuentes":"Frequently asked questions","Producto":"Product","Legal":"Legal","Términos":"Terms","Privacidad":"Privacy","Cookies":"Cookies","Contacto":"Contact","Todos los derechos reservados.":"All rights reserved.","Entrena":"Train","Registra":"Record","Progresa":"Progress","Conecta":"Connect","Challenges":"Challenges","Logros":"Achievements","Puntos":"Points","Rutas":"Routes","Entrenamiento":"Training","Marathon":"Marathon","Free":"Free","Premium":"Premium","Recomendado":"Recommended","Start free":"Start free","Explore RUN+":"Explore RUN+","Principiantes":"Beginners","Corredores recreativos":"Recreational runners","Corredores competitivos":"Competitive runners","Preparación de carreras":"Race preparation","I'm a coach":"I'm a coach","Empezar con RUN":"Get started with RUN","Avísame cuando esté disponible":"Notify me when available","RUN brings your activities, training, goals, routes, devices and community together in one experience built for runners.":"RUN brings your activities, training, goals, routes, devices and community together in one experience built for runners.","The platform grows with you, from your first run to your next big goals.":"The platform grows with you, from your first run to your next big goals.","Save your runs and review distance, time, pace and other data from every session.":"Save your runs and review distance, time, pace and other data from every session.","Organize your sessions and work with plans for different goals and distances.":"Organize your sessions and work with plans for different goals and distances.","Record your routes and keep your training history.":"Record your routes and keep your training history.","RUN supports connections with Garmin, Strava, Apple Health and Coros.":"RUN supports connections with Garmin, Strava, Apple Health and Coros.","Turn consistency into motivation with challenges, achievements and points.":"Turn consistency into motivation with challenges, achievements and points.","Connect with professionals and train with guidance.":"Connect with professionals and train with guidance.","RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.":"RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.","RUN is also designed for professionals who want to centralize their relationship with athletes.":"RUN is also designed for professionals who want to centralize their relationship with athletes.","Organize your athletes' training.":"Organize your athletes' training.","Keep training information centralized.":"Keep training information centralized.","Stay connected with your athletes.":"Stay connected with your athletes.","Showcase your experience and specialties.":"Showcase your experience and specialties.","The badge identifies profiles that have completed RUN's review process.":"The badge identifies profiles that have completed RUN's review process.","Join challenges, earn achievements, collect points and find new reasons to keep moving.":"Join challenges, earn achievements, collect points and find new reasons to keep moving.","We are preparing the next evolution of RUN to expand your sports experience.":"We are preparing the next evolution of RUN to expand your sports experience.","A clear experience to get started, with additional options for those who want to go deeper into their training.":"A clear experience to get started, with additional options for those who want to go deeper into their training.","Start recording your runs and building your journey wherever you are.":"Start recording your runs and building your journey wherever you are.","Tu entrenamiento.":"Your training.","Tu camino.":"Your journey.","Para corredores":"For runners","Crear cuenta gratis":"Create your free account","Web + móvil":"Web + mobile","Tu entrenamiento":"Your training","Sigue avanzando":"Keep going","Organiza tu camino":"Organize your journey","Conserva cada sesión":"Keep every session","Mide tu evolución":"Track your progress","Corre acompañado":"Run together","Empieza donde estás. Avanza hacia donde quieres llegar.":"Start where you are. Move toward where you want to go.","Entrena. Acompaña. Haz crecer a tus atletas.":"Train. Guide. Grow your athletes.","Soy entrenador":"I'm a coach","Planes y sesiones":"Plans & sessions","Seguimiento de atletas":"Athlete tracking","Comunicación":"Communication","Perfil profesional":"Professional profile","Entrenador verificado":"Verified coach","Maratón":"Marathon","Corre acompañado.":"Run together.","RUN también llegará al ciclismo.":"RUN is coming to cycling.","Empieza gratis. Crece cuando quieras.":"Start free. Grow when you want.","Gratis":"Free","Registro de actividades":"Activity tracking","Estadísticas básicas":"Basic statistics","Planes y objetivos":"Plans & goals","Metas y logros":"Goals & achievements","Funciones de comunidad":"Community features","Premium":"Premium","Todo lo incluido en Free":"Everything in Free","Funciones avanzadas":"Advanced features","Planes personalizados":"Personalized plans","Analíticas ampliadas":"Advanced analytics","Experiencia sin anuncios*":"Ad-free experience*","Conocer RUN+":"Explore RUN+","Comenzar gratis":"Start free","Empieza a registrar tus carreras y a construir tu camino desde donde estés.":"Start recording your runs and building your journey wherever you are.","Las funciones concretas y precios de suscripción quedan sujetos a la configuración comercial vigente.":"Specific features and subscription pricing are subject to the current commercial configuration.","Entrena. Progresa. Conecta.":"Train. Progress. Connect.","Carrera":"Run","Actividad registrada":"Activity recorded","Distancia":"Distance","Tiempo":"Time","Ritmo":"Pace","Tus recorridos":"Your routes","Retos":"Challenges","Todo en un solo lugar":"Everything in one place","Herramientas para correr mejor":"Tools to help you run better","La plataforma crece contigo, desde tu primera carrera hasta tus próximos grandes objetivos.":"The platform grows with you, from your first run to your next big goals.","RUN reúne tus actividades, entrenamiento, objetivos, rutas, dispositivos y comunidad en una experiencia creada para corredores.":"RUN brings your activities, training, goals, routes, devices and community together in one experience built for runners.","Guarda tus carreras y consulta distancia, tiempo, ritmo y otros datos de cada sesión.":"Save your runs and review distance, time, pace and other data from every session.","Organiza tus sesiones y trabaja con planes para diferentes objetivos y distancias.":"Organize your sessions and work with plans for different goals and distances.","Registra tus recorridos y conserva tu historial de entrenamiento.":"Record your routes and keep your training history.","RUN ya contempla conexiones con Garmin, Strava, Apple Health y Coros.":"RUN supports connections with Garmin, Strava, Apple Health and Coros.","Convierte la constancia en motivación con retos, logros y puntos.":"Turn consistency into motivation with challenges, achievements and points.","Conecta con profesionales y lleva tu entrenamiento acompañado.":"Connect with professionals and train with guidance.","RUN está pensado para acompañarte sin importar si estás empezando, entrenando por salud o preparando una nueva marca.":"RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.","RUN también está pensado para profesionales que quieren centralizar su relación con sus deportistas.":"RUN is also designed for professionals who want to centralize their relationship with athletes.","Organiza el trabajo de tus atletas.":"Organize your athletes' training.","Ten la información de entrenamiento centralizada.":"Keep training information centralized.","Mantén el contacto con tus deportistas.":"Stay connected with your athletes.","Presenta tu experiencia y especialidades.":"Showcase your experience and specialties.","La insignia identifica los perfiles que han pasado por el proceso de revisión de RUN.":"The badge identifies profiles that have completed RUN's review process.","Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.":"Join challenges, earn achievements, collect points and find new reasons to keep moving.","Estamos preparando la próxima evolución de RUN para ampliar la experiencia deportiva.":"We are preparing the next evolution of RUN to expand your sports experience.","Una experiencia clara para comenzar, con opciones adicionales para quienes quieren profundizar en su entrenamiento.":"A clear experience to get started, with additional options for those who want to go deeper into their training.","¿Qué es RUN?":"What is RUN?","RUN es una plataforma deportiva pensada para corredores que quieren registrar sus actividades, organizar su entrenamiento, seguir su progreso y conectar con una comunidad y entrenadores.":"RUN is a sports platform for runners who want to record activities, organize training, track progress, and connect with a community and coaches.","¿Necesito experiencia para utilizar RUN?":"Do I need experience to use RUN?","No. RUN está pensado tanto para quienes empiezan a correr como para corredores con experiencia.":"No. RUN is designed for both new and experienced runners.","¿Puedo utilizar RUN sin entrenador?":"Can I use RUN without a coach?","Sí. Puedes utilizar las funciones de registro, actividades, rutas, retos y otras herramientas de RUN sin tener un entrenador.":"Yes. You can use activity tracking, routes, challenges, and other RUN tools without a coach.","¿Qué dispositivos puedo conectar?":"Which devices can I connect?","El proyecto actual contempla conexiones con Garmin Connect, Strava, Apple Health y Coros. La disponibilidad concreta puede depender del dispositivo y del flujo de conexión.":"The current project supports Garmin Connect, Strava, Apple Health, and Coros. Availability may depend on the device and connection flow.","¿RUN tendrá ciclismo?":"Will RUN support cycling?","Sí. El ciclismo forma parte de la evolución prevista de RUN y se presentará como una futura expansión de la plataforma.":"Yes. Cycling is part of RUN's planned evolution and will be introduced as a future platform expansion.","¿Mis datos están protegidos?":"Is my data protected?","RUN incorpora controles de privacidad y gestión de preferencias dentro de la aplicación. Consulta las políticas oficiales antes de utilizar el servicio.":"RUN includes privacy controls and preference management within the app. Review the official policies before using the service."};
 const features = [
-  [Activity, "Registra tus actividades", "Guarda tus carreras y consulta distancia, tiempo, ritmo y otros datos de cada sesión."],
-  [Dumbbell, "Entrenamiento", "Organiza tus sesiones y trabaja con planes para diferentes objetivos y distancias."],
-  [Map, "Rutas y recorridos", "Registra tus recorridos y conserva tu historial de entrenamiento."],
-  [Watch, "Conecta tus dispositivos", "RUN ya contempla conexiones con Garmin, Strava, Apple Health y Coros."],
-  [Trophy, "Retos y puntos", "Convierte la constancia en motivación con retos, logros y puntos."],
-  [Users, "Entrenadores", "Conecta con profesionales y lleva tu entrenamiento acompañado."],
+  [Activity, "Registra tus actividades", "Save your runs and review distance, time, pace and other data from every session."],
+  [Dumbbell, "Entrenamiento", "Organize your sessions and work with plans for different goals and distances."],
+  [Map, "Rutas y recorridos", "Record your routes and keep your training history."],
+  [Watch, "Conecta tus dispositivos", "RUN supports connections with Garmin, Strava, Apple Health and Coros."],
+  [Trophy, "Retos y puntos", "Turn consistency into motivation with challenges, achievements and points."],
+  [Users, "Entrenadores", "Connect with professionals and train with guidance."],
 ];
 
 const faqs = [
-  ["¿Qué es RUN?", "RUN es una plataforma deportiva pensada para corredores que quieren registrar sus actividades, organizar su entrenamiento, seguir su progreso y conectar con una comunidad y entrenadores."],
-  ["¿Necesito experiencia para utilizar RUN?", "No. RUN está pensado tanto para quienes empiezan a correr como para corredores con experiencia."],
-  ["¿Puedo utilizar RUN sin entrenador?", "Sí. Puedes utilizar las funciones de registro, actividades, rutas, retos y otras herramientas de RUN sin tener un entrenador."],
-  ["¿Qué dispositivos puedo conectar?", "El proyecto actual contempla conexiones con Garmin Connect, Strava, Apple Health y Coros. La disponibilidad concreta puede depender del dispositivo y del flujo de conexión."],
-  ["¿RUN tendrá ciclismo?", "Sí. El ciclismo forma parte de la evolución prevista de RUN y se presentará como una futura expansión de la plataforma."],
-  ["¿Mis datos están protegidos?", "RUN incorpora controles de privacidad y gestión de preferencias dentro de la aplicación. Consulta las políticas oficiales antes de utilizar el servicio."],
+  ["What is RUN?", "RUN is a sports platform for runners who want to record activities, organize training, track progress, and connect with a community and coaches."],
+  ["Do I need experience to use RUN?", "No. RUN is designed for both new and experienced runners."],
+  ["Can I use RUN without a coach?", "Yes. You can use activity tracking, routes, challenges, and other RUN tools without a coach."],
+  ["Which devices can I connect?", "The current project supports Garmin Connect, Strava, Apple Health, and Coros. Availability may depend on the device and connection flow."],
+  ["Will RUN support cycling?", "Yes. Cycling is part of RUN's planned evolution and will be introduced as a future platform expansion."],
+  ["Is my data protected?", "RUN includes privacy controls and preference management within the app. Review the official policies before using the service."],
 ];
 
 function useReveal<T extends HTMLElement>() {
@@ -222,22 +222,24 @@ export function PublicWebsite() {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <style>{`
         html { scroll-behavior: smooth; }
+        @keyframes runLogoEntrance { 0% { opacity: 0; transform: scale(.45) rotate(-18deg); } 55% { opacity: 1; transform: scale(1.16) rotate(5deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
         @keyframes runFloat { 0%,100% { transform: translate3d(0,0,0) rotate(0deg); } 50% { transform: translate3d(0,-9px,0) rotate(1deg); } }
         @keyframes runPulse { 0%,100% { opacity:.35; transform:scale(1); } 50% { opacity:.75; transform:scale(1.12); } }
         @keyframes runDash { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -70; } }
+        .run-logo-entrance { animation: runLogoEntrance 900ms cubic-bezier(.2,.8,.2,1) both; transform-origin: center; }
         .run-float { animation: runFloat 5s ease-in-out infinite; }
         .run-pulse { animation: runPulse 3.5s ease-in-out infinite; }
         .run-dash { animation: runDash 8s linear infinite; }
         @media (prefers-reduced-motion: reduce) {
           html { scroll-behavior: auto; }
-          .run-float, .run-pulse, .run-dash { animation: none !important; }
+          .run-logo-entrance, .run-float, .run-pulse, .run-dash { animation: none !important; }
         }
       `}</style>
 
       <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur-xl">
         <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 lg:px-8">
           <a href="#inicio" className="flex items-center gap-2.5" aria-label="RUN inicio">
-            <span className="size-9 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} />
+            <span className="run-logo-entrance size-11 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} />
             <span className="font-display text-2xl uppercase tracking-tight">run</span>
           </a>
           <nav className="hidden items-center gap-7 lg:flex">
@@ -254,7 +256,7 @@ export function PublicWebsite() {
         </div>
         {menu && <div className="border-t bg-background px-5 py-4 lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col gap-1">
-            {nav.map(([label, href]) => <a key={label} href={href} onClick={() => setMenu(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-muted">{label}</a>)}
+            {nav.map(([label, href]) => <a key={label} href={href} onClick={() => setMenu(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-muted">{tr(label)}</a>)}
             <div className="mt-2 grid grid-cols-2 gap-2">
               <Link to="/app" className="rounded-lg border px-4 py-3 text-center font-semibold">{tr("Iniciar sesión")}</Link>
               <a href="#descarga" onClick={() => setMenu(false)} className="rounded-lg bg-primary px-4 py-3 text-center font-bold text-primary-foreground">{tr("Crear cuenta")}</a>
@@ -278,12 +280,12 @@ export function PublicWebsite() {
               RUN reúne tus actividades, entrenamiento, objetivos, rutas, dispositivos y comunidad en una experiencia creada para corredores.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#descarga" className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-1 hover:shadow-xl">Crear cuenta gratis <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
+              <a href="#descarga" className="group inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:-translate-y-1 hover:shadow-xl">{tr("Crear cuenta gratis")} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
               <a href="#funciones" className="rounded-xl border bg-card px-6 py-3.5 font-bold transition-all hover:-translate-y-0.5 hover:bg-muted">{tr("Conocer RUN")}</a>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
               <span className="flex items-center gap-2"><ShieldCheck className="size-4 text-primary" /> Privacidad y control</span>
-              <span className="flex items-center gap-2"><Smartphone className="size-4 text-primary" /> Web + móvil</span>
+              <span className="flex items-center gap-2"><Smartphone className="size-4 text-primary" /> {tr("Web + móvil")}</span>
             </div>
           </Reveal>
 
@@ -301,7 +303,7 @@ export function PublicWebsite() {
                     <span className="size-2.5 rounded-full bg-primary animate-pulse motion-reduce:animate-none" />
                   </div>
                   <div className="space-y-4 p-5">
-                    <p className="text-xs font-bold uppercase tracking-widest text-primary">Tu entrenamiento</p>
+                    <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Tu entrenamiento")}</p>
                     <div className="rounded-2xl border p-5">
                       <div className="flex items-center gap-3"><div className="rounded-xl bg-primary/10 p-3"><Footprints className="text-primary" /></div><div><p className="font-bold">Carrera</p><p className="text-xs text-muted-foreground">Actividad registrada</p></div></div>
                       <div className="mt-5 grid grid-cols-3 gap-2">
@@ -312,7 +314,7 @@ export function PublicWebsite() {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Map className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Rutas")}</p><p className="mt-1 text-xs text-muted-foreground">Tus recorridos</p></div>
-                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Trophy className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Retos")}</p><p className="mt-1 text-xs text-muted-foreground">Sigue avanzando</p></div>
+                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Trophy className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Challenges")}</p><p className="mt-1 text-xs text-muted-foreground">{tr("Sigue avanzando")}</p></div>
                     </div>
                   </div>
                 </div>
@@ -327,7 +329,7 @@ export function PublicWebsite() {
 
       <section className="border-y bg-muted/30">
         <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
-          {([["Entrena", "Organiza tu camino", Dumbbell], ["Registra", "Conserva cada sesión", Activity], ["Progresa", "Mide tu evolución", Zap], ["Conecta", "Corre acompañado", Users]] as const).map(([title, text, Icon]) => (
+          {([["Entrena", "Organize your journey", Dumbbell], ["Registra", "Keep every session", Activity], ["Progresa", "Track your progress", Zap], ["Conecta", "Run together", Users]] as const).map(([title, text, Icon]) => (
             <div key={tr(title as string)} className="group flex items-center gap-3">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110"><Icon className="size-4" /></span>
               <div><p className="font-bold">{title as string}</p><p className="text-sm text-muted-foreground">{tr(text as string)}</p></div>
@@ -338,7 +340,7 @@ export function PublicWebsite() {
 
       <section id="funciones" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <Reveal>
-          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Todo en un solo lugar")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Herramientas para correr mejor")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("La plataforma crece contigo, desde tu primera carrera hasta tus próximos grandes objetivos.")}</p></div>
+          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Everything in one place")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Tools to help you run better")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("The platform grows with you, from your first run to your next big goals.")}</p></div>
         </Reveal>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map(([Icon, title, text], i) => (
@@ -358,8 +360,8 @@ export function PublicWebsite() {
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Para deportistas")}</p>
-            <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Empieza donde estás. Avanza hacia donde quieres llegar.</h2>
-            <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">{tr("RUN está pensado para acompañarte sin importar si estás empezando, entrenando por salud o preparando una nueva marca.")}</p>
+            <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Empieza donde estás. Avanza hacia donde quieres llegar.")}</h2>
+            <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">{tr("RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.")}</p>
             <a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">Empezar con RUN <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
           </Reveal>
           <Reveal delay={120}>
@@ -368,7 +370,7 @@ export function PublicWebsite() {
               <div className="relative rounded-[2rem] border border-background/10 bg-background/5 p-4">
                 <div className="h-72 sm:h-80"><RunnerIllustration /></div>
                 <div className="grid grid-cols-2 gap-3">
-                  {["Principiantes", "Corredores recreativos", "Corredores competitivos", "Preparación de carreras"].map((x) => <div key={x} className="rounded-xl border border-background/10 bg-background/5 p-4 text-sm font-semibold transition-transform hover:-translate-y-1"><Check className="mb-3 size-4 text-primary" />{x}</div>)}
+                  {[tr("Principiantes"), tr("Corredores recreativos"), tr("Corredores competitivos"), tr("Preparación de carreras")].map((x) => <div key={x} className="rounded-xl border border-background/10 bg-background/5 p-4 text-sm font-semibold transition-transform hover:-translate-y-1"><Check className="mb-3 size-4 text-primary" />{x}</div>)}
                 </div>
               </div>
             </div>
@@ -379,15 +381,15 @@ export function PublicWebsite() {
       <section id="entrenadores" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Para entrenadores")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Entrena. Acompaña. Haz crecer a tus atletas.</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("RUN también está pensado para profesionales que quieren centralizar su relación con sus deportistas.")}</p><a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">Soy entrenador <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Para entrenadores")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Entrena. Acompaña. Haz crecer a tus atletas.")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("RUN is also designed for professionals who want to centralize their relationship with athletes.")}</p><a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">{tr("Soy entrenador")} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
             <div className="mt-10 h-44 max-w-md text-primary opacity-80"><svg viewBox="0 0 520 220" className="h-full w-full"><path d="M30 184h460" stroke="currentColor" strokeWidth="2" opacity=".15" /><path d="M55 158 145 116l76 31 91-75 104 34" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /><circle cx="145" cy="116" r="7" fill="currentColor" /><circle cx="221" cy="147" r="7" fill="currentColor" /><circle cx="312" cy="72" r="7" fill="currentColor" /><circle cx="416" cy="106" r="7" fill="currentColor" /><path d="M55 158 145 116 221 147 312 72 416 106" fill="none" stroke="currentColor" strokeWidth="14" opacity=".07" /></svg></div>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2">
-            {["Planes y sesiones", "Seguimiento de atletas", "Comunicación", "Perfil profesional"].map((x, i) => (
+            {["Plans & sessions", "Athlete tracking", "Communication", "Professional profile"].map((x, i) => (
               <Reveal key={x} delay={i * 70}>
                 <div className="group h-full rounded-2xl border bg-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="mb-7 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground">{i === 0 ? <Dumbbell className="size-5" /> : i === 1 ? <Activity className="size-5" /> : i === 2 ? <Radio className="size-5" /> : <ShieldCheck className="size-5" />}</div>
-                  <h3 className="font-display text-xl uppercase">{x}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{["Organiza el trabajo de tus atletas.", "Ten la información de entrenamiento centralizada.", "Mantén el contacto con tus deportistas.", "Presenta tu experiencia y especialidades."][i]}</p>
+                  <h3 className="font-display text-xl uppercase">{x}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{["Organize your athletes' training.", "Keep training information centralized.", "Stay connected with your athletes.", "Showcase your experience and specialties."][i]}</p>
                 </div>
               </Reveal>
             ))}
@@ -398,12 +400,12 @@ export function PublicWebsite() {
       <section className="bg-muted/30">
         <div className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
           <Reveal>
-            <div className="mx-auto max-w-2xl text-center"><div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary"><ShieldCheck /></div><p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{tr("Confianza")}</p><h2 className="mt-2 font-display text-4xl uppercase">{tr("Entrenadores verificados")}</h2><p className="mt-4 leading-7 text-muted-foreground">{tr("La insignia identifica los perfiles que han pasado por el proceso de revisión de RUN.")}</p></div>
+            <div className="mx-auto max-w-2xl text-center"><div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary"><ShieldCheck /></div><p className="mt-5 text-xs font-bold uppercase tracking-widest text-primary">{tr("Confianza")}</p><h2 className="mt-2 font-display text-4xl uppercase">{tr("Entrenadores verificados")}</h2><p className="mt-4 leading-7 text-muted-foreground">{tr("The badge identifies profiles that have completed RUN's review process.")}</p></div>
           </Reveal>
           <Reveal delay={100}>
             <div className="mx-auto mt-10 max-w-md rounded-2xl border bg-card p-6 shadow-sm transition-transform hover:-translate-y-1 hover:shadow-xl">
-              <div className="flex items-center gap-4"><div className="flex size-14 items-center justify-center rounded-full bg-muted font-display text-lg">CR</div><div><p className="font-bold">Carlos Rodríguez</p><p className="flex items-center gap-1 text-xs font-semibold text-primary"><ShieldCheck className="size-3.5" /> Entrenador verificado</p></div></div>
-              <div className="mt-6 flex flex-wrap gap-2">{["Running", "Maratón", "Trail"].map(x => <span key={x} className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{x}</span>)}</div>
+              <div className="flex items-center gap-4"><div className="flex size-14 items-center justify-center rounded-full bg-muted font-display text-lg">CR</div><div><p className="font-bold">Carlos Rodríguez</p><p className="flex items-center gap-1 text-xs font-semibold text-primary"><ShieldCheck className="size-3.5" /> {tr("Entrenador verificado")}</p></div></div>
+              <div className="mt-6 flex flex-wrap gap-2">{["Running", "Marathon", "Trail"].map(x => <span key={x} className="rounded-full bg-muted px-3 py-1 text-xs font-semibold">{x}</span>)}</div>
             </div>
           </Reveal>
         </div>
@@ -412,8 +414,8 @@ export function PublicWebsite() {
       <section id="comunidad" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
         <div className="grid items-center gap-10 rounded-3xl border bg-card p-8 shadow-sm sm:p-12 lg:grid-cols-[1fr_.9fr] lg:p-16">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Comunidad")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">Corre acompañado.</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.")}</p>
-            <div className="mt-8 grid grid-cols-3 gap-3">{[["Retos", Trophy], ["Logros", Target], ["Puntos", Zap]].map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Comunidad")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Corre acompañado.")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("Join challenges, earn achievements, collect points and find new reasons to keep moving.")}</p>
+            <div className="mt-8 grid grid-cols-3 gap-3">{[["Challenges", Trophy], ["Logros", Target], ["Puntos", Zap]].map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
           </Reveal>
           <Reveal delay={120} className="text-primary">
             <div className="h-56 sm:h-64"><CommunityIllustration /></div>
@@ -424,7 +426,7 @@ export function PublicWebsite() {
       <section className="overflow-hidden bg-primary text-primary-foreground">
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-16 lg:grid-cols-[1fr_.8fr] lg:px-8">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest opacity-70">{tr("Próximamente")}</p><h2 className="mt-2 font-display text-4xl uppercase">RUN también llegará al ciclismo.</h2><p className="mt-3 max-w-2xl opacity-80">{tr("Estamos preparando la próxima evolución de RUN para ampliar la experiencia deportiva.")}</p>
+            <p className="text-xs font-bold uppercase tracking-widest opacity-70">{tr("Próximamente")}</p><h2 className="mt-2 font-display text-4xl uppercase">{tr("RUN también llegará al ciclismo.")}</h2><p className="mt-3 max-w-2xl opacity-80">{tr("We are preparing the next evolution of RUN to expand your sports experience.")}</p>
             <button className="mt-7 rounded-xl bg-foreground px-6 py-3.5 font-bold text-background transition-all hover:-translate-y-1">{tr("Avísame cuando esté disponible")}</button>
           </Reveal>
           <Reveal delay={100} className="text-primary-foreground">
@@ -435,16 +437,16 @@ export function PublicWebsite() {
 
       <section id="planes" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
         <Reveal>
-          <div className="text-center"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Planes")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">Empieza gratis. Crece cuando quieras.</h2><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{tr("Una experiencia clara para comenzar, con opciones adicionales para quienes quieren profundizar en su entrenamiento.")}</p></div>
+          <div className="text-center"><p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Planes")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">{tr("Empieza gratis. Crece cuando quieras.")}</h2><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">{tr("A clear experience to get started, with additional options for those who want to go deeper into their training.")}</p></div>
         </Reveal>
         <div className="mx-auto mt-12 grid max-w-4xl gap-4 md:grid-cols-2">
-          {[["Gratis", "RUN Free", ["Registro de actividades", "Estadísticas básicas", "Planes y objetivos", "Metas y logros", "Funciones de comunidad"], false], ["Premium", "RUN+", ["Todo lo incluido en Free", "Funciones avanzadas", "Planes personalizados", "Analíticas ampliadas", "Experiencia sin anuncios*"], true]].map(([eyebrow, title, items, featured], i) => (
+          {[["Free", "RUN Free", ["Activity tracking", "Basic statistics", "Plans & goals", "Goals & achievements", "Community features"], false], ["Premium", "RUN+", ["Everything in Free", "Advanced features", "Personalized plans", "Advanced analytics", "Ad-free experience*"], true]].map(([eyebrow, title, items, featured], i) => (
             <Reveal key={title as string} delay={i * 100}>
               <div className={`relative h-full rounded-2xl border ${featured ? "border-2 border-primary shadow-xl shadow-primary/10" : "bg-card"} p-7 transition-transform hover:-translate-y-2`}>
                 {featured && <span className="absolute right-5 top-5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase text-primary-foreground">{tr("Recomendado")}</span>}
                 <p className={`text-sm font-bold uppercase tracking-wider ${featured ? "text-primary" : "text-muted-foreground"}`}>{eyebrow as string}</p><h3 className="mt-3 font-display text-3xl uppercase">{title as string}</h3>
                 <ul className="mt-7 space-y-3 text-sm">{(items as string[]).map(x => <li key={x} className="flex gap-2"><Check className="size-4 shrink-0 text-primary" />{x}</li>)}</ul>
-                <a href="#descarga" className={`mt-8 block rounded-xl px-5 py-3 text-center font-bold transition-all hover:-translate-y-0.5 ${featured ? "bg-primary text-primary-foreground" : "border"}`}>{featured ? "Conocer RUN+" : "Comenzar gratis"}</a>
+                <a href="#descarga" className={`mt-8 block rounded-xl px-5 py-3 text-center font-bold transition-all hover:-translate-y-0.5 ${featured ? "bg-primary text-primary-foreground" : "border"}`}>{featured ? "Explore RUN+" : "Start free"}</a>
               </div>
             </Reveal>
           ))}
@@ -456,7 +458,7 @@ export function PublicWebsite() {
         <div className="pointer-events-none absolute right-0 top-0 size-96 rounded-full bg-primary/10 blur-3xl" />
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 lg:grid-cols-[1fr_auto] lg:px-8 lg:py-24">
           <Reveal>
-            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Descarga RUN")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">{tr("Lleva RUN contigo.")}</h2><p className="mt-5 max-w-xl text-lg leading-8 opacity-70">{tr("Empieza a registrar tus carreras y a construir tu camino desde donde estés.")}</p><div className="mt-8 flex flex-wrap gap-3"><button className="transition-all hover:-translate-y-1 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground"><Download className="mr-2 inline size-4" /> Google Play</button><button className="transition-all hover:-translate-y-1 rounded-xl border border-background/20 px-6 py-3.5 font-bold"><Download className="mr-2 inline size-4" /> App Store</button></div>
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Descarga RUN")}</p><h2 className="mt-3 font-display text-4xl uppercase sm:text-5xl">{tr("Lleva RUN contigo.")}</h2><p className="mt-5 max-w-xl text-lg leading-8 opacity-70">{tr("Start recording your runs and building your journey wherever you are.")}</p><div className="mt-8 flex flex-wrap gap-3"><button className="transition-all hover:-translate-y-1 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground"><Download className="mr-2 inline size-4" /> Google Play</button><button className="transition-all hover:-translate-y-1 rounded-xl border border-background/20 px-6 py-3.5 font-bold"><Download className="mr-2 inline size-4" /> App Store</button></div>
           </Reveal>
           <Reveal delay={100}>
             <div className="relative mx-auto flex size-44 items-center justify-center">
@@ -479,7 +481,7 @@ export function PublicWebsite() {
 
       <footer className="border-t bg-muted/30">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:px-8">
-          <div><div className="flex items-center gap-2"><span className="size-7 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} /><span className="font-display text-xl uppercase">run</span></div><p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">Entrena. Progresa. Conecta.</p></div>
+          <div><div className="flex items-center gap-2"><span className="run-logo-entrance size-8 bg-primary" style={{ mask: `url(${logo.url}) center/contain no-repeat`, WebkitMask: `url(${logo.url}) center/contain no-repeat` }} /><span className="font-display text-xl uppercase">run</span></div><p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">{tr("Entrena. Progresa. Conecta.")}</p></div>
           <div><p className="font-bold">{tr("Producto")}</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#funciones" className="block hover:text-foreground">{tr("Funciones")}</a><a href="#planes" className="block hover:text-foreground">{tr("Planes")}</a><a href="#entrenadores" className="block hover:text-foreground">{tr("Entrenadores")}</a><a href="#comunidad" className="block hover:text-foreground">{tr("Comunidad")}</a></div></div>
           <div><p className="font-bold">{tr("Ayuda")}</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#faq" className="block hover:text-foreground">{tr("Preguntas frecuentes")}</a><a href="mailto:soporte@run.app" className="block hover:text-foreground">{tr("Contacto")}</a></div></div>
           <div><p className="font-bold">{tr("Legal")}</p><div className="mt-4 space-y-2 text-sm text-muted-foreground"><a href="#" className="block hover:text-foreground">{tr("Términos")}</a><a href="#" className="block hover:text-foreground">{tr("Privacidad")}</a><a href="#" className="block hover:text-foreground">{tr("Cookies")}</a></div></div>
