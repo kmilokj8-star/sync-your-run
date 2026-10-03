@@ -1,6 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo } from "react";
-import { ChevronRight, Download, Map as MapIcon, Watch } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ChevronRight, Download, Map as MapIcon, Watch, Activity, BarChart3, Gauge, Flame, Route as RouteIcon } from "lucide-react";
+import {
+  BarChart, Bar, LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip,
+  CartesianGrid, AreaChart, Area,
+} from "recharts";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { RunPlusCard } from "@/components/premium-card";
 import { ActivityRow, ProviderMark } from "@/components/activity-row";
@@ -30,6 +34,7 @@ function PerformanceOverview() {
   const { distance, pace, locale } = usePreferences();
   const L = (es: string, en: string) => (locale === "es" ? es : en);
   const { all } = useAllActivities();
+  const [range, setRange] = useState<7 | 30 | 3650>(7);
   const fmtTime = (m: number) => (m >= 60 ? `${Math.floor(m / 60)}h ${String(Math.round(m % 60)).padStart(2, "0")}m` : `${Math.round(m)}m`);
   const last = all[0];
   const runs = all.filter((a) => a.distanceKm > 0 && a.durationMin >= 0);
@@ -37,6 +42,8 @@ function PerformanceOverview() {
   const totalMin = runs.reduce((s, a) => s + a.durationMin, 0);
   const longest = runs.reduce((m, a) => Math.max(m, a.distanceKm), 0);
   const best = runs.reduce((m, a) => Math.min(m, a.durationMin / a.distanceKm), Infinity);
+  const windowMs = range === 3650 ? 3650 * 86400000 : range * 86400000;
+  const scoped = runs.filter((a) => Date.now() - new Date(a.date).getTime() <= windowMs);
   const recent7 = runs.filter((a) => Date.now() - new Date(a.date).getTime() <= 7 * 86400000);
   const recent30 = runs.filter((a) => Date.now() - new Date(a.date).getTime() <= 30 * 86400000);
   const previous7 = runs.filter((a) => {
@@ -47,15 +54,24 @@ function PerformanceOverview() {
   const previousKm = previous7.reduce((s, a) => s + a.distanceKm, 0);
   const trend = previousKm > 0 ? ((recentKm - previousKm) / previousKm) * 100 : null;
   const activeDays30 = new Set(recent30.map((a) => new Date(a.date).toISOString().slice(0, 10))).size;
-  const activeWeeks8 = new Set(
-    runs.filter((a) => Date.now() - new Date(a.date).getTime() <= 56 * 86400000)
-      .map((a) => {
-        const d = new Date(a.date);
-        const day = d.getUTCDay();
-        d.setUTCDate(d.getUTCDate() - day);
-        return d.toISOString().slice(0, 10);
-      }),
-  ).size;
+  const weeklyData = Array.from({ length: 8 }, (_, i) => {
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    end.setDate(end.getDate() - (7 - i) * 7);
+    const startDate = new Date(end);
+    startDate.setDate(startDate.getDate() - 6);
+    const items = runs.filter((a) => {
+      const t = new Date(a.date).getTime();
+      return t >= startDate.getTime() && t <= end.getTime();
+    });
+    const km = items.reduce((s, a) => s + a.distanceKm, 0);
+    const min = items.reduce((s, a) => s + a.durationMin, 0);
+    return { name: `S${i + 1}`, km: Number(km.toFixed(1)), pace: km ? Number((min / km).toFixed(2)) : null };
+  });
+  const activityMix = Object.entries(scoped.reduce<Record<string, number>>((acc, a) => {
+    acc[a.type] = (acc[a.type] ?? 0) + 1;
+    return acc;
+  }, {})).map(([name, value]) => ({ name, value }));
   const d = (km: number) => { const x = distance(km); return `${x.value.toFixed(1)} ${x.unit}`; };
   const p = (v: number) => { const x = pace(v); return `${x.value} ${x.unit}`; };
   const sourceLabel = (source: string) => source === "manual" ? L("Manual", "Manual") : source === "record" ? L("Registrada", "Recorded") : source;
@@ -68,44 +84,138 @@ function PerformanceOverview() {
         </div>
         <Link to="/mas/rendimiento" className="text-xs font-semibold text-primary hover:underline">{L("Ver análisis", "View analysis")}</Link>
       </div>
-      <div className="grid gap-3 md:grid-cols-2">
-        <div className="rounded-md border bg-card p-3 md:p-5">
-          <p className="text-[10px] font-bold uppercase text-primary">{L("Última actividad", "Last activity")}</p>
-          {last ? (
-            <>
-              <div className="mt-1 flex items-baseline justify-between gap-2">
-                <h3 className="truncate font-display text-base uppercase md:text-lg">{last.name}</h3>
-                <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{new Date(last.date).toLocaleDateString(locale)}</span>
+
+      <div className="grid gap-3 md:grid-cols-[1.25fr_.75fr]">
+        <div className="relative overflow-hidden rounded-md border bg-card p-3 md:p-5">
+          <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-primary/10 blur-2xl" />
+          <div className="relative">
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2">
+                <div className="rounded-md border border-primary/30 bg-primary/10 p-2"><Activity className="size-5 text-primary" /></div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase text-primary">{L("Última actividad", "Last activity")}</p>
+                  <h3 className="truncate font-display text-base uppercase md:text-lg">{last?.name ?? L("Sin actividades", "No activities")}</h3>
+                </div>
               </div>
-              <p className="mt-1 text-[10px] uppercase text-muted-foreground">{last.type} · {sourceLabel(last.source)}</p>
-              <div className="mt-3 grid grid-cols-3 gap-2">
-                <StatCard label={L("Distancia", "Distance")} value={distance(last.distanceKm).value.toFixed(2)} detail={distance(last.distanceKm).unit} active />
-                <StatCard label={L("Tiempo", "Time")} value={fmtTime(last.durationMin)} detail="" />
-                <StatCard label={L("Ritmo", "Pace")} value={last.distanceKm > 0 ? pace(last.durationMin / last.distanceKm).value : "—"} detail={last.distanceKm > 0 ? pace(1).unit : ""} />
-              </div>
-            </>
-          ) : <p className="mt-3 text-xs text-muted-foreground">{L("Registra o importa tu primera actividad para ver sus métricas.", "Record or import your first activity to see its metrics.")}</p>}
+              {last && <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{new Date(last.date).toLocaleDateString(locale)}</span>}
+            </div>
+            {last ? (
+              <>
+                <p className="mt-1 text-[10px] uppercase text-muted-foreground">{last.type} · {sourceLabel(last.source)}</p>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  <StatCard label={L("Distancia", "Distance")} value={distance(last.distanceKm).value.toFixed(2)} detail={distance(last.distanceKm).unit} active />
+                  <StatCard label={L("Tiempo", "Time")} value={fmtTime(last.durationMin)} detail="" />
+                  <StatCard label={L("Ritmo", "Pace")} value={last.distanceKm > 0 ? pace(last.durationMin / last.distanceKm).value : "—"} detail={last.distanceKm > 0 ? pace(1).unit : ""} />
+                </div>
+                <div className="mt-3 rounded-md border bg-background/40 p-2.5">
+                  <div className="mb-1 flex items-center justify-between text-[9px] font-bold uppercase text-muted-foreground">
+                    <span>{L("Volumen reciente", "Recent volume")}</span><span>{d(recent7.reduce((s, a) => s + a.distanceKm, 0))}</span>
+                  </div>
+                  <div className="h-20 md:h-24">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={weeklyData}>
+                        <defs><linearGradient id="runArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--primary)" stopOpacity={0.32}/><stop offset="100%" stopColor="var(--primary)" stopOpacity={0}/></linearGradient></defs>
+                        <Area type="monotone" dataKey="km" stroke="var(--primary)" strokeWidth={2} fill="url(#runArea)" />
+                        <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 6, fontSize: 11 }} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </>
+            ) : <p className="mt-4 text-xs text-muted-foreground">{L("Registra o importa tu primera actividad para ver sus métricas.", "Record or import your first activity to see its metrics.")}</p>}
+          </div>
         </div>
 
         <div className="rounded-md border bg-card p-3 md:p-5">
-          <p className="text-[10px] font-bold uppercase text-primary">{L("Historial global", "Global history")}</p>
-          <div className="mt-3 grid grid-cols-3 gap-2">
-            <StatCard label={L("Actividades", "Activities")} value={String(runs.length)} detail="" />
-            <StatCard label={L("Distancia total", "Total distance")} value={d(totalKm)} detail="" active />
-            <StatCard label={L("Tiempo total", "Total time")} value={fmtTime(totalMin)} detail="" />
-            <StatCard label={L("Ritmo medio", "Avg pace")} value={totalKm ? p(totalMin / totalKm) : "—"} detail="" />
-            <StatCard label={L("Mejor ritmo", "Best pace")} value={Number.isFinite(best) ? p(best) : "—"} detail="" />
-            <StatCard label={L("Más larga", "Longest")} value={longest ? d(longest) : "—"} detail="" />
+          <div className="flex items-center gap-2"><Gauge className="size-5 text-primary" /><p className="text-[10px] font-bold uppercase text-primary">{L("Constancia", "Consistency")}</p></div>
+          <div className="mt-3 flex items-center gap-4">
+            <div className="relative size-24 shrink-0">
+              <svg viewBox="0 0 100 100" className="size-full -rotate-90">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="9" className="text-muted/50" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="var(--primary)" strokeWidth="9" strokeLinecap="round" strokeDasharray={251} strokeDashoffset={251 - (251 * Math.min(activeDays30 / 30, 1))} />
+              </svg>
+              <span className="absolute inset-0 flex items-center justify-center font-mono text-sm font-bold">{activeDays30}/30</span>
+            </div>
+            <div className="min-w-0">
+              <p className="font-display text-sm uppercase">{L("Días activos", "Active days")}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{trend === null ? L("Sigue acumulando historial para comparar tendencias.", "Keep building history to compare trends.") : `${trend >= 0 ? "+" : ""}${trend.toFixed(0)}% ${L("vs. semana anterior", "vs prior week")}`}</p>
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <StatCard label={L("Últimos 7 días", "Last 7 days")} value={d(recentKm)} detail="" active />
+            <StatCard label={L("Últimos 30 días", "Last 30 days")} value={d(recent30.reduce((s, a) => s + a.distanceKm, 0))} detail="" />
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-        <StatCard label={L("Últimos 7 días", "Last 7 days")} value={d(recentKm)} detail="" active />
-        <StatCard label={L("Últimos 30 días", "Last 30 days")} value={d(recent30.reduce((s, a) => s + a.distanceKm, 0))} detail="" />
-        <StatCard label={L("Tendencia semanal", "Weekly trend")} value={trend === null ? "—" : `${trend >= 0 ? "+" : ""}${trend.toFixed(0)}%`} detail={L("vs. semana previa", "vs prior week")} />
-        <StatCard label={L("Constancia", "Consistency")} value={`${activeDays30}/30`} detail={L("días activos · 8 sem.", "active days · 8 wks")} />
+      <div className="rounded-md border bg-card p-3 md:p-5">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2"><BarChart3 className="size-5 text-primary" /><p className="text-[10px] font-bold uppercase text-primary">{L("Historial global", "Global history")}</p></div>
+            <h3 className="mt-1 font-display text-sm uppercase md:text-base">{L("Carga y evolución", "Load & progression")}</h3>
+          </div>
+          <div className="flex rounded-md border bg-background p-0.5">
+            {([[7, "7 días"], [30, "30 días"], [3650, "Todo"]] as const).map(([v, label]) => (
+              <button key={v} type="button" onClick={() => setRange(v)} className={`min-h-9 rounded px-3 text-[10px] font-bold uppercase transition-colors ${range === v ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}>{L(label === "7 días" ? "7 días" : label === "30 días" ? "30 días" : "Todo", label)}</button>
+            ))}
+          </div>
+        </div>
+        <div className="mt-3 grid gap-3 lg:grid-cols-[1.6fr_.8fr]">
+          <div className="h-48 md:h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={weeklyData} barCategoryGap="18%">
+                <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
+                <XAxis dataKey="name" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                <YAxis hide />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 6, fontSize: 11 }} formatter={(value) => [`${value} km`, L("Distancia", "Distance")]} />
+                <Bar dataKey="km" fill="var(--primary)" radius={[4,4,0,0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="h-48 md:h-56">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={weeklyData}>
+                <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 3" />
+                <XAxis dataKey="name" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                <YAxis hide domain={["auto", "auto"]} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 6, fontSize: 11 }} formatter={(value) => [value ? p(Number(value)) : "—", L("Ritmo", "Pace")]} />
+                <Line type="monotone" dataKey="pace" stroke="var(--primary)" strokeWidth={2.5} dot={{ r: 2 }} connectNulls />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-4">
+          <StatCard label={L("Actividades", "Activities")} value={String(runs.length)} detail="" />
+          <StatCard label={L("Distancia total", "Total distance")} value={d(totalKm)} detail="" active />
+          <StatCard label={L("Tiempo total", "Total time")} value={fmtTime(totalMin)} detail="" />
+          <StatCard label={L("Mejor ritmo", "Best pace")} value={Number.isFinite(best) ? p(best) : "—"} detail="" />
+        </div>
       </div>
+
+      {activityMix.length > 0 && (
+        <div className="grid gap-3 md:grid-cols-[.8fr_1.2fr]">
+          <div className="rounded-md border bg-card p-3 md:p-5">
+            <div className="flex items-center gap-2"><RouteIcon className="size-5 text-primary" /><h3 className="font-display text-sm uppercase">{L("Tipos de actividad", "Activity mix")}</h3></div>
+            <div className="mt-3 h-32">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={activityMix} layout="vertical" margin={{ left: 0, right: 12 }}>
+                  <XAxis type="number" hide />
+                  <YAxis type="category" dataKey="name" width={70} tick={{ fontSize: 9 }} axisLine={false} tickLine={false} />
+                  <Bar dataKey="value" fill="var(--primary)" radius={[0,4,4,0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+          <div className="rounded-md border bg-card p-3 md:p-5">
+            <div className="flex items-center gap-2"><Flame className="size-5 text-primary" /><h3 className="font-display text-sm uppercase">{L("Resumen de rendimiento", "Performance summary")}</h3></div>
+            <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3">
+              <StatCard label={L("Ritmo medio", "Avg pace")} value={totalKm ? p(totalMin / totalKm) : "—"} detail="" />
+              <StatCard label={L("Más larga", "Longest")} value={longest ? d(longest) : "—"} detail="" />
+              <StatCard label={L("Tendencia", "Trend")} value={trend === null ? "—" : `${trend >= 0 ? "+" : ""}${trend.toFixed(0)}%`} detail={L("7 días", "7 days")} active />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
