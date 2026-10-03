@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { MouseEvent, ReactNode } from "react";
-import { Map, Navigation, Route as RouteIcon, Trophy, Plus, Flame, Layers3 } from "lucide-react";
+import type { ReactNode } from "react";
+import { Navigation, Route as RouteIcon, Trophy, Plus, Flame, Layers3 } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { usePreferences } from "@/lib/preferences";
@@ -20,12 +20,29 @@ const samples = [
 
 function RoutesPage() {
   const { locale } = usePreferences();
+  const mapRef = useRef<HTMLDivElement | null>(null);
   const es = locale === "es";
   const [selected, setSelected] = useState(0);
   const [builder, setBuilder] = useState(false);
   const [route, setRoute] = useState<Point[]>([]);
   const [territory, setTerritory] = useState(42);
   const selectedRoute = samples[selected]!;
+
+  useEffect(() => {
+    let map: import("leaflet").Map | undefined;
+    let cancelled = false;
+    const init = async () => {
+      if (!mapRef.current) return;
+      const L = await import("leaflet");
+      if (cancelled || !mapRef.current) return;
+      map = L.map(mapRef.current, { zoomControl: true, attributionControl: true }).setView([28.60, -81.30], 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "&copy; OpenStreetMap contributors", maxZoom: 19 }).addTo(map);
+      const bounds = L.latLngBounds([[28.55, -81.38], [28.66, -81.22]]);
+      map.fitBounds(bounds, { padding: [12, 12] });
+    };
+    void init();
+    return () => { cancelled = true; map?.remove(); };
+  }, []);
   const path = useMemo(() => selectedRoute.points.map((p) => \`\${p.x},\${p.y}\`).join(" "), [selectedRoute]);
 
   const addPoint = (e: React.MouseEvent<SVGSVGElement>) => {
