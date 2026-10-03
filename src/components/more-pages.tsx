@@ -27,6 +27,7 @@ export function MoreHome() {
         <div className="min-w-0 flex-1"><p className="font-semibold">{t("profileSummary")}</p><p className="text-xs text-muted-foreground">{t("runnerSince")}</p></div>
         <ChevronRight className="size-5 text-muted-foreground" />
       </Link>
+      <QuickSettings connected={connected} />
       <MenuGroup label={t("account")}>
         <MenuRow to="/dispositivos" icon={<Watch />} title={t("devicesSensors")} subtitle={`${connected} ${connected === 1 ? t("connectedSingular") : t("connected")}`} />
         <MenuRow to="/mas/rendimiento" icon={<Gauge />} title={t("performance")} subtitle={t("performanceSummary")} />
