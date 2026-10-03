@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { AppShell, TopBar } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
+import { RunPlusCard } from "@/components/premium-card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { usePreferences } from "@/lib/preferences";
@@ -28,6 +29,7 @@ export function MoreHome() {
         <ChevronRight className="size-5 text-muted-foreground" />
       </Link>
       <QuickSettings connected={connected} />
+      <RunPlusCard />
       <MenuGroup label={t("account")}>
         <MenuRow to="/dispositivos" icon={<Watch />} title={t("devicesSensors")} subtitle={`${connected} ${connected === 1 ? t("connectedSingular") : t("connected")}`} />
         <MenuRow to="/mas/rendimiento" icon={<Gauge />} title={t("performance")} subtitle={t("performanceSummary")} />
