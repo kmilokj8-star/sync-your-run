@@ -182,16 +182,22 @@ export function PublicWebsite() {
       <style>{`
         html { scroll-behavior: smooth; }
         @keyframes runLogoEntrance { 0% { opacity: 0; transform: scale(.35) rotate(-24deg); } 45% { opacity: 1; transform: scale(1.22) rotate(7deg); } 72% { transform: scale(.94) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
-        @keyframes runFloat { 0%,100% { transform: translate3d(0,0,0) rotate(0deg); } 50% { transform: translate3d(0,-9px,0) rotate(1deg); } }
-        @keyframes runPulse { 0%,100% { opacity:.35; transform:scale(1); } 50% { opacity:.75; transform:scale(1.12); } }
+        @keyframes runFloat { 0%,100% { transform: translate3d(0,0,0) rotate(0deg); } 50% { transform: translate3d(0,-10px,0) rotate(1deg); } }
+        @keyframes runPulse { 0%,100% { opacity:.3; transform:scale(1); } 50% { opacity:.8; transform:scale(1.16); } }
         @keyframes runDash { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -70; } }
+        @keyframes runHeroReveal { 0% { opacity:0; transform:translate3d(70px,25px,0) scale(.9); } 65% { opacity:1; transform:translate3d(-8px,-5px,0) scale(1.025); } 100% { opacity:1; transform:translate3d(0,0,0) scale(1); } }
+        @keyframes runCardFloat { 0%,100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-8px) rotate(-1deg); } }
+        @keyframes runShine { 0% { transform:translateX(-130%); } 55%,100% { transform:translateX(130%); } }
         .run-logo-entrance { animation: runLogoEntrance 900ms cubic-bezier(.2,.8,.2,1) both; transform-origin: center; }
         .run-float { animation: runFloat 5s ease-in-out infinite; }
         .run-pulse { animation: runPulse 3.5s ease-in-out infinite; }
         .run-dash { animation: runDash 8s linear infinite; }
+        .run-hero-reveal { animation: runHeroReveal 1100ms cubic-bezier(.2,.8,.2,1) 120ms both; }
+        .run-card-float { animation: runCardFloat 4.5s ease-in-out infinite; }
+        .run-shine { animation: runShine 4s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) {
           html { scroll-behavior: auto; }
-          .run-logo-entrance, .run-float, .run-pulse, .run-dash { animation: none !important; }
+          .run-logo-entrance, .run-float, .run-pulse, .run-dash, .run-hero-reveal, .run-card-float, .run-shine { animation: none !important; }
         }
       `}</style>
 
@@ -248,41 +254,34 @@ export function PublicWebsite() {
             </div>
           </Reveal>
 
-          <Reveal delay={120} className="relative mx-auto w-full max-w-lg">
-            <div className="run-pulse absolute -inset-10 rounded-full bg-primary/10 blur-3xl" />
-            <div className="run-float relative lg:scale-[1.06]">
-              <div className="absolute -right-5 -top-8 z-10 rounded-2xl border bg-card/95 p-3 shadow-xl backdrop-blur">
-                <div className="flex items-center gap-2 text-xs font-bold"><Target className="size-4 text-primary" /> Objetivo en progreso</div>
-                <div className="mt-2 h-1.5 w-28 overflow-hidden rounded-full bg-muted"><div className="h-full w-3/4 rounded-full bg-primary" /></div>
-              </div>
-              <div className="relative rounded-[2.2rem] border bg-card p-3 shadow-2xl shadow-foreground/10">
-                <div className="overflow-hidden rounded-[1.7rem] border bg-background">
-                  <div className="flex items-center justify-between border-b px-5 py-4">
-                    <span className="font-display text-lg uppercase">run</span>
-                    <span className="size-2.5 rounded-full bg-primary animate-pulse motion-reduce:animate-none" />
+          <Reveal delay={120} className="relative mx-auto w-full max-w-xl">
+            <div className="run-hero-reveal relative">
+              <div className="run-pulse absolute -inset-12 rounded-full bg-primary/15 blur-3xl" />
+              <div className="relative overflow-hidden rounded-[2.5rem] border bg-card/90 p-2 shadow-2xl shadow-foreground/15 backdrop-blur">
+                <div className="absolute inset-0 overflow-hidden rounded-[2.3rem]">
+                  <div className="run-shine absolute -inset-y-10 left-0 w-1/3 skew-x-12 bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+                  <div className="absolute -right-20 -top-20 size-64 rounded-full bg-primary/10 blur-3xl" />
+                  <div className="absolute -bottom-24 -left-20 size-72 rounded-full bg-primary/10 blur-3xl" />
+                </div>
+                <div className="relative min-h-[390px] overflow-hidden rounded-[2.1rem] border bg-background/80">
+                  <div className="absolute left-5 top-5 z-20 run-card-float rounded-2xl border bg-card/95 px-4 py-3 shadow-xl backdrop-blur">
+                    <div className="flex items-center gap-2 text-xs font-bold"><Target className="size-4 text-primary" /> {tr("Objetivo en progreso")}</div>
+                    <div className="mt-2 h-1.5 w-28 overflow-hidden rounded-full bg-muted"><div className="h-full w-3/4 rounded-full bg-primary" /></div>
                   </div>
-                  <div className="space-y-4 p-5">
-                    <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Tu entrenamiento")}</p>
-                    <div className="rounded-2xl border p-5">
-                      <div className="flex items-center gap-3"><div className="rounded-xl bg-primary/10 p-3"><Footprints className="text-primary" /></div><div><p className="font-bold">Carrera</p><p className="text-xs text-muted-foreground">Actividad registrada</p></div></div>
-                      <div className="mt-5 grid grid-cols-3 gap-2">
-                        <div><p className="text-[10px] uppercase text-muted-foreground">{tr("Distancia")}</p><p className="mt-1 font-display text-xl">8.4 km</p></div>
-                        <div><p className="text-[10px] uppercase text-muted-foreground">{tr("Tiempo")}</p><p className="mt-1 font-display text-xl">42:18</p></div>
-                        <div><p className="text-[10px] uppercase text-muted-foreground">{tr("Ritmo")}</p><p className="mt-1 font-display text-xl">5:02</p></div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Map className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Rutas")}</p><p className="mt-1 text-xs text-muted-foreground">{tr("Tus recorridos")}</p></div>
-                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Trophy className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Challenges")}</p><p className="mt-1 text-xs text-muted-foreground">{tr("Sigue avanzando")}</p></div>
-                    </div>
+                  <div className="absolute bottom-5 right-5 z-20 run-card-float rounded-2xl border bg-card/95 px-4 py-3 shadow-xl backdrop-blur" style={{animationDelay:"-2s"}}>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{tr("Distancia")}</p>
+                    <p className="font-display text-2xl">8.4 KM</p>
+                  </div>
+                  <div className="relative z-10 flex h-[390px] items-end justify-center px-2 pb-1 text-primary">
+                    <RunnerIllustration />
                   </div>
                 </div>
               </div>
+              <div className="absolute -bottom-4 -left-4 z-20 rounded-2xl border bg-card/95 px-4 py-3 shadow-xl backdrop-blur">
+                <div className="flex items-center gap-2 text-xs font-bold"><Activity className="size-4 text-primary" /> RUN / LIVE</div>
+              </div>
             </div>
           </Reveal>
-        </div>
-        <div className="pointer-events-none absolute bottom-0 left-1/2 hidden h-48 w-[900px] -translate-x-1/2 lg:block">
-          <RunnerIllustration />
         </div>
       </section>
 
