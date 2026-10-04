@@ -266,13 +266,13 @@ export function PublicWebsite() {
                     <div className="rounded-2xl border p-5">
                       <div className="flex items-center gap-3"><div className="rounded-xl bg-primary/10 p-3"><Footprints className="text-primary" /></div><div><p className="font-bold">Carrera</p><p className="text-xs text-muted-foreground">Actividad registrada</p></div></div>
                       <div className="mt-5 grid grid-cols-3 gap-2">
-                        <div><p className="text-[10px] uppercase text-muted-foreground">Distancia</p><p className="mt-1 font-display text-xl">8.4 km</p></div>
-                        <div><p className="text-[10px] uppercase text-muted-foreground">Tiempo</p><p className="mt-1 font-display text-xl">42:18</p></div>
-                        <div><p className="text-[10px] uppercase text-muted-foreground">Ritmo</p><p className="mt-1 font-display text-xl">5:02</p></div>
+                        <div><p className="text-[10px] uppercase text-muted-foreground">{tr("Distancia")}</p><p className="mt-1 font-display text-xl">8.4 km</p></div>
+                        <div><p className="text-[10px] uppercase text-muted-foreground">{tr("Tiempo")}</p><p className="mt-1 font-display text-xl">42:18</p></div>
+                        <div><p className="text-[10px] uppercase text-muted-foreground">{tr("Ritmo")}</p><p className="mt-1 font-display text-xl">5:02</p></div>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Map className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Rutas")}</p><p className="mt-1 text-xs text-muted-foreground">Tus recorridos</p></div>
+                      <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Map className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Rutas")}</p><p className="mt-1 text-xs text-muted-foreground">{tr("Tus recorridos")}</p></div>
                       <div className="rounded-2xl border p-4 transition-transform hover:-translate-y-1"><Trophy className="mb-4 size-5 text-primary" /><p className="font-bold">{tr("Challenges")}</p><p className="mt-1 text-xs text-muted-foreground">{tr("Sigue avanzando")}</p></div>
                     </div>
                   </div>
@@ -321,7 +321,7 @@ export function PublicWebsite() {
             <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Para deportistas")}</p>
             <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Empieza donde estás. Avanza hacia donde quieres llegar.")}</h2>
             <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">{tr("RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.")}</p>
-            <a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">Empezar con RUN <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
+            <a href="#descarga" className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">{tr("Empezar con RUN")} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a>
           </Reveal>
           <Reveal delay={120}>
             <div className="relative mx-auto w-full max-w-xl text-primary">
@@ -344,11 +344,11 @@ export function PublicWebsite() {
             <div className="mt-10 h-44 max-w-md text-primary opacity-80"><svg viewBox="0 0 520 220" className="h-full w-full"><path d="M30 184h460" stroke="currentColor" strokeWidth="2" opacity=".15" /><path d="M55 158 145 116l76 31 91-75 104 34" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" /><circle cx="145" cy="116" r="7" fill="currentColor" /><circle cx="221" cy="147" r="7" fill="currentColor" /><circle cx="312" cy="72" r="7" fill="currentColor" /><circle cx="416" cy="106" r="7" fill="currentColor" /><path d="M55 158 145 116 221 147 312 72 416 106" fill="none" stroke="currentColor" strokeWidth="14" opacity=".07" /></svg></div>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2">
-            {["Plans & sessions", "Athlete tracking", "Communication", "Professional profile"].map((x, i) => (
+            {["Planes y sesiones", "Seguimiento de atletas", "Comunicación", "Perfil profesional"].map((x, i) => (
               <Reveal key={x} delay={i * 70}>
                 <div className="group h-full rounded-2xl border bg-card p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="mb-7 flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground">{i === 0 ? <Dumbbell className="size-5" /> : i === 1 ? <Activity className="size-5" /> : i === 2 ? <Radio className="size-5" /> : <ShieldCheck className="size-5" />}</div>
-                  <h3 className="font-display text-xl uppercase">{x}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{["Organize your athletes' training.", "Keep training information centralized.", "Stay connected with your athletes.", "Showcase your experience and specialties."][i]}</p>
+                  <h3 className="font-display text-xl uppercase">{tr(x)}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{["Organiza el trabajo de tus atletas.", "Ten la información de entrenamiento centralizada.", "Mantén el contacto con tus deportistas.", "Presenta tu experiencia y especialidades."][i]}</p>
                 </div>
               </Reveal>
             ))}
@@ -374,7 +374,7 @@ export function PublicWebsite() {
         <div className="grid items-center gap-10 rounded-3xl border bg-card p-8 shadow-sm sm:p-12 lg:grid-cols-[1fr_.9fr] lg:p-16">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Comunidad")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Corre acompañado.")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.")}</p>
-            <div className="mt-8 grid grid-cols-3 gap-3">{([["Challenges", Trophy], ["Logros", Target], ["Puntos", Zap]] as const).map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
+            <div className="mt-8 grid grid-cols-3 gap-3">{([["Retos", Trophy], ["Logros", Target], ["Puntos", Zap]] as const).map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{tr(x as string)}</p></div>)}</div>
           </Reveal>
           <Reveal delay={120} className="text-primary">
             <div className="h-56 sm:h-64"><CommunityIllustration /></div>
