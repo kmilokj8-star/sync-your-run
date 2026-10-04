@@ -263,7 +263,7 @@ function DashboardLayout({
       const id = dragId.current;
       if (!id) return;
       const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>("[data-dashboard-id]");
-      const targetId = target?.dataset.dashboardId as DashboardId | undefined;
+      const targetId = target?.dataset["dashboardId"] as DashboardId | undefined;
       if (targetId && targetId !== id && targetId !== hoverId.current && layout.order.includes(targetId)) { hoverId.current = targetId; move(id, targetId); }
     };
     const onUp = () => { dragId.current = null; hoverId.current = null; };
