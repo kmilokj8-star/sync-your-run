@@ -206,7 +206,7 @@ export function PublicWebsite() {
           </nav>
           <div className="hidden items-center gap-2 lg:flex">
             <select aria-label="Language" value={language} onChange={e=>changeLanguage(e.target.value as "en"|"es")} className="rounded-lg bg-transparent px-3 py-2.5 text-sm font-semibold text-muted-foreground outline-none"><option value="en">EN</option><option value="es">ES</option></select>
-            <Link to="/app" className="rounded-lg px-4 py-2.5 text-sm font-semibold">{tr("Iniciar sesión")}</Link>
+            <a href="/app" className="rounded-lg px-4 py-2.5 text-sm font-semibold">{tr("Iniciar sesión")}</a>
             <a href="#descarga" className="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg">{tr("Crear cuenta")}</a>
           </div>
           <button className="flex size-11 items-center justify-center rounded-lg border lg:hidden" onClick={() => setMenu(!menu)} aria-label="Abrir menú" aria-expanded={menu}>
@@ -217,7 +217,7 @@ export function PublicWebsite() {
           <nav className="mx-auto flex max-w-7xl flex-col gap-1">
             {nav.map(([label, href]) => <a key={label} href={href} onClick={() => setMenu(false)} className="rounded-lg px-3 py-3 font-semibold hover:bg-muted">{tr(label)}</a>)}
             <div className="mt-2 grid grid-cols-2 gap-2">
-              <Link to="/app" className="rounded-lg border px-4 py-3 text-center font-semibold">{tr("Iniciar sesión")}</Link>
+              <a href="/app" className="rounded-lg border px-4 py-3 text-center font-semibold">{tr("Iniciar sesión")}</a>
               <a href="#descarga" onClick={() => setMenu(false)} className="rounded-lg bg-primary px-4 py-3 text-center font-bold text-primary-foreground">{tr("Crear cuenta")}</a>
             </div>
           </nav>
@@ -374,7 +374,7 @@ export function PublicWebsite() {
         <div className="grid items-center gap-10 rounded-3xl border bg-card p-8 shadow-sm sm:p-12 lg:grid-cols-[1fr_.9fr] lg:p-16">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-widest text-primary">{tr("Comunidad")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Corre acompañado.")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("Participa en retos, consigue logros, acumula puntos y encuentra nuevas razones para mantenerte en movimiento.")}</p>
-            <div className="mt-8 grid grid-cols-3 gap-3">{[["Challenges", Trophy], ["Logros", Target], ["Puntos", Zap]].map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
+            <div className="mt-8 grid grid-cols-3 gap-3">{([["Challenges", Trophy], ["Logros", Target], ["Puntos", Zap]] as const).map(([x, Icon]) => <div key={tr(x as string)} className="rounded-2xl bg-muted/50 p-4 text-center"><Icon className="mx-auto mb-4 size-5 text-primary" /><p className="font-display text-lg uppercase">{x as string}</p></div>)}</div>
           </Reveal>
           <Reveal delay={120} className="text-primary">
             <div className="h-56 sm:h-64"><CommunityIllustration /></div>
