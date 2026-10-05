@@ -93,12 +93,15 @@ export function ActivitiesPage() {
             const own = a.source === "manual" || a.source === "record";
             return (
               <li key={a.id} className="flex items-center gap-3 p-3">
+                <Link to="/actividad/$id" params={{ id: a.id }} className="flex min-w-0 flex-1 items-center gap-3">
                 <SourceMark a={a} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">{a.name}</p>
                   <p className="text-xs text-muted-foreground">{new Date(a.date).toLocaleDateString(locale === "es" ? "es-ES" : "en-US", { weekday: "short", day: "numeric", month: "short" })} · {a.type} · {fmtDuration(a.durationMin)}</p>
                 </div>
                 <div className="text-right font-mono text-xs"><p className="font-semibold">{d.value.toFixed(1)} {d.unit}</p><p className="text-muted-foreground">{p.value} {p.unit}</p></div>
+                <ChevronRight className="size-4 text-muted-foreground" />
+                </Link>
                 {own && <Button variant="ghost" size="icon" className="size-10" aria-label={L("Eliminar", "Delete")} onClick={() => setManual((m) => m.filter((x) => x.id !== a.id))}><Trash2 className="size-4" /></Button>}
               </li>
             );

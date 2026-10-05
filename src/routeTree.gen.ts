@@ -23,6 +23,7 @@ import { Route as RegistrarRouteImport } from './routes/registrar'
 import { Route as RetosRouteImport } from './routes/retos'
 import { Route as RutasRouteImport } from './routes/rutas'
 import { Route as WebRouteImport } from './routes/web'
+import { Route as ActividadIdRouteImport } from './routes/actividad.$id'
 import { Route as MasIndexRouteImport } from './routes/mas.index'
 import { Route as MasAyudaRouteImport } from './routes/mas.ayuda'
 import { Route as MasConfiguracionRouteImport } from './routes/mas.configuracion'
@@ -102,6 +103,11 @@ const WebRoute = WebRouteImport.update({
   path: '/web',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActividadIdRoute = ActividadIdRouteImport.update({
+  id: '/actividad/$id',
+  path: '/actividad/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MasIndexRoute = MasIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/retos': typeof RetosRoute
   '/rutas': typeof RutasRoute
   '/web': typeof WebRoute
+  '/actividad/$id': typeof ActividadIdRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/distancia': typeof MasDistanciaRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/retos': typeof RetosRoute
   '/rutas': typeof RutasRoute
   '/web': typeof WebRoute
+  '/actividad/$id': typeof ActividadIdRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/distancia': typeof MasDistanciaRoute
@@ -206,6 +214,7 @@ export interface FileRoutesById {
   '/retos': typeof RetosRoute
   '/rutas': typeof RutasRoute
   '/web': typeof WebRoute
+  '/actividad/$id': typeof ActividadIdRoute
   '/mas/ayuda': typeof MasAyudaRoute
   '/mas/configuracion': typeof MasConfiguracionRoute
   '/mas/distancia': typeof MasDistanciaRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/retos'
     | '/rutas'
     | '/web'
+    | '/actividad/$id'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/distancia'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/retos'
     | '/rutas'
     | '/web'
+    | '/actividad/$id'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/distancia'
@@ -279,6 +290,7 @@ export interface FileRouteTypes {
     | '/retos'
     | '/rutas'
     | '/web'
+    | '/actividad/$id'
     | '/mas/ayuda'
     | '/mas/configuracion'
     | '/mas/distancia'
@@ -304,6 +316,7 @@ export interface RootRouteChildren {
   RetosRoute: typeof RetosRoute
   RutasRoute: typeof RutasRoute
   WebRoute: typeof WebRoute
+  ActividadIdRoute: typeof ActividadIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -406,6 +419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/actividad/$id': {
+      id: '/actividad/$id'
+      path: '/actividad/$id'
+      fullPath: '/actividad/$id'
+      preLoaderRoute: typeof ActividadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mas/': {
       id: '/mas/'
       path: '/'
@@ -504,6 +524,7 @@ const rootRouteChildren: RootRouteChildren = {
   RetosRoute: RetosRoute,
   RutasRoute: RutasRoute,
   WebRoute: WebRoute,
+  ActividadIdRoute: ActividadIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
