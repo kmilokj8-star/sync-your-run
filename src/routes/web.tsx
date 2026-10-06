@@ -83,19 +83,62 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
 
 function CyclingIllustration({ language }: { language: "en" | "es" }) {
   return (
-    <svg viewBox="0 0 680 330" className="h-full w-full" aria-label="RUN cycling illustration" role="img">
-      <defs><linearGradient id="cyclingTrail" x1="0" x2="1"><stop stopColor="currentColor" stopOpacity="0"/><stop offset=".5" stopColor="currentColor" stopOpacity=".32"/><stop offset="1" stopColor="currentColor" stopOpacity="0"/></linearGradient></defs>
-      <path d="M35 262h610" stroke="currentColor" strokeWidth="3" opacity=".18"/>
-      <path d="M28 224 C130 140 235 260 344 164 S520 118 652 188" fill="none" stroke="url(#cyclingTrail)" strokeWidth="34" strokeLinecap="round"/>
-      <path d="M28 224 C130 140 235 260 344 164 S520 118 652 188" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="9 13" opacity=".38" className="run-dash"/>
+    <svg viewBox="0 0 760 360" className="h-full w-full" aria-label={language === "en" ? "RUN road bicycle illustration" : "Ilustración de bicicleta de carretera RUN"} role="img">
+      <defs>
+        <linearGradient id="cyclingTrail" x1="0" x2="1">
+          <stop stopColor="currentColor" stopOpacity="0"/>
+          <stop offset=".5" stopColor="currentColor" stopOpacity=".32"/>
+          <stop offset="1" stopColor="currentColor" stopOpacity="0"/>
+        </linearGradient>
+        <linearGradient id="bikeFrame" x1="0" y1="0" x2="1" y2="1">
+          <stop stopColor="currentColor" stopOpacity=".95"/>
+          <stop offset="1" stopColor="currentColor" stopOpacity=".58"/>
+        </linearGradient>
+      </defs>
+
+      <path d="M35 292h690" stroke="currentColor" strokeWidth="3" opacity=".18"/>
+      <path d="M28 250 C145 152 248 286 370 178 S565 138 732 210" fill="none" stroke="url(#cyclingTrail)" strokeWidth="42" strokeLinecap="round"/>
+      <path d="M28 250 C145 152 248 286 370 178 S565 138 732 210" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="10 15" opacity=".34" className="run-dash"/>
+
       <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="192" cy="238" r="59" strokeWidth="7"/><circle cx="458" cy="238" r="59" strokeWidth="7"/>
-        <path d="M192 238 276 142 350 238 192 238 458 238 379 144 350 238" strokeWidth="7"/>
-        <path d="M276 142 309 126h34M379 144l24-36h38" strokeWidth="7"/>
-        <path d="M292 108c17-20 42-30 67-23l25 7" strokeWidth="8"/>
-        <circle cx="350" cy="238" r="13" fill="currentColor" stroke="none"/><path d="M350 238 318 270M350 238l36 32" strokeWidth="5"/>
+        <circle cx="205" cy="270" r="68" strokeWidth="6"/>
+        <circle cx="555" cy="270" r="68" strokeWidth="6"/>
+
+        <path d="M205 270 L315 145 L405 270 L205 270 Z" stroke="url(#bikeFrame)" strokeWidth="8"/>
+        <path d="M315 145 L370 112 L438 145 L405 270" strokeWidth="8"/>
+        <path d="M438 145 L492 130" strokeWidth="8"/>
+        <path d="M492 130 L520 143 L535 128 L521 111" strokeWidth="7"/>
+        <path d="M370 112 L348 86" strokeWidth="7"/>
+        <path d="M348 86 L382 78 L412 88" strokeWidth="7"/>
+
+        <path d="M405 270 L438 145" strokeWidth="6"/>
+        <path d="M315 145 L292 183" strokeWidth="6"/>
+        <path d="M292 183 L268 183" strokeWidth="6"/>
+        <path d="M405 270 L455 270" strokeWidth="6"/>
+        <path d="M455 270 L475 291" strokeWidth="5"/>
+        <path d="M455 270 L438 296" strokeWidth="5"/>
+
+        <path d="M370 112 L338 104" strokeWidth="7"/>
+        <path d="M338 104 L315 114" strokeWidth="5"/>
+        <path d="M492 130 L505 105" strokeWidth="6"/>
+        <path d="M505 105 L528 104" strokeWidth="6"/>
+
+        <circle cx="405" cy="270" r="13" fill="currentColor" stroke="none"/>
+        <circle cx="405" cy="270" r="28" strokeWidth="3" opacity=".55"/>
+        <circle cx="205" cy="270" r="7" fill="currentColor" stroke="none"/>
+        <circle cx="555" cy="270" r="7" fill="currentColor" stroke="none"/>
       </g>
-      <g transform="translate(480 38)"><rect width="145" height="66" rx="18" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".15"/><text x="18" y="25" fontSize="9" fontWeight="700" fill="currentColor" opacity=".5">{language === "en" ? "COMING NEXT" : "PRÓXIMAMENTE"}</text><text x="18" y="48" fontSize="18" fontWeight="800" fill="currentColor">{language === "en" ? "CYCLING" : "CICLISMO"}</text></g>
+
+      <g stroke="currentColor" strokeWidth="2" opacity=".28">
+        <path d="M205 202v136M137 270h136M157 222l96 96M157 318l96-96"/>
+        <path d="M555 202v136M487 270h136M507 222l96 96M507 318l96-96"/>
+      </g>
+
+      <g transform="translate(535 34)">
+        <rect width="175" height="70" rx="19" fill="currentColor" opacity=".10" stroke="currentColor" strokeOpacity=".15"/>
+        <text x="18" y="27" fontSize="9" fontWeight="700" fill="currentColor" opacity=".52">{language === "en" ? "COMING NEXT" : "PRÓXIMAMENTE"}</text>
+        <text x="18" y="52" fontSize="20" fontWeight="800" fill="currentColor">{language === "en" ? "CYCLING" : "CICLISMO"}</text>
+      </g>
     </svg>
   );
 }
