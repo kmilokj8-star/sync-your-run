@@ -149,3 +149,55 @@
   body { background-color: var(--color-background); color: var(--color-foreground); font-family: "Hind", sans-serif; }
   h1, h2, h3 { font-family: var(--font-display); }
 }
+
+/* Public RUN motion and composition; isolated from the athlete app. */
+:root {
+  --public-hero-shade: linear-gradient(90deg, oklch(0.08 0.005 260 / .98) 0%, oklch(0.08 0.005 260 / .88) 33%, oklch(0.08 0.005 260 / .25) 64%, transparent 100%);
+  --public-mobile-shade: linear-gradient(0deg, oklch(0.08 0.005 260) 0%, oklch(0.08 0.005 260 / .95) 30%, oklch(0.08 0.005 260 / .16) 70%, transparent 100%);
+  --public-shine: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+@keyframes runLogoEntrance { from { opacity: 0; transform: translate3d(-12px,0,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes runFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes runDash { to { stroke-dashoffset: -70; } }
+@keyframes runHeroReveal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes runShine { 0%,30% { transform: translateX(-150%); } 80%,100% { transform: translateX(350%); } }
+@keyframes runChart { from { stroke-dashoffset: 700; } to { stroke-dashoffset: 0; } }
+.run-public { letter-spacing: 0; }
+.run-public section[id] { scroll-margin-top: 88px; }
+.run-public .run-logo-entrance { animation: runLogoEntrance 750ms cubic-bezier(.2,.8,.2,1) both; }
+.run-public .run-float, .run-public .run-card-float { animation: runFloat 5.5s ease-in-out infinite; }
+.run-public .run-dash { animation: runDash 9s linear infinite; }
+.run-public-hero { min-height: 690px; }
+.run-hero-photo { object-position: 70% center; animation: runHeroReveal 1.2s ease-out both; }
+.run-hero-shade { background: var(--public-hero-shade); }
+.run-hero-copy { padding-bottom: 30px; }
+.run-hero-telemetry { position: absolute; right: 32px; bottom: 25px; width: 340px; border-radius: 8px; }
+.run-signal { position: relative; }
+.run-signal::after { content: ''; position: absolute; inset: 0; width: 35%; opacity: .4; background: var(--public-shine); animation: runShine 7s ease-in-out infinite; }
+.run-performance { background: var(--background); padding: 28px; border-radius: 8px; }
+.run-function-visual { min-height: 190px; display: flex; flex-direction: column; background: color-mix(in oklch,var(--primary) 5%, var(--background)); padding: 18px; border-radius: 6px; }
+.run-function-visual small { display: block; font-size: 10px; color: var(--muted-foreground); }
+.run-public .run-chart-line { stroke-dasharray: 700; animation: runChart 2s ease-out both; }
+.run-public a, .run-public button { transition-property: color, background-color, border-color, transform, opacity; }
+.run-public button:active, .run-public a:active { transform: translateY(1px); }
+.run-public button:disabled { cursor: default; }
+@media (max-width: 1023px) {
+ .run-public-hero { min-height: 0; }
+ .run-hero-photo { object-position: 65% top; }
+ .run-hero-shade { background: var(--public-mobile-shade); }
+ .run-hero-copy { padding-top: 300px; max-width: 650px; padding-bottom: 0; }
+ .run-hero-telemetry { position: relative; right: auto; bottom: auto; margin-top: 28px; width: min(100%,340px); }
+ .run-public-hero h1 { font-size: 42px; }
+}
+@media (max-width: 479px) {
+ .run-hero-copy { padding-top: 215px; }
+ .run-public-hero h1 { font-size: 36px; }
+ .run-public h2 { font-size: 30px; }
+ .run-public h3 { font-size: 19px; }
+ .run-public-hero > div:last-child { padding-top: 30px; padding-bottom: 30px; }
+ .run-performance { padding: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .run-public *, .run-public *::before, .run-public *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+ .run-public [style*="transition-delay"] { opacity: 1; transform: none; }
+}
