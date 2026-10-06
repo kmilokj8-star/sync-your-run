@@ -13,3 +13,5 @@
 - Mobile screens use a compact Garmin-inspired information density with a sticky top bar, bottom navigation, single-row metrics, and condensed integration cards because runners need quick one-handed scanning.
 - Shared language, units, privacy, notification, and theme preferences live in one reactive provider and persist locally so every route stays consistent.
 - Android packaging uses Capacitor around the web build so mobile and web remain one product rather than diverging implementations.
+- Public landing visual modules and styles stay isolated from internal app screens so website redesigns cannot change the athlete experience.
+- Public app links derive from Vite BASE_URL so they remain valid on root hosting and GitHub Pages subpath hosting.
