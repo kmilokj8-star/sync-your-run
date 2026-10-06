@@ -1,5 +1,8 @@
 # Roadmap
 
+- [ ] Improve public RUN visuals, motion and bilingual navigation without changing /app.
+- [ ] Verify public website on desktop/mobile and republish.
+
 - [x] Add a Garmin-inspired “Más” hub with grouped tools and settings.
 - [x] Add profile, performance, training, configuration, privacy, support, and version subviews.
 - [x] Add reactive Spanish/English internationalization with automatic browser-language detection and persistent preference.
