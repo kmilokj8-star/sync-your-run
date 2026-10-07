@@ -10,7 +10,7 @@ export default defineConfig({
   vite: {
     // Lovable serves from the domain root; GitHub Pages serves from /sync-your-run/.
     // Keep both deployments resolving CSS and assets correctly.
-    base: process.env.GITHUB_ACTIONS ? "/sync-your-run/" : "/",
+    base: process.env["GITHUB_ACTIONS"] ? "/sync-your-run/" : "/",
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).

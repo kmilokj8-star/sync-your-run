@@ -158,6 +158,14 @@ export function PublicWebsite() {
   useEffect(()=>{try{const v=localStorage.getItem("run-language");if(v==="en"||v==="es")setLanguage(v)}catch{}},[]);
   const [menu, setMenu] = useState(false);
   const [faq, setFaq] = useState<number | null>(null);
+  const faqs: [string, string][] = [
+    ["¿Qué es RUN?", "RUN es una plataforma deportiva pensada para corredores que quieren registrar sus actividades, organizar su entrenamiento, seguir su progreso y conectar con una comunidad y entrenadores."],
+    ["¿Necesito experiencia para utilizar RUN?", "No. RUN está pensado tanto para quienes empiezan a correr como para corredores con experiencia."],
+    ["¿Puedo utilizar RUN sin entrenador?", "Sí. Puedes utilizar las funciones de registro, actividades, rutas, retos y otras herramientas de RUN sin tener un entrenador."],
+    ["¿Qué dispositivos puedo conectar?", "Garmin Connect, Strava, Apple Health y Coros están presentes en la experiencia actual de integración. Las conexiones son simuladas hasta disponer de autorización real."],
+    ["¿RUN tendrá ciclismo?", "Sí. El ciclismo forma parte de la evolución prevista de RUN y se presentará como una futura expansión de la plataforma."],
+    ["¿Mis datos están protegidos?", "RUN incorpora controles de privacidad y gestión de preferencias dentro de la aplicación. Consulta las políticas oficiales antes de utilizar el servicio."],
+  ];
 
   const nav: [string, string][] = [
     ["Funciones", "#funciones"],
@@ -252,12 +260,12 @@ export function PublicWebsite() {
             [RouteIcon, "Plan routes", "Discover new places."],
             [Activity, "Analyze performance", "See your progress over time."],
             [Watch, "Sync devices", "Your data, in one place."],
-          ].map(([Icon, title, desc], i) => (
+          ].map(([IconAny, title, desc], i) => { const Icon = IconAny as typeof Activity; return (
             <div key={title as string} className={`flex items-center gap-4 border-b py-4 sm:px-5 lg:border-b-0 lg:border-r last:border-r-0 ${i === 0 ? "lg:pl-0" : ""}`}>
               <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-primary shadow-sm"><Icon className="size-5" /></span>
               <div><p className="font-bold">{title as string}</p><p className="text-xs text-muted-foreground">{desc as string}</p></div>
             </div>
-          ))}
+          );})}
         </div>
       </section>
 
