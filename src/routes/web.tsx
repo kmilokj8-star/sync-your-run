@@ -265,7 +265,7 @@ export function PublicWebsite() {
               <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-primary shadow-sm"><Icon className="size-5" /></span>
               <div><p className="font-bold">{title as string}</p><p className="text-xs text-muted-foreground">{desc as string}</p></div>
             </div>
-          ))}
+          );})}
         </div>
       </section>
 
