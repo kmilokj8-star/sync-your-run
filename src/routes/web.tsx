@@ -260,7 +260,7 @@ export function PublicWebsite() {
             [RouteIcon, "Plan routes", "Discover new places."],
             [Activity, "Analyze performance", "See your progress over time."],
             [Watch, "Sync devices", "Your data, in one place."],
-          ].map(([Icon, title, desc], i) => (
+          ].map(([IconAny, title, desc], i) => { const Icon = IconAny as typeof Activity; return (
             <div key={title as string} className={`flex items-center gap-4 border-b py-4 sm:px-5 lg:border-b-0 lg:border-r last:border-r-0 ${i === 0 ? "lg:pl-0" : ""}`}>
               <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-primary shadow-sm"><Icon className="size-5" /></span>
               <div><p className="font-bold">{title as string}</p><p className="text-xs text-muted-foreground">{desc as string}</p></div>
