@@ -229,22 +229,25 @@ export function PublicWebsite() {
         </div>}
       </header>
 
-      <section id="inicio" className="run-public-hero relative isolate overflow-hidden">
-        <div className="run-hero-photo absolute inset-0"><GeneratedScene variant="hero" /></div>
-        <div className="run-hero-shade absolute inset-0" />
-        <div className="relative mx-auto max-w-7xl px-5 py-14 lg:px-8 lg:py-20">
-          <Reveal className="run-hero-copy max-w-2xl">
-            <p className="mb-5 flex items-center gap-2 text-xs font-bold uppercase text-primary"><Activity className="size-4" /> RUN / {tr("Para corredores")}</p>
-            <h1 className="font-display text-5xl uppercase leading-[1.05] sm:text-6xl lg:text-7xl">RUN.<br />{tr("Tu entrenamiento.")}<br /><span className="text-primary">{tr("Tu progreso.")}</span></h1>
-            <p className="mt-6 max-w-lg text-lg leading-7 text-muted-foreground">{tr("RUN reúne tus actividades, entrenamiento, objetivos, rutas, dispositivos y comunidad en una experiencia creada para corredores.")}</p>
-            <div className="mt-7 flex flex-wrap gap-3"><Button asChild size="lg" className="h-auto min-h-12 px-6 py-3 font-bold"><a href={`${import.meta.env.BASE_URL}app`}>{tr("Empezar con RUN")}<ArrowRight /></a></Button><Button asChild variant="outline" size="lg" className="h-auto min-h-12 px-6 py-3"><a href="#funciones">{tr("Conocer RUN")}</a></Button></div>
-            <div className="mt-6 flex flex-wrap gap-5 text-sm text-muted-foreground"><span className="flex items-center gap-2"><ShieldCheck className="size-4 text-primary" />{tr("Privacidad y control")}</span><span className="flex items-center gap-2"><Watch className="size-4 shrink-0 text-primary" /> Garmin Connect · Strava · Apple Health · Coros</span></div>
+      <section id="inicio" className="run-public-hero relative overflow-hidden bg-white">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-[.78fr_1.22fr] lg:px-8 lg:py-16">
+          <Reveal className="relative z-10">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[.18em] text-muted-foreground">{language === "en" ? "MORE THAN A RUNNING APP" : "MUCHO MÁS QUE UNA APP DE RUNNING"}</p>
+            <h1 className="font-display text-5xl uppercase leading-[.98] tracking-tight text-foreground sm:text-6xl lg:text-[5.1rem]">{language === "en" ? <>Your training.<br />Your <span className="text-primary">progress.</span></> : <>Tu entrenamiento.<br />Tu <span className="text-primary">progreso.</span></>}</h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">{tr("RUN reúne tus actividades, entrenamiento, objetivos, rutas, dispositivos y comunidad en una experiencia creada para corredores.")}</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button asChild size="lg" className="h-auto min-h-12 rounded-full px-7 py-3.5 font-bold shadow-lg shadow-primary/20"><a href="\${import.meta.env.BASE_URL}app">{tr("Empezar con RUN")}<ArrowRight /></a></Button>
+              <Button asChild variant="outline" size="lg" className="h-auto min-h-12 rounded-full px-7 py-3.5 font-bold"><a href="#funciones">{tr("Conocer RUN")}</a></Button>
+            </div>
           </Reveal>
-          <div className="run-hero-telemetry run-card-float border bg-card/90 p-4 backdrop-blur" role="img" aria-label={language === "en" ? "Illustrative running metrics" : "Métricas ilustrativas de running"}>
-            <div className="flex items-center justify-between gap-6"><span className="flex items-center gap-2 text-xs font-bold"><Activity className="size-4 text-primary" />{tr("Actividad registrada")}</span><span className="text-[10px] text-muted-foreground">{language === "en" ? "ILLUSTRATIVE" : "ILUSTRATIVO"}</span></div>
-            <div className="mt-3 grid grid-cols-3 gap-4">{[["10.2 km",tr("Distancia")],["56:26",tr("Tiempo")],["5:32 /km",tr("Ritmo")]].map(([v,label])=><div key={label}><p className="font-mono text-lg font-bold">{v}</p><p className="text-xs text-muted-foreground">{label}</p></div>)}</div>
-            <div className="run-signal mt-3 h-1 overflow-hidden bg-muted"><div className="h-full w-3/4 bg-primary"/></div>
-          </div>
+          <Reveal delay={100} className="relative min-h-[430px] lg:min-h-[500px]">
+            <div className="run-hero-visual absolute inset-0 overflow-hidden rounded-[2rem] bg-sky-50 shadow-2xl shadow-slate-900/10"><GeneratedScene variant="hero" /></div>
+            <div className="run-hero-telemetry run-card-float absolute bottom-8 left-5 z-10 w-[min(330px,calc(100%-2.5rem))] rounded-2xl border border-white/70 bg-white/95 p-5 shadow-xl backdrop-blur" role="img" aria-label={language === "en" ? "Illustrative running metrics" : "Métricas ilustrativas de running"}>
+              <div className="flex items-center justify-between gap-4"><span className="flex items-center gap-2 text-xs font-bold"><Activity className="size-4 text-primary" />RUNNING</span><span className="text-[10px] font-bold text-muted-foreground">RUN</span></div>
+              <p className="mt-2 font-display text-4xl">10.2 km</p>
+              <div className="mt-3 grid grid-cols-3 gap-3 border-t pt-3 text-xs"><span><b className="block text-base text-foreground">56:26</b>{tr("Tiempo")}</span><span><b className="block text-base text-foreground">5:32</b>{tr("Ritmo")}</span><span><b className="block text-base text-foreground">742</b>Cal</span></div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -259,30 +262,42 @@ export function PublicWebsite() {
         </div>
       </section>
 
-      <section id="funciones" className="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
-        <Reveal>
-          <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-normal text-primary">{tr("Everything in one place")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Tools to help you run better")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("The platform grows with you, from your first run to your next big goals.")}</p></div>
-        </Reveal>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map(([Icon, title, text], i) => (
-            <Reveal key={title as string} delay={i * 60}>
-              <article className="group h-full rounded-lg border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40">
-                <FunctionVisual index={i} language={language} />
-                <div className="mb-3 mt-6 flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-primary-foreground "><Icon className="size-5" /></div>
-                <h3 className="font-display text-xl uppercase">{tr(title as string)}</h3><p className="mt-3 leading-7 text-muted-foreground">{tr(text as string)}</p>
-              </article>
-            </Reveal>
+      <section id="funciones" className="mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
+        <Reveal><div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[.18em] text-primary">{tr("Everything in one place")}</p><h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Tools to help you run better")}</h2><p className="mt-5 text-lg leading-8 text-muted-foreground">{tr("The platform grows with you, from your first run to your next big goals.")}</p></div></Reveal>
+        <div className="mt-10 grid gap-5 md:grid-cols-3">
+          {[
+            {title:"Comunidad", desc:"Participa en retos, comparte tu progreso y corre acompañado.", visual:<GeneratedScene variant="community" />, href:"#comunidad"},
+            {title:"Entrenadores", desc:"Encuentra orientación y organiza tu entrenamiento con profesionales.", visual:<GeneratedScene variant="coaching" />, href:"#entrenadores"},
+            {title:"Deportistas", desc:"Registra tus sesiones, sigue tu progreso y alcanza tus próximos objetivos.", visual:<PerformanceVisual language={language} />, href:"#deportistas"},
+          ].map((item, i) => (
+            <Reveal key={item.title} delay={i * 80}><a href={item.href} className="group block h-full"><article className="h-full overflow-hidden rounded-[1.4rem] border bg-card transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-xl hover:shadow-slate-900/10"><div className="aspect-[1.55/1] overflow-hidden bg-sky-50 [&>svg]:transition-transform [&>svg]:duration-700 group-hover:[&>svg]:scale-105">{item.visual}</div><div className="p-6"><div className="mb-4 flex items-center justify-between"><h3 className="font-display text-2xl uppercase">{tr(item.title)}</h3><span className="flex size-10 items-center justify-center rounded-full bg-muted transition-colors group-hover:bg-primary group-hover:text-primary-foreground"><ArrowRight className="size-5" /></span></div><p className="leading-7 text-muted-foreground">{tr(item.desc)}</p></div></article></a></Reveal>
           ))}
         </div>
       </section>
 
-      <section id="deportistas" className="relative overflow-hidden bg-foreground text-background">
+      <section className="border-y bg-[#f3faef]">
+        <div className="mx-auto grid max-w-7xl gap-0 px-5 py-5 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+          {[
+            [Footprints, "Track activities", "Run, walk, bike and more."],
+            [RouteIcon, "Plan routes", "Discover new places."],
+            [Activity, "Analyze performance", "See your progress over time."],
+            [Watch, "Sync devices", "Your data, in one place."],
+          ].map(([Icon, title, desc], i) => (
+            <div key={title as string} className={`flex items-center gap-4 border-b py-4 sm:px-5 lg:border-b-0 lg:border-r last:border-r-0 ${i === 0 ? "lg:pl-0" : ""}`}>
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-primary shadow-sm"><Icon className="size-5" /></span>
+              <div><p className="font-bold">{title as string}</p><p className="text-xs text-muted-foreground">{desc as string}</p></div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="deportistas" className="relative overflow-hidden bg-white text-foreground">
         <div className="pointer-events-none absolute -right-24 top-0 size-96 rounded-full bg-primary/15 blur-3xl" />
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
           <Reveal>
             <p className="text-xs font-bold uppercase tracking-normal text-primary">{tr("Para deportistas")}</p>
             <h2 className="mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl">{tr("Empieza donde estás. Avanza hacia donde quieres llegar.")}</h2>
-            <p className="mt-5 max-w-xl text-lg leading-8 opacity-70">{tr("RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.")}</p>
+            <p className="mt-5 max-w-xl text-lg leading-8 text-muted-foreground">{tr("RUN is designed to support you whether you are just starting, training for health or preparing for a new personal best.")}</p>
             <Button asChild className="h-auto p-0"><a href={`${import.meta.env.BASE_URL}app`} className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-bold text-primary-foreground transition-all hover:-translate-y-1">{tr("Empezar con RUN")} <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" /></a></Button>
           </Reveal>
                      <Reveal delay={120}>
@@ -356,7 +371,7 @@ export function PublicWebsite() {
         <p className="mx-auto mt-4 max-w-4xl text-center text-xs text-muted-foreground">* {tr("Las funciones concretas y precios de suscripción quedan sujetos a la configuración comercial vigente.")}</p>
       </section>
 
-      <section id="descarga" className="relative overflow-hidden bg-foreground text-background">
+      <section id="descarga" className="relative overflow-hidden bg-white text-foreground">
         <div className="pointer-events-none absolute right-0 top-0 size-96 rounded-full bg-primary/10 blur-3xl" />
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 lg:grid-cols-[1fr_auto] lg:px-8 lg:py-24">
           <Reveal>
